@@ -11,6 +11,7 @@ import { playEvents, clearFeedback, reconcilePieces } from './feedback.js';
 import { showInvite } from './invite.js';
 import { prepareReveals } from './reveal.js';
 import { syncTurnClock, paintTurnClock } from './turn-clock.js';
+import { openMapSize, closeMapSize } from './map-size.js';
 
 const invitedCode = new URLSearchParams(location.search).get('room')?.toUpperCase();
 const invitation = /^[A-F0-9]{6}$/.test(invitedCode || '') ? invitedCode : null;
@@ -33,6 +34,7 @@ function accept(next) {
   if (!sameRoom || state.phase === 'finished' && next.phase === 'spawn') clearFeedback();
   prepareReveals(events, state);
   state = next;
+  if (next.phase !== 'lobby') closeMapSize();
   syncTurnClock(next, myTurn(next, meIn(next, session)));
   if (!myTurn(state, meIn(state, session)) || state.pending) {
     mode = {};
@@ -48,6 +50,7 @@ function welcome() {
   busy = false;
   document.body.classList.remove('busy');
   clearFeedback();
+  closeMapSize();
   hideCardTooltip();
   document.querySelector('#turn-notice').hidden = true;
   state = session = null;
@@ -85,6 +88,7 @@ async function act(action) {
     if (ticket !== generation) return;
     if (action.type === 'leave') welcome();
     else { mode = {}; selected = null; accept(next); }
+    return true;
   } catch (error) {
     if (ticket !== generation) return;
     message(error.message);
@@ -190,6 +194,10 @@ document.addEventListener('click', async event => {
   if (button.hasAttribute('data-invite') && state) return showInvite(state);
   if (button.dataset.action === 'leave') return leaveRoom();
   if (busy || !state) return;
+  if (button.hasAttribute('data-map-size')) {
+    hideCardTooltip();
+    return openMapSize(state, dimensions => act({ type: 'resize', ...dimensions }));
+  }
   if (button.dataset.action) return act({ type: button.dataset.action });
   if (button.hasAttribute('data-mode')) {
     mode = mode.type === button.dataset.mode ? {} : { type: button.dataset.mode };

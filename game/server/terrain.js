@@ -1,4 +1,4 @@
-import { RULES, TERRAIN, WEAPONS } from '../rules.js';
+import { RULES, TERRAIN, WEAPONS, mapDimensions } from '../rules.js';
 import { damage } from './combat.js';
 import { newItem, record } from './model.js';
 
@@ -60,12 +60,13 @@ export function resolveTerrain(room, player, tile) {
     }
     record(room, count ? `${player.name}从遗迹获得 ${count} 张道具牌` : `${player.name}手牌已满，遗迹保留`, { ...details, count });
   } else if (tile.type === 'tower') {
+    const { width, height } = mapDimensions(room);
     tile.spent = true;
     record(room, `${player.name}登上瞭望塔，翻开相邻四格`, details);
     for (const [dx, dy] of [[0, -1], [0, 1], [-1, 0], [1, 0]]) {
       const x = tile.x + dx, y = tile.y + dy;
-      if (x >= 0 && y >= 0 && x < RULES.size && y < RULES.size) {
-        revealTile(room, player, room.tiles[y * RULES.size + x]);
+      if (x >= 0 && y >= 0 && x < width && y < height) {
+        revealTile(room, player, room.tiles[y * width + x]);
       }
     }
   }

@@ -6,6 +6,8 @@ import { actionRecord } from './activity.js';
 
 export function render(state, session, mode, selected) {
   const me = meIn(state, session);
+  const dimensions = `${state.width ?? state.size} × ${state.height ?? state.size}`;
+  const canResize = state.phase === 'lobby' && state.hostId === session.playerId;
   if (!me) return;
   document.querySelector('#welcome').hidden = true;
   const match = document.querySelector('#match');
@@ -22,7 +24,7 @@ export function render(state, session, mode, selected) {
     </div>
     <div class="game-layout">
       <section class="map-section">
-        <div class="board-heading ${myTurn(state, me) ? 'your-turn' : ''}"><h1>${e(status(state, me, mode))}</h1><span class="quiet">${state.phase === 'playing' ? `<span id="turn-clock" role="timer" aria-live="off"></span>第 ${state.round} 轮` : `${state.size} × ${state.size}`}</span></div>
+        <div class="board-heading ${myTurn(state, me) ? 'your-turn' : ''}"><h1>${e(status(state, me, mode))}</h1>${canResize ? `<button class="text-button map-size-open" data-map-size aria-label="地图大小：${dimensions}">地图 ${dimensions}</button>` : `<span class="quiet">${state.phase === 'playing' ? `<span id="turn-clock" role="timer" aria-live="off"></span>第 ${state.round} 轮` : dimensions}</span>`}</div>
         ${board(state, me, mode, selected)}
         ${controls(state, me, mode)}
         ${hand(state, me, mode)}

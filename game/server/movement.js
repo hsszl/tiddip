@@ -1,4 +1,4 @@
-import { RULES } from '../rules.js';
+import { mapDimensions } from '../rules.js';
 import { requireThat } from './errors.js';
 import { record } from './model.js';
 import { revealTile, resolveTerrain } from './terrain.js';
@@ -6,8 +6,9 @@ import { startIfReady } from './turns.js';
 import { moveInRange } from '../range.js';
 
 export function destination(room, player, x, y) {
-  requireThat(Number.isInteger(x) && Number.isInteger(y) && x >= 0 && y >= 0 && x < RULES.size && y < RULES.size, '位置超出地图', 400);
-  const tile = room.tiles[y * RULES.size + x];
+  const { width, height } = mapDimensions(room);
+  requireThat(Number.isInteger(x) && Number.isInteger(y) && x >= 0 && y >= 0 && x < width && y < height, '位置超出地图', 400);
+  const tile = room.tiles[y * width + x];
   const occupied = room.players.some(other => other.id !== player.id && other.alive && other.x === x && other.y === y);
   requireThat(tile.type !== 'toilet' || !occupied, '厕所已经有人');
   return tile;

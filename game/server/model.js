@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
-import { RULES, WEAPONS, ITEMS } from '../rules.js';
+import { RULES, WEAPONS, ITEMS, mapDimensions } from '../rules.js';
 import { requireThat } from './errors.js';
+import { makeMap } from './map.js';
 
 const colors = ['#b7654d', '#527e88', '#8b76a2', '#9d883f', '#6f8a50', '#c2768a'];
 export const pick = array => array[Math.floor(Math.random() * array.length)];
@@ -13,24 +14,9 @@ export function record(room, text, details = {}) {
   return entry;
 }
 
-function makeMap() {
-  const tiles = Array.from({ length: RULES.size ** 2 }, (_, index) => ({
-    x: index % RULES.size, y: Math.floor(index / RULES.size),
-    type: 'ground', revealed: false, spent: false,
-  }));
-  const candidates = tiles.filter(tile => !(tile.x < 2 && tile.y < 2));
-  for (const [type, count] of Object.entries(RULES.terrainCounts)) {
-    for (let tileCount = 0; tileCount < count; tileCount++) {
-      const index = Math.floor(Math.random() * candidates.length);
-      candidates.splice(index, 1)[0].type = type;
-    }
-  }
-  return tiles;
-}
-
 export function createRoom(id, name) {
   const room = {
-    id, phase: 'lobby', players: [], tiles: makeMap(),
+    id, phase: 'lobby', width: RULES.size, height: RULES.size, players: [], tiles: makeMap(),
     turn: 0, round: 1, pending: null, winnerId: null,
     actions: { moved: false, attacked: false },
     log: [], version: 1, updatedAt: Date.now(),
@@ -58,7 +44,8 @@ export function addPlayer(room, name, isBot = false) {
 export function startRoom(room) {
   requireThat(room.players.filter(player => !player.left).length >= 2, '至少需要两名玩家，可以添加电脑');
   room.players = room.players.filter(player => !player.left);
-  room.tiles = makeMap();
+  Object.assign(room, mapDimensions(room));
+  room.tiles = makeMap(room);
   room.phase = 'spawn';
   room.turn = 0;
   room.round = 1;

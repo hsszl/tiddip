@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="/game/client/styles/theme.css">
   <link rel="stylesheet" href="/game/client/styles/combat.css">
   <link rel="stylesheet" href="/game/client/styles/outcome.css">
+  <link rel="stylesheet" href="/game/client/styles/map-size.css">
 </head>
 <body>
   <header class="topbar">
@@ -54,7 +55,16 @@
       <li>武器公开，手牌私有。攻击与能力范围画在棋盘上；武器 ⓘ 查看范围图。</li>
       <li>突进、侧步、疾跑占用本回合移动，只触发落点。军械库换武器并恢复技能，每人每座一次。</li>
     </ul>
-    <p class="quiet">8×8 地图，2–6 人。武器 ⓘ 查看范围；手牌悬停查看效果。房间长期无人操作会被回收。</p>
+    <p class="quiet">地图宽高各 4–16 格，2–6 人。武器 ⓘ 查看范围；手牌悬停查看效果。房间长期无人操作会被回收。</p>
+  </dialog>
+  <dialog id="map-size-dialog" aria-labelledby="map-size-title">
+    <div class="dialog-top"><h2 id="map-size-title">地图大小</h2><button type="button" data-close aria-label="关闭地图设置">×</button></div>
+    <form id="map-size-form">
+      <div id="map-size-grid" class="map-size-grid" role="grid" tabindex="0" aria-label="拖动选择地图大小"></div>
+      <div class="map-size-inputs"><label>宽<input id="map-width" type="number" step="1" required></label><span aria-hidden="true">×</span><label>高<input id="map-height" type="number" step="1" required></label></div>
+      <p id="map-size-error" role="status"></p>
+      <div class="map-size-footer"><button type="button" data-close>取消</button><button id="map-size-apply" class="primary" type="submit">应用</button></div>
+    </form>
   </dialog>
   <dialog id="targets-dialog" aria-labelledby="targets-title"><div class="dialog-top"><h2 id="targets-title">攻击谁？</h2><button data-close aria-label="取消选择">×</button></div><div id="targets"></div></dialog>
   <dialog id="inspect-dialog" aria-labelledby="inspect-title"><div class="dialog-top"><h2 id="inspect-title">卡牌</h2><button data-close aria-label="关闭详情">×</button></div><div id="inspect-content"></div></dialog>

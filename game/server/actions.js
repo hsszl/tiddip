@@ -6,18 +6,28 @@ import { useItem } from './items.js';
 import { useWeaponSkill } from './skills.js';
 import { activateTerrain } from './armory.js';
 import { activePlayer, advanceTurn, checkVictory, startIfReady } from './turns.js';
+import { resizeMap } from './map.js';
+import { mapDimensions } from '../rules.js';
 
 function start(room) {
   startRoom(room);
+  const { width, height } = mapDimensions(room);
+  const distance = tile => Math.abs(tile.x - Math.floor(width / 2)) + Math.abs(tile.y - Math.floor(height / 2));
   for (const bot of room.players.filter(player => player.isBot)) {
-    const index = room.players.indexOf(bot);
-    spawn(room, bot, 3 + index % 3, 3 + Math.floor(index / 3));
+    const tile = room.tiles.filter(tile => tile.type === 'ground' && !room.players.some(p => p.x === tile.x && p.y === tile.y))
+      .sort((a, b) => distance(a) - distance(b))[0];
+    spawn(room, bot, tile.x, tile.y);
   }
 }
 
 export function applyAction(room, player, action) {
   requireThat(action && typeof action.type === 'string', '缺少行动类型', 400);
   const host = () => requireThat(player.id === room.hostId, '只有房主可以操作', 403);
+  if (action.type === 'resize') {
+    host();
+    resizeMap(room, action.width, action.height);
+    return;
+  }
   if (action.type === 'leave') {
     record(room, `${player.name}离开房间`, { kind: 'leave', actorId: player.id, actorName: player.name });
     player.left = true;

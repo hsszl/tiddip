@@ -19,6 +19,7 @@ export function selectable(state, me, tile, mode) {
 }
 
 export function board(state, me, mode, selected) {
+  const width = state.width ?? state.size, height = state.height ?? state.size;
   const cells = state.tiles.map(tile => {
     const occupants = state.players.filter(player => player.alive && player.x === tile.x && player.y === tile.y);
     const fallen = state.players.filter(player => !player.alive && !player.left && player.x === tile.x && player.y === tile.y);
@@ -44,5 +45,5 @@ export function board(state, me, mode, selected) {
       <span class="cell-coordinate" aria-hidden="true">${tile.x + 1}.${tile.y + 1}</span>
     </button>`;
   }).join('');
-  return `<div class="board" data-mode="${mode.type || 'idle'}" style="--size:${state.size}" role="group" aria-label="${state.size} 乘 ${state.size} 地图">${cells}</div>`;
+  return `<div class="board" data-mode="${mode.type || 'idle'}" style="--size:${width}" role="group" aria-label="${width} 乘 ${height} 地图">${cells}</div>`;
 }

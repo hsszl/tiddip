@@ -1,9 +1,10 @@
-import { WEAPONS, RULES } from '../rules.js';
+import { WEAPONS, mapDimensions } from '../rules.js';
 
 export function roomView(room, viewerId) {
+  const dimensions = mapDimensions(room);
   return {
     id: room.id, phase: room.phase, hostId: room.hostId,
-    size: RULES.size, round: room.round, version: room.version,
+    ...dimensions, size: dimensions.width, round: room.round, version: room.version,
     turnEndsAt: room.turnEndsAt ?? null,
     currentPlayerId: room.phase === 'playing' ? room.players[room.turn].id : null,
     actions: { ...room.actions }, pending: room.pending,

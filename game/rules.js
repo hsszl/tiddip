@@ -1,8 +1,13 @@
 // Demo values. Only the server applies these rules to a match.
 export const RULES = {
-  size: 8, maxPlayers: 6, maxHand: 5, turnSeconds: 30,
+  size: 8, mapMin: 4, mapMax: 16, maxPlayers: 6, maxHand: 5, turnSeconds: 30,
   terrainCounts: { mine: 8, toilet: 5, supply: 6, clinic: 4, tower: 3, brambles: 5, camp: 3, ruins: 3, armory: 3 },
 };
+
+// Older saved rooms and cached clients only carried a square size.
+export function mapDimensions(map = {}) {
+  return { width: map.width ?? map.size ?? RULES.size, height: map.height ?? map.size ?? RULES.size };
+}
 
 export const WEAPONS = {
   sniper: {

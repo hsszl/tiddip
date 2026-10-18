@@ -2,6 +2,7 @@ import { requireThat } from './errors.js';
 
 const fields = {
   leave: [], addBot: [], start: [], restart: [], end: [], terrain: [],
+  resize: ['width', 'height'],
   spawn: ['x', 'y'], move: ['x', 'y'], land: ['x', 'y'],
   attack: ['targetId'], skill: ['targetId', 'x', 'y'], item: ['itemId', 'x', 'y', 'targetId'],
 };
