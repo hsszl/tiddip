@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fafafa">
+  <title>Loopland · 双人</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header>
+      <a class="brand" href="../index.html">Loopland</a>
+      <nav aria-label="游戏模式"><span class="active">双人</span></nav>
+      <button id="theme-toggle" class="theme" aria-label="切换黑暗模式">◐</button>
+    </header>
+    <main>
+      <div class="toolbar">
+        <div class="scores"><span class="blue">蓝方 <strong id="blue-score"></strong></span><span class="pink">粉方 <strong id="pink-score"></strong></span></div>
+        <div class="controls"><time id="clock">03:00</time><button id="pause" disabled>暂停</button><button id="restart">重开</button></div>
+      </div>
+      <div class="arena">
+        <canvas id="board" width="960" height="960" tabindex="0" aria-label="围地棋盘：蓝方 WASD，粉方方向键"></canvas>
+        <div id="overlay" class="overlay">
+          <h1 id="result">双人</h1>
+          <p id="summary"><span class="blue">WASD</span><span class="pink">方向键</span></p>
+          <button id="start" class="primary">开始</button>
+        </div>
+      </div>
+      <div class="bottom"><span id="status" role="status">围一圈，回到自己的领地。</span><span>空格暂停 · Enter 开始</span></div>
+    </main>
+    <footer>先占满 50% 获胜；3 分钟后比较领地。碰线重生，已有领地保留。</footer>
+  </div>
+  <script src="game.js"></script>
+  <script src="render.js"></script>
+  <script src="theme.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

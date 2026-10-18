@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>tiddip</title>
+  <desc>A minimal emblem inspired by the decagonal faces and prism connections of the truncated dodecahedral prism. This is a stylized mark, not a complete mathematical projection.</desc>
+  <rect width="64" height="64" rx="16" fill="#283d38"/>
+  <g fill="none" stroke="#f7f4eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M32 9 45.52 13.39 53.87 24.89 53.87 39.11 45.52 50.61 32 55 18.48 50.61 10.13 39.11 10.13 24.89 18.48 13.39Z"/>
+    <path d="M32 21 38.47 23.1 42.46 28.6 42.46 35.4 38.47 40.9 32 43 25.53 40.9 21.54 35.4 21.54 28.6 25.53 23.1Z"/>
+    <path d="M32 9V21 M45.52 13.39 38.47 23.1 M53.87 24.89 42.46 28.6 M53.87 39.11 42.46 35.4 M45.52 50.61 38.47 40.9 M32 55V43 M18.48 50.61 25.53 40.9 M10.13 39.11 21.54 35.4 M10.13 24.89 21.54 28.6 M18.48 13.39 25.53 23.1" opacity=".48"/>
+  </g>
+  <path d="M32 9 45.52 13.39 38.47 23.1 32 21Z" fill="#df7755"/>
+</svg>

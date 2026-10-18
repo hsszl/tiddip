@@ -63,10 +63,10 @@ test('encoded traversal cannot expose files outside the public client', () => wi
   assert.equal(response, 404);
 }));
 
-test('old links preserve room queries and API paths when redirected', () => withServer(async base => {
+test('old game path is reserved rather than redirected to gaogame', () => withServer(async base => {
   for (const path of ['/game/?room=ABC123', '/game/api/health']) {
     const response = await fetch(base + path, { redirect: 'manual' });
-    assert.equal(response.status, 308);
-    assert.equal(response.headers.get('location'), '/gaogame' + path.slice('/game'.length));
+    assert.equal(response.status, 404);
+    assert.equal(response.headers.get('location'), null);
   }
 }));

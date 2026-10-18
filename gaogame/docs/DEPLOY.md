@@ -32,7 +32,7 @@ Supreme 是试用或付费共享托管，不是长期免费 VPS。官方确认 S
 
 ## 可控单进程主机或容器
 
-在 game 目录运行 `node app.cjs`。本机默认 127.0.0.1:3000；只有需要接受入口代理连接时设置 HOST 和 PORT。
+在 gaogame 目录运行 `node app.cjs`。本机默认 127.0.0.1:3000；只有需要接受入口代理连接时设置 HOST 和 PORT。不自动启动本地服务。
 
 `gaogame/deploy/Dockerfile` 提供非 root 的 Node 24 容器配置；构建上下文仍为 `gaogame`，命令为 `docker build -f deploy/Dockerfile -t tiddip-gaogame .`。需为 /data 配持久卷；只启一个副本，HTTPS 由入口代理处理。本次未安装 Docker，也未实际构建或发布镜像。
 
@@ -41,7 +41,8 @@ Supreme 是试用或付费共享托管，不是长期免费 VPS。官方确认 S
 - 本地源码：`gaogame/`；部署包：`gaogame/dist/tiddip-gaogame.zip`。
 - 云端 Application root：`apps/tiddip-gaogame`；Application URL：`https://tiddip.com/gaogame/`；启动文件仍为 `app.cjs`。
 - 使用 CloudLinux Selector 修改应用根目录与 URI，由它同步移动运行环境并生成 Passenger 配置；随后上传运行文件并重启应用。
-- 首页、API、资源导入和邀请链接均使用 `/gaogame/`。旧 `/game/` 以 HTTP 308 跳转，保留房间参数；浏览器身份存储键不改名，避免丢失已记住的令牌。
+- 首页、API、资源导入和邀请链接均使用 `/gaogame/`。按最新要求取消旧 `/game/` 跳转，将该路径留给将来的项目；浏览器身份存储键不改名，避免丢失已记住的令牌。此前访问过的浏览器可能缓存旧 308，需要清除该站点缓存。
+- 主题按钮通过独立脚本加载，不依赖游戏模块或 API 连接；这不代表整个联网游戏可以离线使用。
 - 迁移前云端备份：`/home/sufylwsmby/private/gaogame-migration/20261018T124142Z/before.zip`，含原应用、首页与挂载配置。备份位于文档根目录之外。
 - 当前云端未设置 `GAME_DATA_DIR`，房间仍为内存存储，重启会丢失房间；路径兼容不等于恢复重启前的房间。
 - 本地旧 `game/dist/tiddip-game.zip` 被其他程序占用，暂留且不进 Git；它不是新的部署包。关闭占用程序后可删除旧 `game` 目录。
@@ -57,7 +58,7 @@ Supreme 是试用或付费共享托管，不是长期免费 VPS。官方确认 S
 
 ## Git 工作流
 
-本地修改、针对性检查、按功能提交，再推到自己的 GitHub 仓库。当前没有配置远程发布或放置密钥。数据目录、环境文件和日志由 gaogame/.gitignore 排除。
+本地修改、针对性检查、按功能提交，再推到自己的 GitHub 仓库。Git 远程 `tiddip` 指向 `https://github.com/hsszl/tiddip.git`；push 同步源码，不会自动发布到 Spaceship。当前没有配置自动部署或放置发布密钥。数据目录、环境文件和日志由 gaogame/.gitignore 排除。
 
 先跑通手动部署与重启恢复，再连接 GitHub 自动部署；发布前备份私有数据，更新后核对两个玩家同步。不要把测试环境的会话复制给别人。
 

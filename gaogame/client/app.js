@@ -5,7 +5,6 @@ import { selectable } from './board.js';
 import { ITEMS } from '/gaogame/rules.js';
 import { skillMode, itemInRange } from '/gaogame/range.js';
 import './catalog.js';
-import './theme.js';
 import { inspectCard, inspectEvent, hideCardTooltip } from './inspect.js';
 import { playEvents, clearFeedback, reconcilePieces } from './feedback.js';
 import { showInvite } from './invite.js';

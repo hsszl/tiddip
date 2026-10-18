@@ -13,11 +13,6 @@ export function createApp({ trustedProxies = [], ...storeOptions } = {}) {
     response.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'");
     try {
       const { pathname } = new URL(request.url, 'http://localhost');
-      if (pathname === '/game' || pathname.startsWith('/game/')) {
-        response.writeHead(308, { Location: '/gaogame' + request.url.slice('/game'.length) });
-        response.end();
-        return;
-      }
       if (await handleApi(pathname, request, response, store, limit, trustedProxies)) return;
       if (!['GET', 'HEAD'].includes(request.method)) {
         response.writeHead(405, { Allow: 'GET, HEAD' });
