@@ -1,4 +1,4 @@
-import { request, savedSession, saveSession } from './network.js';
+import { request, savedSession, saveSession, savedName, saveName } from './network.js';
 import { render } from './render.js';
 import { meIn, myTurn, inRange, escapeHTML as e } from './helpers.js';
 import { selectable } from './board.js';
@@ -12,7 +12,9 @@ import { showInvite } from './invite.js';
 import { prepareReveals } from './reveal.js';
 import { syncTurnClock, paintTurnClock } from './turn-clock.js';
 
-let session = savedSession(), state = null, mode = {}, selected = null, busy = false, polling = false;
+const invitedCode = new URLSearchParams(location.search).get('room')?.toUpperCase();
+const invitation = /^[A-F0-9]{6}$/.test(invitedCode || '') ? invitedCode : null;
+let session = savedSession(invitation), state = null, mode = {}, selected = null, busy = false, polling = false;
 let generation = 0;
 let viewingInvite = false;
 const message = text => { document.querySelector('#message').textContent = text; };
@@ -110,12 +112,10 @@ async function act(action) {
   finally { if (ticket === generation) { busy = false; document.body.classList.remove('busy'); } }
 }
 
-async function enter(event) {
-  event.preventDefault();
+async function enter(intent = 'create', requestedCode) {
   if (busy) return;
-  const intent = event.submitter?.value || 'create';
   const name = document.querySelector('#nickname').value.trim();
-  const code = document.querySelector('#room-code').value.trim().toUpperCase();
+  const code = requestedCode || document.querySelector('#room-code').value.trim().toUpperCase();
   if (intent === 'join' && !/^[A-F0-9]{6}$/.test(code)) return message('输入 6 位房间号');
   busy = true;
   const ticket = ++generation;
@@ -128,6 +128,7 @@ async function enter(event) {
     session = { roomId: result.roomId, playerId: result.playerId, token: result.token };
     selected = null;
     saveSession(session);
+    saveName(name);
     history.replaceState(null, '', `/game/?room=${session.roomId}`);
     accept(result.state);
     if (intent === 'solo') {
@@ -175,7 +176,10 @@ function cellClick(coordinate) {
   return attackCell(x, y);
 }
 
-document.querySelector('#entry-form').addEventListener('submit', enter);
+document.querySelector('#entry-form').addEventListener('submit', event => {
+  event.preventDefault();
+  enter(event.submitter?.value || (viewingInvite ? 'join' : 'create'));
+});
 document.querySelector('#rules-open').addEventListener('click', () => document.querySelector('#rules-dialog').showModal());
 document.addEventListener('click', async event => {
   const button = event.target.closest('button');
@@ -230,8 +234,10 @@ async function poll() {
   } finally { polling = false; }
 }
 
-const code = new URLSearchParams(location.search).get('room');
-if (code) document.querySelector('#room-code').value = code;
+document.querySelector('#nickname').value = savedName();
+if (invitation) document.querySelector('#room-code').value = invitation;
+// Migrate older tab-only sessions and select a remembered invitation identity.
+if (session) saveSession(session);
 document.querySelector('#resume-session').addEventListener('click', () => {
   viewingInvite = false;
   document.querySelector('#resume-session').hidden = true;
@@ -242,10 +248,11 @@ document.querySelector('#resume-session').addEventListener('click', () => {
 try {
   await request('/health');
   connection('已连接');
-  if (session && /^[A-Fa-f0-9]{6}$/.test(code || '') && code.toUpperCase() !== session.roomId) {
+  if (invitation && session?.roomId !== invitation) {
     viewingInvite = true;
-    document.querySelector('#welcome').hidden = false;
-    document.querySelector('#resume-session').hidden = false;
+    document.querySelector('#resume-session').hidden = !session;
+    await enter('join', invitation);
+    if (viewingInvite) document.querySelector('#welcome').hidden = false;
   } else if (session) {
     await poll();
     if (!state) document.querySelector('#welcome').hidden = false;

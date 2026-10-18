@@ -1,4 +1,4 @@
-:root { --accent: #396c80; --surface: #faf7f0; }
+:root { --accent: #396c80; --surface: #fff; }
 #theme-toggle { display: inline-flex; align-items: center; justify-content: center; padding: 6px; }
 :root[data-theme="dark"] { color-scheme: dark; --ink: #e6e6e6; --muted: #a0a0a0; --line: #303030; --accent: #d4d4d4; --surface: #202020; color: var(--ink); background: #111; }
 [data-theme="dark"] body { background: #111; }

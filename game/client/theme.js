@@ -11,7 +11,7 @@ function apply(theme) {
   button.innerHTML = icon(dark ? 'sun' : 'moon');
   button.setAttribute('aria-label', dark ? '切换浅色模式' : '切换黑暗模式');
   button.title = dark ? '浅色模式' : '黑暗模式';
-  document.querySelector('meta[name="theme-color"]').content = dark ? '#111111' : '#e9e3d7';
+  document.querySelector('meta[name="theme-color"]').content = dark ? '#111111' : '#fafafa';
 }
 apply(preference === 'dark' || preference === 'light' ? preference : system.matches ? 'dark' : 'light');
 button.addEventListener('click', () => {

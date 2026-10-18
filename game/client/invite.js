@@ -19,8 +19,8 @@ export function showInvite(state) {
   share.innerHTML = `${icon('share')}分享`;
   status.textContent = '';
   document.querySelector('#invite-note').textContent = local ? '这是本机地址，其他设备打不开。部署后才能通过链接联机。'
-    : state.phase !== 'lobby' ? '这局已开始。创建新房间后再邀请朋友。'
-    : supported ? '分享面板中有哪些应用，取决于你的设备。' : '当前浏览器不支持系统分享，可以复制链接。';
+    : state.phase !== 'lobby' ? '这局已开始；原玩家可重连，新玩家不能加入。'
+    : '打开链接直接加入；已有身份会回到原房间。';
   dialog.showModal();
 }
 

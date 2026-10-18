@@ -13,7 +13,7 @@
 .empty-heart { opacity: .18; filter: grayscale(1); }
 .health { display: inline-flex; align-items: center; gap: 7px; }
 .hp-number { font: 11px monospace; color: var(--muted); white-space: nowrap; }
-.tile-details { margin-top: 20px; padding: 12px 0 12px 12px; border-left: 3px solid var(--terrain-color, #b4ac9e); background: #f4efe5; }
+.tile-details { margin-top: 20px; padding: 12px 0 12px 12px; border-left: 3px solid var(--terrain-color, #b4ac9e); background: var(--surface); }
 .tile-details h2 { font-size: 13px; margin-bottom: 7px; }
 .tile-details h2 small { float: right; margin-right: 10px; color: var(--muted); font-size: 11px; }
 .tile-details p { font-size: 11px; line-height: 1.7; padding-right: 8px; }

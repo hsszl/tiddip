@@ -10,7 +10,7 @@ export function startIfReady(room) {
   room.turn = Math.max(0, room.players.findIndex(player => player.alive));
   room.turnEndsAt = deadline(room);
   checkVictory(room);
-  if (room.phase === 'playing') record(room, `武器已公开，轮到${activePlayer(room).name}`);
+  if (room.phase === 'playing') record(room, `轮到${activePlayer(room).name}`);
 }
 
 export function checkVictory(room) {

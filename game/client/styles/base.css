@@ -2,7 +2,7 @@
   color-scheme: light;
   font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
   color: #353830;
-  background: #eee9df;
+  background: #fafafa;
   font-synthesis: none;
   --ink: #353830;
   --muted: #77786d;
@@ -13,8 +13,8 @@
 body { margin: 0; }
 [hidden] { display: none !important; }
 button, input { font: inherit; }
-button { color: inherit; cursor: pointer; border: 1px solid #8c887d; border-radius: 4px; background: #f8f5ee; padding: 10px 15px; }
-button:hover:not(:disabled) { background: #e7e1d4; }
+button { color: inherit; cursor: pointer; border: 1px solid #8c887d; border-radius: 4px; background: #fff; padding: 10px 15px; }
+button:hover:not(:disabled) { background: #eee; }
 button:focus-visible, input:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 button:disabled { cursor: default; opacity: .45; }
 button.primary { background: var(--accent); border-color: var(--accent); color: #fffdf7; }
@@ -34,14 +34,14 @@ main { max-width: 1180px; margin: auto; padding: 0 28px 28px; }
 .welcome { width: min(100%, 370px); margin: 100px auto; }
 .welcome h1 { margin-bottom: 28px; font-size: 30px; }
 label { display: block; margin-bottom: 8px; font-size: 13px; }
-input { min-width: 0; width: 100%; background: #f9f6ef; border: 1px solid #c5bdaf; border-radius: 4px; padding: 11px 12px; }
+input { min-width: 0; width: 100%; background: #fff; border: 1px solid #96938a; border-radius: 4px; padding: 11px 12px; }
 .entry-buttons { display: flex; gap: 10px; margin: 16px 0 24px; }
 .entry-buttons button { flex: 1; }
 .join-row { display: flex; gap: 10px; padding-top: 24px; border-top: 1px solid var(--line); }
 .join-row button { flex: 0 0 auto; }
 .welcome > p { margin-top: 16px; }
 .message { font-size: 13px; min-height: 22px; margin-top: 14px; color: #80513d; overflow-wrap: anywhere; }
-dialog { width: min(530px, calc(100% - 32px)); max-height: 85vh; border: 1px solid var(--line); border-radius: 6px; padding: 28px; color: var(--ink); background: #f7f3eb; }
+dialog { width: min(530px, calc(100% - 32px)); max-height: 85vh; border: 1px solid var(--line); border-radius: 6px; padding: 28px; color: var(--ink); background: #fff; }
 dialog::backdrop { background: #272b2470; }
 .dialog-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
 .dialog-top button { padding: 0 8px; background: none; border: none; font-size: 26px; }

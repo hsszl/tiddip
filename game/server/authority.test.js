@@ -13,6 +13,22 @@ function match() {
   return { store, a, b, read, act };
 }
 
+test('weapons and health are public before anyone selects a starting tile, hands stay private', () => {
+  const store = createRoomStore();
+  const a = store.create('甲'), b = store.join(a.roomId, '乙');
+  store.act(a.roomId, a.token, { type: 'start', expectedVersion: b.state.version });
+  const own = store.read(a.roomId, a.token).players.find(player => player.id === a.playerId);
+  const view = store.read(a.roomId, b.token);
+  const opponent = view.players.find(player => player.id === a.playerId);
+  assert.equal(view.phase, 'spawn');
+  assert.equal(opponent.weapon, own.weapon);
+  assert.equal(opponent.hp, own.hp);
+  assert.equal(opponent.maxHp, own.maxHp);
+  assert.equal(opponent.x, null);
+  assert.equal(opponent.items, undefined);
+  assert.equal(JSON.stringify(view).includes(a.token), false);
+});
+
 test('private hands expose counts but no other player’s cards or credentials', () => {
   const { a, b, read } = match();
   const view = read(b), own = read(a).players.find(player => player.id === a.playerId);
@@ -36,6 +52,7 @@ test('forged player state and another player’s card cannot change the match', 
   const { a, b, read, act } = match();
   const before = read(a);
   assert.throws(() => act(a, { type: 'end', hp: 99, playerId: b.playerId }), error => error.status === 400);
+  assert.throws(() => act(a, { type: 'end', name: '乙' }), error => error.status === 400);
   assert.deepEqual(read(a), before);
   const stolen = read(b).players.find(player => player.id === b.playerId).items[0].id;
   assert.throws(() => act(a, { type: 'item', itemId: stolen }), /没有这张/);
