@@ -3,3 +3,8 @@
 node_modules
 *.log
 **/*.test.js
+docs
+tests
+scripts
+deploy
+dist

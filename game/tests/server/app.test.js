@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { request } from 'node:http';
-import { createApp } from './app.js';
+import { createApp } from '../../server/app.js';
 
 async function withServer(run) {
   const server = createApp();

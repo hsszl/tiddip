@@ -1,4 +1,4 @@
-# tiddip 迷雾棋盘 Demo
+# tiddip 游戏
 
 Node.js 服务端 + 原生 JS 客户端，无安装依赖。2–6 人，默认 8×8 共享迷雾，支持电脑对手。
 
@@ -43,6 +43,27 @@ npm start
 官方资料：[Web Share API](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share)。本次未接微信专用 SDK，也未实际发送消息给任何人。
 
 ## 文件与安全边界
+
+```text
+tiddip.com/
+  index.html            网站首页
+  favicon.svg           网站图标
+  docs/                 原始需求
+  game/
+    app.cjs             启动入口
+    package.json        Node 配置与本地命令
+    rules.js, range.js  前后端共享代码
+    client/             网页、样式和 SVG
+    server/             服务端逻辑
+    docs/               游戏说明、设计和部署文档
+    tests/              客户端与服务端测试
+    scripts/            本地打包工具
+    deploy/             容器配置
+    dist/               生成的上传包，不进 Git
+    .data/              本地私有存档，不上传、不进 Git
+```
+
+在 `game` 目录运行 `npm start` 启动，`npm test` 检查，`npm run pack` 生成 `dist/tiddip-game.zip`。手动部署只需这个 ZIP；网站首页和图标仍单独放在网站文档根目录。游戏包放入 Node 应用的 Application root，两者用途不同。
 
 - `rules.js`、`range.js`：共享配置与范围几何。
 - `server/`：房间、会话、回合、移动、战斗、能力、地形、道具、机器人和 HTTP。

@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createRoom, addPlayer, startRoom } from './model.js';
-import { spawn, move, land, enterTile } from './movement.js';
-import { canAttack, attack } from './combat.js';
-import { roomView } from './view.js';
+import { createRoom, addPlayer, startRoom } from '../../server/model.js';
+import { spawn, move, land, enterTile } from '../../server/movement.js';
+import { canAttack, attack } from '../../server/combat.js';
+import { roomView } from '../../server/view.js';
 
 function game() {
   const { room, player: a } = createRoom('ABC123', '甲');

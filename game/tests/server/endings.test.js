@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createRoom, addPlayer, startRoom } from './model.js';
-import { spawn } from './movement.js';
-import { attack, damage } from './combat.js';
-import { createRoomStore } from './rooms.js';
+import { createRoom, addPlayer, startRoom } from '../../server/model.js';
+import { spawn } from '../../server/movement.js';
+import { attack, damage } from '../../server/combat.js';
+import { createRoomStore } from '../../server/rooms.js';
 
 test('lethal hit broadcasts elimination and victory with their board position', () => {
   const { room, player: a } = createRoom('ABC123', '甲'), b = addPlayer(room, '乙');

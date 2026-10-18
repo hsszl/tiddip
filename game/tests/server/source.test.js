@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { requestSource } from './source.js';
-import { createRequestLimiter } from './request-limit.js';
-import { createRoomStore } from './rooms.js';
+import { requestSource } from '../../server/source.js';
+import { createRequestLimiter } from '../../server/request-limit.js';
+import { createRoomStore } from '../../server/rooms.js';
 
 const req = (ip, chain) => ({ method: 'GET', socket: { remoteAddress: ip }, headers: { 'x-forwarded-for': chain } });
 test('address aliases normalize and untrusted forwarding cannot bypass source quotas', () => {

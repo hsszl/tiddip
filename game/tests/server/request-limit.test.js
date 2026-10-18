@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createRequestLimiter } from './request-limit.js';
+import { createRequestLimiter } from '../../server/request-limit.js';
 
 test('room creation bursts are limited without blocking polling or other connections', () => {
   const limit = createRequestLimiter();

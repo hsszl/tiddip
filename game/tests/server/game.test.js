@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createApp } from './app.js';
+import { createApp } from '../../server/app.js';
 
 async function withGame(run) {
   const server = createApp();

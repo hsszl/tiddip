@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createRoom, addPlayer, startRoom } from './model.js';
-import { spawn } from './movement.js';
-import { applyAction } from './actions.js';
-import { canAttack, damage } from './combat.js';
-import { runBots } from './bots.js';
+import { createRoom, addPlayer, startRoom } from '../../server/model.js';
+import { spawn } from '../../server/movement.js';
+import { applyAction } from '../../server/actions.js';
+import { canAttack, damage } from '../../server/combat.js';
+import { runBots } from '../../server/bots.js';
 
 function fixture(count = 2) {
   const { room, player: a } = createRoom('ABC123', '甲');

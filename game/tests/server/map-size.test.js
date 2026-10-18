@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createRoomStore } from './rooms.js';
-import { createRoom, addPlayer, startRoom } from './model.js';
-import { destination, enterTile } from './movement.js';
-import { roomView } from './view.js';
+import { createRoomStore } from '../../server/rooms.js';
+import { createRoom, addPlayer, startRoom } from '../../server/model.js';
+import { destination, enterTile } from '../../server/movement.js';
+import { roomView } from '../../server/view.js';
 
 function lobby() {
   const store = createRoomStore();

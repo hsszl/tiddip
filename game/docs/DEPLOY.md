@@ -13,8 +13,10 @@
 
 Supreme 是试用或付费共享托管，不是长期免费 VPS。官方确认 Setup Node.js App 使用 Passenger。
 
+先在本地 `game` 目录运行 `npm run pack`，得到 `dist/tiddip-game.zip`。这个包只含启动入口、运行配置、共享代码、客户端和服务端，不含文档、测试、存档或环境文件；无需自己选文件。解压后 `app.cjs` 必须直接位于 Application root，不能再多套一层 `game/`。
+
 1. cPanel → Setup Node.js App → Create Application，确认有 Node.js 22/24。
-2. 应用模式选 Production；Application root 使用账户主目录下的独立文件夹，例如 `apps/tiddip-game`。上传本项目 game 文件夹的**内容**至此目录，package.json、app.cjs、server、client 并列。
+2. 应用模式选 Production；Application root 使用账户主目录下的独立文件夹，例如 `apps/tiddip-game`，对应 `/home/你的账户/apps/tiddip-game`。`apps` 是自选文件夹名，不是服务器系统根目录 `/apps`，也不是网址路径。在这个目录上传 ZIP 并解压，package.json、app.cjs、server、client 并列。保留面板生成的配置文件，不覆盖已有私有数据。
 3. Application URL 选 tiddip.com，路径 /game；启动文件填 `app.cjs`。保留现有首页在其文档根目录，不覆盖首页。
 4. 环境变量 `GAME_DATA_DIR=/home/你的账户/private/tiddip-game-data`；NODE_ENV=production。目录需在所有网页根目录之外。端口由宿主分配，不能给共享主机随意开公网端口。
 5. 确认主机允许单进程，并设置一个实例。持久目录锁会拒绝第二个进程，避免不同玩家落入不同内存对局，但不能代替宿主配置。确认空闲回收、重启和资源额度；不能据此保证稳定。
@@ -32,7 +34,7 @@ Supreme 是试用或付费共享托管，不是长期免费 VPS。官方确认 S
 
 在 game 目录运行 `node app.cjs`。本机默认 127.0.0.1:3000；只有需要接受入口代理连接时设置 HOST 和 PORT。
 
-game/Dockerfile 提供非 root 的 Node 24 容器配置，需为 /data 配持久卷；只启一个副本，HTTPS 由入口代理处理。本次未安装 Docker，也未实际构建或发布镜像。
+`game/deploy/Dockerfile` 提供非 root 的 Node 24 容器配置；构建上下文仍为 `game`，命令为 `docker build -f deploy/Dockerfile -t tiddip-game .`。需为 /data 配持久卷；只启一个副本，HTTPS 由入口代理处理。本次未安装 Docker，也未实际构建或发布镜像。
 
 ## 运行与回收
 

@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createRoom, addPlayer, startRoom } from './model.js';
-import { spawn, move } from './movement.js';
-import { expireTurn } from './timeout.js';
+import { createRoom, addPlayer, startRoom } from '../../server/model.js';
+import { spawn, move } from '../../server/movement.js';
+import { expireTurn } from '../../server/timeout.js';
 
 function mineFixture() {
   const { room, player } = createRoom('ABC123', '甲');

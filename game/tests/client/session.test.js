@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { savedSession, saveSession } from './network.js';
+import { savedSession, saveSession } from '../../client/network.js';
 
 // Browser storage is unavailable in Node; each Map models a separate storage area.
 const storage = () => {

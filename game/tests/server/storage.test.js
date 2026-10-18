@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir, hostname } from 'node:os';
 import { join } from 'node:path';
-import { createRoomStore } from './rooms.js';
+import { createRoomStore } from '../../server/rooms.js';
 
 test('private disk state restores tokens, hidden cards, deadlines and source quota', () => {
   const dataDir = mkdtempSync(join(tmpdir(), 'tiddip-store-'));

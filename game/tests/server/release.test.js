@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createRoomStore } from './rooms.js';
+import { createRoomStore } from '../../server/rooms.js';
 
 function fixture() {
   let time = 100000;
