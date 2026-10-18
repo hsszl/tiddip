@@ -22,7 +22,7 @@ export function render(state, session, mode, selected) {
     </div>
     <div class="game-layout">
       <section class="map-section">
-        <div class="board-heading"><h1>${e(status(state, me, mode))}</h1><span class="quiet">${state.phase === 'playing' ? `第 ${state.round} 轮` : `${state.size} × ${state.size}`}</span></div>
+        <div class="board-heading"><h1>${e(status(state, me, mode))}</h1><span class="quiet">${state.phase === 'playing' ? `<span id="turn-clock" role="timer" aria-live="off"></span>第 ${state.round} 轮` : `${state.size} × ${state.size}`}</span></div>
         ${board(state, me, mode, selected)}
         ${controls(state, me, mode)}
         ${hand(state, me, mode)}

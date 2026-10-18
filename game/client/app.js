@@ -10,6 +10,7 @@ import { inspectCard, inspectEvent, hideCardTooltip } from './inspect.js';
 import { playEvents, clearFeedback, reconcilePieces } from './feedback.js';
 import { showInvite } from './invite.js';
 import { prepareReveals } from './reveal.js';
+import { syncTurnClock, paintTurnClock } from './turn-clock.js';
 
 let session = savedSession(), state = null, mode = {}, selected = null, busy = false, polling = false;
 let viewingInvite = false;
@@ -18,7 +19,8 @@ const connection = text => { document.querySelector('#connection').textContent =
 const draw = () => {
   hideCardTooltip();
   document.body.classList.remove('preview-skill');
-  if (state) { render(state, session, mode, selected); reconcilePieces(); }
+  document.body.classList.remove('preview-attack');
+  if (state) { render(state, session, mode, selected); reconcilePieces(); paintTurnClock(); }
 };
 
 function accept(next) {
@@ -28,6 +30,7 @@ function accept(next) {
   if (!sameRoom) clearFeedback();
   prepareReveals(events, state);
   state = next;
+  syncTurnClock(next);
   if (!myTurn(state, meIn(state, session)) || state.pending) {
     mode = {};
     const targets = document.querySelector('#targets-dialog');
@@ -169,9 +172,11 @@ document.addEventListener('click', async event => {
 
 for (const name of ['pointerover', 'focusin']) document.addEventListener(name, event => {
   if (event.target.closest('[data-skill-preview]:not(:disabled)')) document.body.classList.add('preview-skill');
+  if (event.target.closest('[data-mode="attack"]:not(:disabled)')) document.body.classList.add('preview-attack');
 });
 for (const name of ['pointerout', 'focusout']) document.addEventListener(name, event => {
   if (event.target.closest('[data-skill-preview]') && !event.relatedTarget?.closest?.('[data-skill-preview]')) document.body.classList.remove('preview-skill');
+  if (event.target.closest('[data-mode="attack"]') && !event.relatedTarget?.closest?.('[data-mode="attack"]')) document.body.classList.remove('preview-attack');
 });
 
 // An old poll must never overwrite a newer action result.

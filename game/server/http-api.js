@@ -1,7 +1,10 @@
 import { RULES, WEAPONS, ITEMS, TERRAIN } from '../rules.js';
 import { GameError } from './errors.js';
+import { requestSource } from './source.js';
 
 function send(response, status, body, head = false) {
+  if (body?.turnEndsAt) body.serverNow = Date.now();
+  if (body?.state?.turnEndsAt) body.state.serverNow = Date.now();
   response.writeHead(status, {
     'Content-Type': 'application/json; charset=utf-8',
     'Cache-Control': 'no-store',
@@ -19,11 +22,16 @@ async function readJson(request) {
   catch { throw new GameError('请求内容不是有效 JSON', 400); }
 }
 
-export async function handleApi(pathname, request, response, store, limit) {
+export async function handleApi(pathname, request, response, store, limit, trustedProxies = []) {
   if (!pathname.startsWith('/game/api/')) return false;
   try {
-    limit(request, pathname);
     const token = request.headers.authorization?.replace(/^Bearer /, '') || '';
+    const roomRoute = pathname.match(/^\/game\/api\/rooms\/([A-Fa-f0-9]{6})(?:\/actions)?$/);
+    let principal;
+    if (roomRoute && token) {
+      try { principal = store.authorize(roomRoute[1], token); } catch { /* Invalid identities use the source budget. */ }
+    }
+    limit(request, pathname, principal);
     if (request.method === 'GET' || request.method === 'HEAD') {
       let body;
       if (pathname === '/game/api/config') body = { rules: RULES, weapons: WEAPONS, items: ITEMS, terrain: TERRAIN };
@@ -45,7 +53,7 @@ export async function handleApi(pathname, request, response, store, limit) {
     }
     const body = await readJson(request);
     if (!body || typeof body !== 'object' || Array.isArray(body)) throw new GameError('请求内容不正确', 400);
-    if (pathname === '/game/api/rooms') send(response, 201, store.create(body.name));
+    if (pathname === '/game/api/rooms') send(response, 201, store.create(body.name, requestSource(request, trustedProxies)));
     else {
       const match = pathname.match(/^\/game\/api\/rooms\/([A-Fa-f0-9]{6})\/(join|actions)$/);
       if (!match) throw new GameError('接口不存在', 404);

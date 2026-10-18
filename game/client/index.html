@@ -38,7 +38,7 @@
   </main>
   <dialog id="rules-dialog" aria-labelledby="rules-title">
     <div class="dialog-top"><h2 id="rules-title">怎么玩</h2><button data-close aria-label="关闭规则">×</button></div>
-    <p>选出生点后，轮流行动。每回合最多移动一次、攻击一次；自己的回合，道具不限次数。顺序自由，也可以跳过。</p>
+    <p>选出生点后，轮流行动。每回合 30 秒，超时自动换人。最多移动一次、攻击一次；自己的回合，道具不限次数。顺序自由，也可以跳过。</p>
     <p>移动是上下左右一格。踩到哪里，就翻开哪里的地图，所有人都能看见。攻击伤害均为 1。最后一名存活者获胜。</p>
     <h3>武器</h3>
     <div id="weapon-catalog" class="rules-catalog"></div>
@@ -54,7 +54,7 @@
       <li>武器公开，手牌私有。攻击与能力范围画在棋盘上；武器 ⓘ 查看范围图。</li>
       <li>突进、侧步、疾跑占用本回合移动，只触发落点。军械库需主动使用，每人每座一次。</li>
     </ul>
-    <p class="quiet">8×8 地图，2–6 人。数值先用于试玩。武器 ⓘ 查看范围；手牌悬停查看效果。房间保存在内存中，服务重启后消失。</p>
+    <p class="quiet">8×8 地图，2–6 人。武器 ⓘ 查看范围；手牌悬停查看效果。房间长期无人操作会被回收。</p>
   </dialog>
   <dialog id="targets-dialog" aria-labelledby="targets-title"><div class="dialog-top"><h2 id="targets-title">攻击谁？</h2><button data-close aria-label="取消选择">×</button></div><div id="targets"></div></dialog>
   <dialog id="inspect-dialog" aria-labelledby="inspect-title"><div class="dialog-top"><h2 id="inspect-title">卡牌</h2><button data-close aria-label="关闭详情">×</button></div><div id="inspect-content"></div></dialog>

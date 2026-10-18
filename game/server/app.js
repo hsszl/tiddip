@@ -4,14 +4,16 @@ import { serveStatic } from './static.js';
 import { createRoomStore } from './rooms.js';
 import { createRequestLimiter } from './request-limit.js';
 
-export function createApp() {
-  const store = createRoomStore();
-  const limit = createRequestLimiter();
+export function createApp({ trustedProxies = [], ...storeOptions } = {}) {
+  const store = createRoomStore(storeOptions);
+  const limit = createRequestLimiter({ trustedProxies });
   const server = createServer(async (request, response) => {
     response.setHeader('X-Content-Type-Options', 'nosniff');
+    response.setHeader('Referrer-Policy', 'same-origin');
+    response.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'");
     try {
       const { pathname } = new URL(request.url, 'http://localhost');
-      if (await handleApi(pathname, request, response, store, limit)) return;
+      if (await handleApi(pathname, request, response, store, limit, trustedProxies)) return;
       if (!['GET', 'HEAD'].includes(request.method)) {
         response.writeHead(405, { Allow: 'GET, HEAD' });
         response.end('Method not allowed');
@@ -31,6 +33,8 @@ export function createApp() {
     try { store.tick(); } catch (error) { console.error('Computer turn failed:', error); }
   }, 1000);
   timer.unref();
-  server.on('close', () => clearInterval(timer));
+  server.requestTimeout = 15000;
+  server.headersTimeout = 10000;
+  server.on('close', () => { clearInterval(timer); store.close?.(); });
   return server;
 }

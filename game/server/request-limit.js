@@ -1,14 +1,15 @@
 import { GameError } from './errors.js';
+import { requestSource, sourceQuotaKey } from './source.js';
 
 // Per-connection address, never an untrusted X-Forwarded-For header.
 // Separate reads from writes so ordinary polling cannot exhaust actions.
-export function createRequestLimiter() {
+export function createRequestLimiter({ trustedProxies = [] } = {}) {
   const buckets = new Map();
-  return (request, pathname) => {
+  return (request, pathname, principal) => {
     const now = Date.now();
     const kind = request.method === 'POST' ? pathname === '/game/api/rooms' ? 'create' : 'write' : 'read';
     const limit = { create: 10, write: 120, read: 600 }[kind];
-    const key = `${request.socket.remoteAddress}:${kind}`;
+    const key = `${principal ? `member:${principal}` : `source:${sourceQuotaKey(requestSource(request, trustedProxies))}`}:${kind}`;
     if (buckets.size > 2000) for (const [id, bucket] of buckets) if (bucket.until <= now) buckets.delete(id);
     let bucket = buckets.get(key);
     if (!bucket || bucket.until <= now) {

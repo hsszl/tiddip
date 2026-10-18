@@ -63,6 +63,7 @@ export function startRoom(room) {
   room.turn = 0;
   room.round = 1;
   room.pending = null;
+  room.turnEndsAt = null;
   room.winnerId = null;
   room.actions = { moved: false, attacked: false };
   room.log = [];

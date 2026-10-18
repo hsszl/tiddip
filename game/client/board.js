@@ -18,20 +18,19 @@ export function selectable(state, me, tile, mode) {
 }
 
 export function board(state, me, mode, selected) {
-  const lastMove = state.log.findLast(entry => ['move', 'teleport', 'blast'].includes(entry.kind));
   const cells = state.tiles.map(tile => {
     const occupants = state.players.filter(player => player.alive && player.x === tile.x && player.y === tile.y);
     const available = selectable(state, me, tile, mode);
-    const rangeVisible = state.phase === 'playing' && me.alive;
-    const attackRange = rangeVisible && inRange(me, { ...tile, id: 'preview', alive: true });
-    const skillRange = rangeVisible && skillInRange(me, tile);
+    const rangeVisible = myTurn(state, me) && !state.pending;
+    const attackRange = rangeVisible && !state.actions.attacked && inRange(me, { ...tile, id: 'preview', alive: true });
+    const kind = skillMode(me.weapon);
+    const skillRange = rangeVisible && !(kind === 'attack' && state.actions.attacked || kind === 'move' && state.actions.moved) && skillInRange(me, tile);
     const terrain = tile.revealed ? TERRAIN[tile.type].name : '迷雾';
     const label = `${tile.x + 1},${tile.y + 1} ${terrain}${tile.spent ? '（已触发）' : ''}${occupants.length ? ` · ${occupants.map(player => player.name).join('、')}` : ''}`;
     const ownTile = occupants.some(player => player.id === me.id);
     const chosen = selected?.x === tile.x && selected?.y === tile.y;
-    const arrival = lastMove?.to?.x === tile.x && lastMove?.to?.y === tile.y;
     const pending = isRevealPending(tile);
-    return `<button class="tile ${tile.revealed ? `revealed terrain-${tile.type}` : 'fog'} ${pending ? 'reveal-pending' : ''} ${available ? 'available' : ''} ${ownTile ? 'own-tile' : ''} ${chosen ? 'inspected' : ''} ${arrival ? 'recent-arrival' : ''}"
+    return `<button class="tile ${tile.revealed ? `revealed terrain-${tile.type}` : 'fog'} ${pending ? 'reveal-pending' : ''} ${available ? 'available' : ''} ${ownTile ? 'own-tile' : ''} ${chosen ? 'inspected' : ''}"
       data-cell="${tile.x},${tile.y}" data-attack-range="${attackRange}" data-skill-range="${skillRange}" aria-label="${e(label)}" title="${e(label)}" ${tile.revealed ? `data-card-kind="terrain" data-card-key="${tile.type}" data-card-note="${tile.type === 'armory' ? tile.usedByMe ? '你已使用' : '每人一次，手动使用' : tile.spent ? '已触发' : ''}"` : ''}>
       <img class="tile-art" src="/game/client/assets/${tile.revealed ? `terrain/${tile.type}` : 'fog'}.svg" alt="" draggable="false">
       ${!tile.revealed ? '<img class="tile-art night-fog" src="/game/client/assets/fog-night.svg" alt="" draggable="false">' : ''}

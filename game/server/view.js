@@ -4,6 +4,7 @@ export function roomView(room, viewerId) {
   return {
     id: room.id, phase: room.phase, hostId: room.hostId,
     size: RULES.size, round: room.round, version: room.version,
+    turnEndsAt: room.turnEndsAt ?? null,
     currentPlayerId: room.phase === 'playing' ? room.players[room.turn].id : null,
     actions: { ...room.actions }, pending: room.pending,
     winnerId: room.winnerId, log: room.log,
