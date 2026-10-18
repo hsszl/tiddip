@@ -1,12 +1,13 @@
 .map-size-open { border: 1px solid var(--line); font-size: 12px; padding: 5px 9px; color: var(--ink); }
-#map-size-dialog { width: min(380px, calc(100% - 24px)); padding: 22px; }
+#map-size-dialog { width: min(380px, calc(100% - 24px)); padding: 22px; animation: none; transition: none; }
+#map-size-dialog::backdrop { animation: none; transition: none; }
 #map-size-dialog h2 { font-size: 18px; }
-.map-size-grid { position: relative; display: grid; grid-template-columns: repeat(var(--extent), minmax(0, 1fr)); gap: 1px; padding: 1px; background: color-mix(in srgb, var(--line) 45%, var(--surface)); border: 1px solid var(--line); border-radius: 2px; touch-action: none; user-select: none; cursor: crosshair; }
+.map-size-grid { position: relative; display: grid; grid-template-columns: repeat(var(--extent), minmax(0, 1fr)); grid-template-rows: repeat(var(--extent), minmax(0, 1fr)); aspect-ratio: 1; gap: 1px; padding: 1px; background: color-mix(in srgb, var(--line) 45%, var(--surface)); border: 1px solid var(--line); border-radius: 2px; touch-action: none; user-select: none; cursor: crosshair; }
 .map-size-grid:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .map-size-grid [role="row"] { display: contents; }
 .map-size-grid [role="gridcell"] { aspect-ratio: 1; background: var(--surface); }
 .map-size-grid .selected { background: color-mix(in srgb, var(--accent) 17%, var(--surface)); }
-.map-size-grid::after { content: ''; position: absolute; left: calc(var(--pick-x) + 1px); top: calc(var(--pick-y) + 1px); width: calc(var(--pick-width) - 1px); height: calc(var(--pick-height) - 1px); border: 2px solid var(--accent); pointer-events: none; }
+.map-size-grid::after { content: ''; position: absolute; grid-column: var(--pick-column) / span var(--pick-width); grid-row: var(--pick-row) / span var(--pick-height); inset: 0; border: 2px solid var(--accent); pointer-events: none; }
 .map-size-inputs { display: flex; align-items: flex-end; gap: 16px; margin: 18px 0 0; }
 .map-size-inputs label { flex: 1; margin: 0; color: var(--muted); font-size: 12px; }
 .map-size-inputs input { margin-top: 7px; padding: 9px 10px; color: var(--ink); font-variant-numeric: tabular-nums; }

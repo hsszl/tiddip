@@ -45,7 +45,7 @@ export function controls(state, me, mode) {
     <button data-mode="attack" title="按武器射程攻击，每回合一次" aria-pressed="${mode.type === 'attack'}" ${!canAct || state.actions.attacked ? 'disabled' : ''}>${icon('attack')}<span>攻击${myTurn(state, me) && state.actions.attacked ? ' ✓' : ''}</span></button>
     ${skill ? `<button ${kind === 'self' ? 'data-action="skill"' : 'data-mode="skill"'} data-skill-preview title="${e(weapon.description)}" aria-label="技能：${e(weapon.skillName)}" aria-pressed="${mode.type === 'skill'}" ${skillBlocked ? 'disabled' : ''}>${icon('skill')}<span>${e(weapon.skillName)}</span></button>` : ''}
     <button class="primary" data-action="end" ${!canAct ? 'disabled' : ''}>${icon('end')}<span>结束回合</span></button>
-  </div>${tile?.type === 'armory' ? `<button class="terrain-action" data-action="terrain" ${!canAct || tile.usedByMe ? 'disabled' : ''}><img src="/game/client/assets/terrain/armory.svg" alt="">${tile.usedByMe ? '这座已用过' : '换武器'}</button>` : ''}${mode.type && canAct ? '<button class="text-button cancel" data-mode="">取消</button>' : ''}`;
+  </div>${tile?.type === 'armory' ? `<button class="terrain-action" data-action="terrain" ${!canAct || tile.usedByMe ? 'disabled' : ''}><img src="/game/client/assets/terrain/armory.svg" alt="">${tile.usedByMe ? '这座已用过' : '换武器'}</button>` : ''}`;
 }
 
 export function hand(state, me, mode) {

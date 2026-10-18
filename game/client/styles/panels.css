@@ -24,7 +24,6 @@
 .turn-controls button { padding: 10px 7px; font-size: 12px; }
 .turn-controls button.primary, .turn-controls button[data-mode="skill"] { grid-column: 1 / -1; }
 .turn-controls button[aria-pressed="true"] { background: #e2e8d6; border-color: var(--accent); color: #394d25; }
-.cancel { width: 100%; font-size: 11px; margin-top: 5px; }
 .rules-catalog { display: grid; gap: 12px; margin-top: 14px; }
 .catalog-entry { display: flex; gap: 12px; align-items: center; }
 .catalog-entry img { width: 54px; height: 44px; flex: 0 0 auto; border-radius: 3px; object-fit: cover; }

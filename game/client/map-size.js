@@ -27,14 +27,16 @@ function paint() {
   const next = `${x},${y},${width},${height}`;
   if (next === signature) return;
   signature = next;
-  for (const [name, value] of Object.entries({ x, y, width, height })) {
-    grid.style.setProperty(`--pick-${name}`, `${value / max * 100}%`);
+  for (const [name, value] of Object.entries({ column: x + 1, row: y + 1, width, height })) {
+    grid.style.setProperty(`--pick-${name}`, value);
   }
   for (const cell of cells) {
     const cx = Number(cell.dataset.x), cy = Number(cell.dataset.y);
     const selected = cx >= x && cx < x + width && cy >= y && cy < y + height;
-    cell.setAttribute('aria-selected', selected);
-    cell.classList.toggle('selected', selected);
+    if (cell.classList.contains('selected') !== selected) {
+      cell.setAttribute('aria-selected', selected);
+      cell.classList.toggle('selected', selected);
+    }
   }
 }
 
@@ -44,17 +46,20 @@ export function openMapSize(state, save) {
   anchor = null;
   error.textContent = '';
   apply.disabled = false;
-  paint();
   dialog.showModal();
+  paint();
 }
 
 export function closeMapSize() { if (dialog.open) dialog.close(); }
 
 function cellAt(event) {
-  const rect = grid.getBoundingClientRect();
+  const first = cells[0].getBoundingClientRect();
+  const last = cells.at(-1).getBoundingClientRect();
+  const stepX = (last.left - first.left) / (max - 1);
+  const stepY = (last.top - first.top) / (max - 1);
   return {
-    x: Math.max(0, Math.min(max - 1, Math.floor((event.clientX - rect.left) / rect.width * max))),
-    y: Math.max(0, Math.min(max - 1, Math.floor((event.clientY - rect.top) / rect.height * max))),
+    x: Math.max(0, Math.min(max - 1, Math.floor((event.clientX - first.left) / stepX))),
+    y: Math.max(0, Math.min(max - 1, Math.floor((event.clientY - first.top) / stepY))),
   };
 }
 
