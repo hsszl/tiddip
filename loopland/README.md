@@ -23,4 +23,6 @@
 | theme.js | 独立亮暗切换 |
 | tests/ | 必要规则检查，不上传到网站 |
 
-当前先做本地预览。确认后仅将上表六个运行文件上传至网站文档根目录的 `loopland/`，不需要创建 Node.js application。
+已部署：[https://tiddip.com/loopland/](https://tiddip.com/loopland/)。同屏双人，游戏逻辑仍全部在浏览器运行，不是两台设备联网对战。
+
+线上目录为网站文档根目录下的 `loopland/`，只含上表六个运行文件。不需要 Node.js application，也不影响 `/gaogame/`。更新时覆盖这六个文件即可；GitHub push 目前不会自动发布。
