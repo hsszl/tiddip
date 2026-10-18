@@ -1,0 +1,41 @@
+:root { --accent: #396c80; --surface: #fff; }
+#theme-toggle { display: inline-flex; align-items: center; justify-content: center; padding: 6px; }
+:root[data-theme="dark"] { color-scheme: dark; --ink: #e6e6e6; --muted: #a0a0a0; --line: #303030; --accent: #d4d4d4; --surface: #202020; color: var(--ink); background: #111; }
+[data-theme="dark"] body { background: #111; }
+[data-theme="dark"] button, [data-theme="dark"] input { color: var(--ink); border-color: #3b3b3b; background: #222; }
+[data-theme="dark"] button:hover:not(:disabled) { background: #303030; }
+[data-theme="dark"] input { background: #181818; }
+[data-theme="dark"] .text-button { color: #bcbcbc; background: transparent; }
+[data-theme="dark"] button.primary { background: #d4d4d4; border-color: #d4d4d4; color: #171717; }
+[data-theme="dark"] button.primary:hover:not(:disabled) { background: #eee; }
+[data-theme="dark"] dialog { background: #1b1b1b; color: var(--ink); }
+[data-theme="dark"] dialog::backdrop { background: #000b; }
+[data-theme="dark"] .board { background: #161616; border-color: #303030; box-shadow: none; }
+[data-theme="dark"] .tile { border-color: #353535; box-shadow: none; }
+[data-theme="dark"] .tile.inspected { outline-color: #ddd; }
+[data-theme="dark"] .piece.self { outline-color: #eee; }
+[data-theme="dark"] .player, [data-theme="dark"] .player:first-child { border-color: var(--line); }
+[data-theme="dark"] .player.current { background: #242424; }
+[data-theme="dark"] .hand, [data-theme="dark"] .tile-details { border-color: var(--line); background: transparent; }
+[data-theme="dark"] .game-card { background: #222; border-color: #444; border-top-color: color-mix(in srgb, var(--card-accent, #999) 45%, #666); box-shadow: none; }
+[data-theme="dark"] .game-card::before { border-color: #383838; }
+[data-theme="dark"] .card-info { background: #1c1c1ceb; color: #ddd; }
+[data-theme="dark"] .card-body small, [data-theme="dark"] .card-bottom, [data-theme="dark"] .section-label { color: #b6b6b6; }
+[data-theme="dark"] .skill-tag { color: #bbb; }
+[data-theme="dark"] .turn-controls button[aria-pressed="true"] { color: #fff; background: #393939; border-color: #999; }
+[data-theme="dark"] .feed-row, [data-theme="dark"] .older-events .feed-row { background: #1c1c1c; border-color: #3a3a3a; color: #ddd; }
+[data-theme="dark"] .feed-row.own-event { background: #252525; border-color: #555; }
+[data-theme="dark"] button.feed-row:hover { background: #303030; }
+[data-theme="dark"] .feed-name { color: color-mix(in srgb, var(--player) 65%, #fff); }
+[data-theme="dark"] .feed-coordinate, [data-theme="dark"] .feed-row small, [data-theme="dark"] .older-events summary { color: #aaa; }
+[data-theme="dark"] .range-grid span { background: #333; }
+[data-theme="dark"] .range-grid .in-range { background: #777; }
+[data-theme="dark"] .mini-card { background: transparent; }
+[data-theme="dark"] .empty-heart { opacity: .35; }
+[data-theme="dark"] .result-hit, [data-theme="dark"] .result-eliminated { color: #ff987e; }
+[data-theme="dark"] .result-shield { color: #84d7f2; }
+[data-theme="dark"] .result-revived { color: #8ed1b8; }
+.night-fog { display: none; }
+[data-theme="dark"] .fog .tile-art:not(.night-fog) { display: none; }
+[data-theme="dark"] .fog .night-fog { display: block; }
+[data-theme="dark"] .fog .cell-coordinate { color: #888; }

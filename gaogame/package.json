@@ -1,0 +1,11 @@
+{
+  "name": "tiddip-gaogame-demo",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "start": "node app.cjs",
+    "test": "node --test tests/server/*.test.js tests/client/*.test.js",
+    "pack": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package.ps1"
+  }
+}
