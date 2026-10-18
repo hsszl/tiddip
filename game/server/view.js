@@ -17,7 +17,7 @@ export function roomView(room, viewerId) {
       const weaponVisible = room.phase !== 'spawn' || player.id === viewerId;
       return {
         id: player.id, name: player.name, color: player.color, isBot: player.isBot,
-        x: player.x, y: player.y, alive: player.alive,
+        x: player.x, y: player.y, alive: player.alive, left: !!player.left,
         hp: weaponVisible ? player.hp : null,
         weapon: weaponVisible ? player.weapon : null,
         maxHp: weaponVisible && player.weapon ? WEAPONS[player.weapon].hp : null,

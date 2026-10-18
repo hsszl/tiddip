@@ -2,6 +2,7 @@ import { TERRAIN } from '/game/rules.js';
 import { escapeHTML as e, distance, inRange, canStand, myTurn } from './helpers.js';
 import { skillInRange, skillMode, moveInRange, itemInRange } from '/game/range.js';
 import { isRevealPending, revealCover } from './reveal.js';
+import { icon } from './icons.js';
 
 export function selectable(state, me, tile, mode) {
   if (state.phase === 'spawn') return me.x === null && canStand(state, me, tile);
@@ -20,6 +21,7 @@ export function selectable(state, me, tile, mode) {
 export function board(state, me, mode, selected) {
   const cells = state.tiles.map(tile => {
     const occupants = state.players.filter(player => player.alive && player.x === tile.x && player.y === tile.y);
+    const fallen = state.players.filter(player => !player.alive && !player.left && player.x === tile.x && player.y === tile.y);
     const available = selectable(state, me, tile, mode);
     const rangeVisible = myTurn(state, me) && !state.pending;
     const attackRange = rangeVisible && !state.actions.attacked && inRange(me, { ...tile, id: 'preview', alive: true });
@@ -38,6 +40,7 @@ export function board(state, me, mode, selected) {
       ${tile.revealed ? `<span class="terrain ${tile.spent ? 'spent' : ''}">${e(terrain)}${tile.spent ? ' · 已用' : ''}</span>` : ''}
       <span class="range-overlay" aria-hidden="true"></span>
       <span class="pieces">${occupants.map(player => `<span class="piece ${player.id === me.id ? 'self' : ''}" data-player-id="${player.id}" style="--player:${player.color}" title="${e(player.name)}">${state.players.indexOf(player) + 1}</span>`).join('')}</span>
+      ${fallen.length ? `<span class="fallen-marker" role="img" aria-label="${e(fallen.map(p => p.name).join('、'))}已淘汰">${icon('eliminated')}<small>${fallen.map(p => state.players.indexOf(p) + 1).join('·')}</small></span>` : ''}
       <span class="cell-coordinate" aria-hidden="true">${tile.x + 1}.${tile.y + 1}</span>
     </button>`;
   }).join('');

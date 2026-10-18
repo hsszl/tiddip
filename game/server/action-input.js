@@ -12,5 +12,6 @@ export function validateCommand(action, version) {
   const allowed = new Set(['type', 'expectedVersion', ...fields[action.type]]);
   requireThat(Object.keys(action).every(key => allowed.has(key)), '行动包含不允许的字段', 400);
   requireThat(Number.isSafeInteger(action.expectedVersion), '缺少有效的对局版本', 400);
-  requireThat(action.expectedVersion === version, '对局已更新，请重新操作', 409);
+  // Leaving acts only on the authenticated session and is safe across turn changes.
+  requireThat(action.type === 'leave' || action.expectedVersion === version, '对局已更新，请重新操作', 409);
 }

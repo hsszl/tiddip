@@ -13,6 +13,7 @@ import { prepareReveals } from './reveal.js';
 import { syncTurnClock, paintTurnClock } from './turn-clock.js';
 
 let session = savedSession(), state = null, mode = {}, selected = null, busy = false, polling = false;
+let generation = 0;
 let viewingInvite = false;
 const message = text => { document.querySelector('#message').textContent = text; };
 const connection = text => { document.querySelector('#connection').textContent = text; };
@@ -27,7 +28,7 @@ function accept(next) {
   const sameRoom = state?.id === next.id;
   const previous = new Set(sameRoom ? state.log.map(entry => entry.id) : []);
   const events = sameRoom ? next.log.filter(entry => !previous.has(entry.id)) : [];
-  if (!sameRoom) clearFeedback();
+  if (!sameRoom || state.phase === 'finished' && next.phase === 'spawn') clearFeedback();
   prepareReveals(events, state);
   state = next;
   syncTurnClock(next, myTurn(next, meIn(next, session)));
@@ -41,6 +42,9 @@ function accept(next) {
 }
 
 function welcome() {
+  generation++;
+  busy = false;
+  document.body.classList.remove('busy');
   clearFeedback();
   hideCardTooltip();
   document.querySelector('#turn-notice').hidden = true;
@@ -52,36 +56,58 @@ function welcome() {
   document.querySelector('#welcome').hidden = false;
 }
 
+function leaveRoom() {
+  if (!session || !state) return;
+  const leaving = session, version = state.version;
+  welcome();
+  viewingInvite = false;
+  document.querySelector('#resume-session').hidden = true;
+  document.querySelector('#room-code').value = '';
+  history.replaceState(null, '', '/game/');
+  message('');
+  const ticket = generation;
+  request(`/rooms/${leaving.roomId}/actions`, { type: 'leave', expectedVersion: version }, leaving.token).catch(error => {
+    if (generation === ticket && ![401, 404].includes(error.status)) message('已退出页面；服务器未确认离开，房间稍后自动回收');
+  });
+}
+
 async function act(action) {
   if (busy || !session) return;
+  const ticket = generation, current = session;
   const attemptedVersion = state.version;
   busy = true;
   document.body.classList.add('busy');
   message('');
   try {
-    const next = await request(`/rooms/${session.roomId}/actions`, { ...action, expectedVersion: state.version }, session.token);
+    const next = await request(`/rooms/${current.roomId}/actions`, { ...action, expectedVersion: state.version }, current.token);
+    if (ticket !== generation) return;
     if (action.type === 'leave') welcome();
     else { mode = {}; selected = null; accept(next); }
   } catch (error) {
+    if (ticket !== generation) return;
     message(error.message);
     if (error.status === 409) {
       try {
-        const latest = await request(`/rooms/${session.roomId}`, undefined, session.token);
+        const latest = await request(`/rooms/${current.roomId}`, undefined, current.token);
+        if (ticket !== generation) return;
         accept(latest);
         // Concurrent birth selections do not invalidate another player's choice.
         // Never retry turn actions: a repeated 'end' could skip a later turn.
         if (action.type === 'spawn' && latest.version > attemptedVersion && latest.phase === 'spawn' && meIn(latest, session).x === null) {
           selected = null;
-          accept(await request(`/rooms/${session.roomId}/actions`, { ...action, expectedVersion: latest.version }, session.token));
+          const retried = await request(`/rooms/${current.roomId}/actions`, { ...action, expectedVersion: latest.version }, current.token);
+          if (ticket !== generation) return;
+          accept(retried);
           message('');
         }
       } catch (syncError) {
+        if (ticket !== generation) return;
         message(syncError.message);
         if (!syncError.status) connection('连接中断');
       }
     }
   }
-  finally { busy = false; document.body.classList.remove('busy'); }
+  finally { if (ticket === generation) { busy = false; document.body.classList.remove('busy'); } }
 }
 
 async function enter(event) {
@@ -92,9 +118,11 @@ async function enter(event) {
   const code = document.querySelector('#room-code').value.trim().toUpperCase();
   if (intent === 'join' && !/^[A-F0-9]{6}$/.test(code)) return message('输入 6 位房间号');
   busy = true;
+  const ticket = ++generation;
   message('');
   try {
     const result = await request(intent === 'join' ? `/rooms/${code}/join` : '/rooms', { name });
+    if (ticket !== generation) return;
     viewingInvite = false;
     document.querySelector('#resume-session').hidden = true;
     session = { roomId: result.roomId, playerId: result.playerId, token: result.token };
@@ -103,11 +131,15 @@ async function enter(event) {
     history.replaceState(null, '', `/game/?room=${session.roomId}`);
     accept(result.state);
     if (intent === 'solo') {
-      accept(await request(`/rooms/${session.roomId}/actions`, { type: 'addBot', expectedVersion: state.version }, session.token));
-      accept(await request(`/rooms/${session.roomId}/actions`, { type: 'start', expectedVersion: state.version }, session.token));
+      const current = session;
+      for (const type of ['addBot', 'start']) {
+        const next = await request(`/rooms/${current.roomId}/actions`, { type, expectedVersion: state.version }, current.token);
+        if (ticket !== generation) return;
+        accept(next);
+      }
     }
-  } catch (error) { message(error.message); }
-  finally { busy = false; }
+  } catch (error) { if (ticket === generation) message(error.message); }
+  finally { if (ticket === generation) busy = false; }
 }
 
 function attackCell(x, y) {
@@ -152,6 +184,7 @@ document.addEventListener('click', async event => {
   if (button.dataset.cardInfo) return inspectCard(button);
   if (button.dataset.event && state) return inspectEvent(state.log.find(entry => entry.id === button.dataset.event), state);
   if (button.hasAttribute('data-invite') && state) return showInvite(state);
+  if (button.dataset.action === 'leave') return leaveRoom();
   if (busy || !state) return;
   if (button.dataset.action) return act({ type: button.dataset.action });
   if (button.hasAttribute('data-mode')) {

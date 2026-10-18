@@ -2,7 +2,7 @@ import { WEAPONS, ITEMS, TERRAIN } from '/game/rules.js';
 import { escapeHTML as e } from './helpers.js';
 import { icon } from './icons.js';
 
-export const feedKinds = new Set(['move', 'teleport', 'attack', 'item', 'blast', 'terrain', 'spawn', 'skill']);
+export const feedKinds = new Set(['move', 'teleport', 'attack', 'item', 'blast', 'terrain', 'spawn', 'skill', 'eliminated', 'revived', 'victory', 'leave']);
 const coordinates = point => `<span class="feed-coordinate">${point.x + 1},${point.y + 1}</span>`;
 
 function image(category, key) {
@@ -44,6 +44,10 @@ export function eventContents(entry, state) {
   if (entry.kind === 'reveal') return `${actor}${icon('reveal')}${image('terrain', entry.terrain)}${coordinates(entry.position)}`;
   if (entry.kind === 'turn') return `${actor}${icon('end')}`;
   if (entry.kind === 'shield') return `${actor}${icon('shield')}`;
+  if (entry.kind === 'eliminated') return `${actor}${result('eliminated')}`;
+  if (entry.kind === 'revived') return `${actor}${result('revived')}`;
+  if (entry.kind === 'victory') return `${entry.actorId ? actor : ''}${icon('trophy')}`;
+  if (entry.kind === 'leave') return `<span class="feed-name">${e(entry.actorName || '玩家')}</span>${icon('end')}`;
   if (entry.kind === 'damage') return `${actor}${result('hit')}`;
   return '';
 }

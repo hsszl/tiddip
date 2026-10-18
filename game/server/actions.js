@@ -19,7 +19,7 @@ export function applyAction(room, player, action) {
   requireThat(action && typeof action.type === 'string', '缺少行动类型', 400);
   const host = () => requireThat(player.id === room.hostId, '只有房主可以操作', 403);
   if (action.type === 'leave') {
-    record(room, `${player.name}离开房间`);
+    record(room, `${player.name}离开房间`, { kind: 'leave', actorId: player.id, actorName: player.name });
     player.left = true;
     player.token = null;
     if (room.phase === 'lobby') room.players = room.players.filter(item => item.id !== player.id);

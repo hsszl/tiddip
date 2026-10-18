@@ -26,7 +26,7 @@ export function createRoomStore({ now = Date.now, dataDir } = {}) {
     return room;
   }
   function member(room, token) {
-    const player = room.players.find(item => item.token === token && !item.isBot);
+    const player = typeof token === 'string' && token.length > 0 && room.players.find(item => item.token === token && !item.isBot && !item.left);
     requireThat(player, '请先加入房间', 401);
     return player;
   }

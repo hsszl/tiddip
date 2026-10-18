@@ -18,7 +18,7 @@ export function render(state, session, mode, selected) {
   match.innerHTML = `
     <div class="match-header">
       <div class="room-label">房间 <strong>${e(state.id)}</strong><button class="text-button" data-invite>邀请</button></div>
-      <button class="text-button" data-action="leave">离开</button>
+      <button class="text-button" data-action="leave">退出房间</button>
     </div>
     <div class="game-layout">
       <section class="map-section">

@@ -1,0 +1,20 @@
+.result-panel, .observer-controls { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 16px; padding: 14px; border: 1px solid var(--ink); border-radius: 4px; }
+.result-panel strong, .observer-controls > span { display: inline-flex; align-items: center; gap: 8px; }
+.result-panel > div { display: flex; gap: 8px; }
+.observer-controls { border-color: var(--line); }
+.observer-controls > span { font-size: 13px; color: var(--muted); }
+.fallen-marker { position: absolute; z-index: 4; right: 3px; bottom: 4px; display: flex; align-items: center; gap: 2px; padding: 2px 3px; border-radius: 3px; background: #272727e8; color: #eee; pointer-events: none; }
+.fallen-marker .ui-icon { width: 14px; height: 14px; }
+.fallen-marker small { font: 10px monospace; }
+.fallen-piece { display: flex; align-items: center; justify-content: center; gap: 5px; width: calc(var(--cell-size) * .7); height: calc(var(--cell-size) * .7); max-width: 70px; max-height: 70px; border: 2px solid #f3eee3; border-radius: 50%; background: var(--effect-color); color: white; box-shadow: 0 2px 16px #0008; font: 700 16px monospace; }
+.fallen-piece .ui-icon { width: 27px; height: 27px; }
+#outcome-notice { position: fixed; z-index: 36; top: 80px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; max-width: calc(100vw - 24px); padding: 14px 24px; background: #242424; color: #f5f5f5; border: 1px solid #777; border-radius: 4px; box-shadow: 0 5px 20px #0004; font-size: 19px; font-weight: 650; pointer-events: none; }
+#outcome-notice .ui-icon { width: 32px; height: 32px; }
+#outcome-notice[data-kind="eliminated"] .ui-icon { color: #d8927d; }
+#outcome-notice[data-kind="victory"] .ui-icon { color: #d5bd7f; }
+#outcome-notice[data-kind="revived"] .ui-icon { color: #9ccbb3; }
+.notice-eliminated, .notice-victory { border-left-width: 4px; }
+.notice-eliminated { border-left-color: #bc765f; }
+.notice-victory { border-left-color: #bda66c; }
+.damage-number { color: var(--effect-color); }
+@media (max-width: 520px) { .result-panel { align-items: stretch; flex-direction: column; } .result-panel > div button { flex: 1; } .fallen-marker small { display: none; } #outcome-notice { font-size: 16px; padding: 12px 18px; } }

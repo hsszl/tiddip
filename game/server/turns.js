@@ -21,7 +21,7 @@ export function checkVictory(room) {
   room.pending = null;
   room.turnEndsAt = null;
   room.winnerId = alive[0]?.id || null;
-  record(room, alive[0] ? `${alive[0].name}获胜` : '无人存活，平局');
+  record(room, alive[0] ? `${alive[0].name}获胜` : '无人存活，平局', { kind: 'victory', actorId: alive[0]?.id || null, position: alive[0] ? { x: alive[0].x, y: alive[0].y } : null });
 }
 
 export function advanceTurn(room, expired = false) {

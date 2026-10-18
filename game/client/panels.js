@@ -15,7 +15,7 @@ export function status(state, me, mode) {
 }
 
 export function playersPanel(state, me) {
-  return `<ol class="players">${state.players.map((player, index) => `<li class="player ${player.alive ? '' : 'dead'} ${state.currentPlayerId === player.id ? 'current' : ''}">
+  return `<ol class="players">${state.players.map((player, index) => `<li data-player-id="${player.id}" class="player ${player.alive ? '' : 'dead'} ${state.currentPlayerId === player.id ? 'current' : ''}">
     <span class="player-number" style="--player:${player.color}">${index + 1}</span>
     <div class="player-detail"><div class="player-name">${e(player.name)}${player.id === me.id ? '<span class="quiet"> · 你</span>' : ''}${player.isBot ? `<span title="电脑" aria-label="电脑">${icon('bot')}</span>` : ''}${player.shield ? `<span title="护盾" aria-label="护盾">${icon('shield')}</span>` : ''}${!player.alive ? '<span class="quiet"> · 淘汰</span>' : ''}</div>${hearts(player)}
       <span class="hidden-hand" aria-label="${e(player.name)}有 ${player.itemCount} 张手牌">${icon('bag')}${player.itemCount}</span>
@@ -29,8 +29,12 @@ export function controls(state, me, mode) {
   if (state.phase === 'lobby') return `<div class="lobby-controls"><p>${state.players.length} / 6 人</p>${host
     ? `<button data-action="addBot" ${state.players.length >= 6 ? 'disabled' : ''}>添加电脑</button><button class="primary" data-action="start" ${state.players.length < 2 ? 'disabled' : ''}>开始</button>`
     : '<span class="quiet">等待房主开始</span>'}</div>`;
-  if (state.phase === 'finished') return `<div class="lobby-controls">${host ? '<button class="primary" data-action="restart">重新开始</button>' : '<span class="quiet">等待房主</span>'}</div>`;
+  if (state.phase === 'finished') {
+    const winner = state.players.find(player => player.id === state.winnerId);
+    return `<div class="result-panel"><strong>${icon('trophy')}${winner ? `${e(winner.name)}获胜` : '平局'}</strong><div>${host ? '<button data-action="restart">重新开始</button>' : ''}<button data-action="leave">退出房间</button></div></div>`;
+  }
   if (state.phase !== 'playing') return '';
+  if (!me.alive) return `<div class="observer-controls"><span>${icon('eliminated')}已淘汰 · 观战中</span><button data-action="leave">退出房间</button></div>`;
   const canAct = myTurn(state, me) && !state.pending;
   const weapon = WEAPONS[me.weapon], kind = skillMode(me.weapon);
   const skill = weapon?.skill && kind !== 'passive';

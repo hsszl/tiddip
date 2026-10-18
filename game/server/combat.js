@@ -9,22 +9,22 @@ export const canAttack = attackInRange;
 export function damage(room, player, cause) {
   if (player.shield) {
     player.shield = false;
-    record(room, `${player.name}的护盾挡住了${cause}`, { kind: 'shield', actorId: player.id });
+    record(room, `${player.name}的护盾挡住了${cause}`, { kind: 'shield', actorId: player.id, position: { x: player.x, y: player.y } });
     return;
   }
   player.hp = Math.max(0, player.hp - 1);
   record(room, `${player.name}受到${cause}，损失 1 血（剩 ${player.hp}）`, {
-    kind: 'damage', actorId: player.id, position: { x: player.x, y: player.y },
+    kind: 'damage', actorId: player.id, amount: 1, position: { x: player.x, y: player.y },
   });
   if (player.hp > 0) return;
   if (WEAPONS[player.weapon].skill === 'revive' && !player.skillUsed) {
     player.skillUsed = true;
     player.hp = 1;
-    record(room, `${player.name}触发急救，恢复 1 血`);
+    record(room, `${player.name}触发急救，恢复 1 血`, { kind: 'revived', actorId: player.id, position: { x: player.x, y: player.y } });
   } else {
     player.alive = false;
     if (room.pending?.playerId === player.id) room.pending = null;
-    record(room, `${player.name}被淘汰`);
+    record(room, `${player.name}被淘汰`, { kind: 'eliminated', actorId: player.id, position: { x: player.x, y: player.y }, weapon: player.weapon });
     checkVictory(room);
   }
 }
