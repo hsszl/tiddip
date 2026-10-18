@@ -32,7 +32,7 @@
 
     turn(id, direction) {
       const p = this.players[id - 1];
-      if (!p || this.over || p.respawnAt || !Number.isInteger(direction) || direction < 0 || direction > 3) return false;
+      if (!p || !Number.isInteger(direction) || direction < 0 || direction > 3) return false;
       if (p.path.length && direction === (p.dir + 2) % 4) return false;
       p.next = direction;
       return true;
