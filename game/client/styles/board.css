@@ -6,14 +6,14 @@
 .board-heading h1 { font-size: 17px; }
 .board-heading > span { flex: 0 0 auto; }
 .board { display: grid; grid-template-columns: repeat(var(--size), minmax(0, 1fr)); gap: 4px; width: 100%; padding: 6px; background: #a59d8d; border: 1px solid #918878; box-shadow: 0 4px 0 #c8c0b1; }
-.tile { position: relative; aspect-ratio: 1; padding: 0; border: 0; border-radius: 0; background: #d7d1c6; min-width: 0; overflow: hidden; }
+.tile { position: relative; aspect-ratio: 1; padding: 0; border: 1px solid #756f63; border-radius: 0; background: #d7d1c6; min-width: 0; overflow: hidden; }
 .tile-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; pointer-events: none; }
 .revealed .tile-art { opacity: .7; }
 .fog:hover .tile-art { filter: brightness(1.045); }
 .tile.available { box-shadow: inset 0 0 0 3px #657a4d; }
 .tile.available::after { content: ''; position: absolute; inset: 0; border: 3px solid #657a4d; background: #708a4010; pointer-events: none; }
 .tile.available:hover::after { border-color: #394d25; background: #708a4030; }
-.own-tile::before { content: ''; position: absolute; inset: 2px; border: 1px solid #fff4d9; z-index: 2; pointer-events: none; }
+.own-tile::before { content: ''; position: absolute; inset: 2px; border: 2px solid #363831; box-shadow: 0 0 0 1px #fff9; z-index: 2; pointer-events: none; }
 .terrain { position: absolute; bottom: 0; left: 0; right: 0; font-size: 12px; line-height: 1.6; background: #f9f3e8ed; padding: 1px 3px; color: #37392e; border-top: 2px solid var(--terrain-color, #807c69); }
 .terrain.spent { color: #807568; }
 .terrain-mark { position: absolute; top: 6px; left: 7px; background: #f8f2e8ee; color: var(--terrain-color); min-width: 20px; height: 20px; font: 700 14px/20px monospace; }

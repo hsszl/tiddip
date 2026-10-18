@@ -9,7 +9,7 @@ let data;
 export function showInvite(state) {
   const url = new URL('/game/', location.origin);
   url.searchParams.set('room', state.id);
-  data = { title: 'tiddip · 迷雾棋盘', text: `来玩一局？房间 ${state.id}`, url: url.href };
+  data = { title: 'tiddip', text: `房间 ${state.id}`, url: url.href };
   link.value = url.href;
   document.querySelector('#invite-code').textContent = state.id;
   const local = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname);

@@ -12,8 +12,8 @@ let anchor = null;
 function cardContent(category, key, used, note = '') {
   const card = catalogs[category]?.[key];
   if (!card) return '';
-  const stats = category === 'weapons' ? `<div class="card-stats"><span aria-label="血量上限 ${card.hp}">${icon('revived')}${card.hp}</span><span aria-label="伤害 1">${icon('attack')}1</span></div>` : '';
-  const skillText = used === 'true' ? '已用' : skillMode(key) === 'passive' ? '被动' : key === 'sniper' ? '每局一次' : '';
+  const stats = category === 'weapons' ? `<div class="card-stats"><span aria-label="血量上限 ${card.hp}">${icon('revived')}${card.hp}</span><span aria-label="伤害 ${card.damage ?? 1}" title="伤害">${icon('damage')}${card.damage ?? 1}</span></div>` : '';
+  const skillText = used === 'true' ? '已用' : skillMode(key) === 'passive' ? '被动' : '';
   return `<img class="inspect-art" src="/game/client/assets/${category}/${key}.svg" alt="">
     <h2>${e(card.name)}</h2>${stats}<p>${e(category === 'weapons' && key === 'sniper' ? '近身射击：同格攻击一次。' : card.description)}</p>
     ${card.skill && skillText ? `<p class="skill-description">${skillText}</p>` : ''}
@@ -59,6 +59,7 @@ function show(source) {
   if (anchor === source || dialog.open) return;
   anchor = source;
   tooltip.innerHTML = cardContent(source.dataset.cardKind, source.dataset.cardKey, source.dataset.cardUsed, source.dataset.cardNote);
+  if (source.dataset.cardKind === 'weapons') tooltip.innerHTML += rangeDiagram(source.dataset.cardKey);
   tooltip.hidden = !tooltip.innerHTML;
   const rect = source.getBoundingClientRect(), bounds = tooltip.getBoundingClientRect();
   tooltip.style.left = `${Math.max(8, Math.min(innerWidth - bounds.width - 8, rect.right + 10))}px`;

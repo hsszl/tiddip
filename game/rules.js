@@ -13,7 +13,7 @@ export const WEAPONS = {
   rifle: {
     name: '步枪', hp: 4, ranges: [0, 1, 2], rangeLabel: '直线 0–2',
     skill: 'suppress', skillName: '压制', skillMode: 'attack',
-    description: '压制：额外允许攻击斜向一格，每局一次。',
+    description: '压制：额外允许攻击斜向一格，一次。',
   },
   pistol: {
     name: '手枪', hp: 3, ranges: [0, 1], rangeLabel: '直线 0–1',
@@ -23,7 +23,7 @@ export const WEAPONS = {
   bow: {
     name: '长弓', hp: 3, ranges: [1, 2, 3, 4], rangeLabel: '直线 1–4',
     skill: 'scout', skillName: '鹰眼', skillMode: 'self',
-    description: '鹰眼：翻开身边九格，每局一次。',
+    description: '鹰眼：翻开身边九格，一次。',
   },
   boomerang: {
     name: '回旋镖', hp: 4, ranges: [1, 2], pattern: 'diagonal', rangeLabel: '斜线 1 · 2',
@@ -33,27 +33,27 @@ export const WEAPONS = {
   dagger: {
     name: '匕首', hp: 5, ranges: [0], rangeLabel: '仅同格',
     skill: 'dash', skillName: '突进', skillMode: 'move',
-    description: '突进：直线移动最多两格，占本回合移动，每局一次。',
+    description: '突进：直线移动最多两格，占本回合移动，一次。',
   },
   axe: {
     name: '战斧', hp: 3, ranges: [0, 1], pattern: 'adjacent', rangeLabel: '同格 · 周围八格',
     skill: 'guard', skillName: '招架', skillMode: 'self',
-    description: '招架：获得一层护盾，每局一次。',
+    description: '招架：获得一层护盾，一次。',
   },
   crossbow: {
     name: '十字弩', hp: 4, ranges: [2, 3, 4], rangeLabel: '直线 2–4',
     skill: 'pierce', skillName: '穿盾', skillMode: 'attack',
-    description: '穿盾：击破护盾并造成 1 点伤害，每局一次。',
+    description: '穿盾：击破护盾并造成 1 点伤害，一次。',
   },
   mortar: {
     name: '迫击炮', hp: 4, ranges: [3], pattern: 'manhattan', rangeLabel: '横竖合计 3 格',
     skill: 'closeShell', skillName: '近防弹', skillMode: 'attack',
-    description: '近防弹：改打横竖合计 1、2 格，每局一次。',
+    description: '近防弹：改打横竖合计 1、2 格，一次。',
   },
   revolver: {
     name: '左轮', hp: 4, ranges: [1], pattern: 'adjacent', rangeLabel: '周围八格',
     skill: 'sidestep', skillName: '侧步', skillMode: 'move',
-    description: '侧步：斜向移动一格，占本回合移动，每局一次。',
+    description: '侧步：斜向移动一格，占本回合移动，一次。',
   },
 };
 
@@ -78,5 +78,5 @@ export const TERRAIN = {
   brambles: { name: '荆棘地', description: '每次进入扣 1 血，不会炸飞。护盾可以挡住。' },
   camp: { name: '营地', description: '获得一层护盾，用后失效；已有护盾时不消耗。' },
   ruins: { name: '遗迹', description: '摸两张道具牌，手牌不超过 5；满手时不消耗。用后失效。' },
-  armory: { name: '军械库', description: '站在这里可手动换武器，每人每座一次；不回血，不恢复已用能力。' },
+  armory: { name: '军械库', description: '换武器并恢复技能，每人每座一次；不回血。' },
 };

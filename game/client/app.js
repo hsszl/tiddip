@@ -30,7 +30,7 @@ function accept(next) {
   if (!sameRoom) clearFeedback();
   prepareReveals(events, state);
   state = next;
-  syncTurnClock(next);
+  syncTurnClock(next, myTurn(next, meIn(next, session)));
   if (!myTurn(state, meIn(state, session)) || state.pending) {
     mode = {};
     const targets = document.querySelector('#targets-dialog');
@@ -43,6 +43,7 @@ function accept(next) {
 function welcome() {
   clearFeedback();
   hideCardTooltip();
+  document.querySelector('#turn-notice').hidden = true;
   state = session = null;
   mode = {};
   selected = null;

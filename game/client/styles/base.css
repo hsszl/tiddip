@@ -6,14 +6,14 @@
   font-synthesis: none;
   --ink: #353830;
   --muted: #77786d;
-  --line: #d4cdbf;
+  --line: #96938a;
   --accent: #566648;
 }
 * { box-sizing: border-box; }
 body { margin: 0; }
 [hidden] { display: none !important; }
 button, input { font: inherit; }
-button { color: inherit; cursor: pointer; border: 1px solid #c5bdaf; border-radius: 4px; background: #f8f5ee; padding: 10px 15px; }
+button { color: inherit; cursor: pointer; border: 1px solid #8c887d; border-radius: 4px; background: #f8f5ee; padding: 10px 15px; }
 button:hover:not(:disabled) { background: #e7e1d4; }
 button:focus-visible, input:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 button:disabled { cursor: default; opacity: .45; }

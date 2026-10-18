@@ -4,8 +4,8 @@ body { background: #e9e3d7; }
 .ui-icon { width: 20px; height: 20px; flex: 0 0 auto; vertical-align: middle; }
 .game-layout { grid-template-columns: minmax(0, 800px) minmax(210px, 1fr); gap: 28px; }
 .sidebar { padding-top: 52px; }
-.board { padding: 7px; gap: 5px; background: #d4c9b6; border: 1px solid #c2b49c; border-radius: 7px; box-shadow: inset 0 1px 5px #65543c18; }
-.tile { border: 1px solid #b3a68e; border-radius: 4px; box-shadow: 0 2px 1px #695a3e35; }
+.board { padding: 7px; gap: 5px; background: #d4c9b6; border: 1px solid #756f63; border-radius: 7px; box-shadow: inset 0 1px 5px #65543c18; }
+.tile { border: 1px solid #756f63; border-radius: 4px; box-shadow: 0 2px 1px #695a3e35; }
 .tile-art { border-radius: 3px; image-rendering: auto; }
 .revealed .tile-art { opacity: 1; }
 .fog .cell-coordinate { color: #e0d3ac; }
@@ -17,7 +17,6 @@ body { background: #e9e3d7; }
 .terrain-camp { --terrain-color: #7f8958; }
 .terrain-ruins { --terrain-color: #8c8667; }
 .terrain-armory { --terrain-color: #65755f; }
-.tile.recent-arrival:not(.available)::after { content: ''; position: absolute; inset: 2px; border: 2px solid #aa7d35; border-radius: 2px; pointer-events: none; }
 .pieces { inset: 12px 3px 20px; }
 .piece { box-shadow: 0 2px 4px #26372c70; }
 .cell-coordinate { font-size: 8px; }
@@ -46,7 +45,7 @@ body { background: #e9e3d7; }
 .hand-heading .section-label { display: flex; align-items: center; gap: 5px; font: 10px monospace; }
 .hand-heading .ui-icon { width: 15px; height: 15px; }
 .items { display: flex; gap: 10px; overflow-x: auto; padding: 3px 3px 10px; align-items: flex-start; }
-.game-card { display: flex; flex-direction: column; width: 120px; min-height: 158px; padding: 5px; position: relative; border: 1px solid #aa987b; border-radius: 6px; background: #faf5e9; box-shadow: 0 2px 0 #c6b598; text-align: left; color: var(--ink); }
+.game-card { display: flex; flex-direction: column; width: 120px; min-height: 158px; padding: 5px; position: relative; border: 1px solid #837969; border-radius: 6px; background: #faf5e9; box-shadow: 0 2px 0 #c6b598; text-align: left; color: var(--ink); }
 .game-card::before { content: ''; position: absolute; inset: 3px; border: 1px solid #dfd1b9; border-radius: 4px; pointer-events: none; }
 .card-slot { position: relative; flex: 0 0 120px; }
 .card-art { display: block; height: 70px; margin: 1px 1px 9px; overflow: hidden; border-radius: 3px; background: #e1d6bd; }

@@ -12,14 +12,14 @@
 .pieces { z-index: 3; }
 .terrain { z-index: 4; }
 .cell-coordinate { z-index: 4; }
-.preview-attack .board .tile[data-attack-range="true"] .range-overlay { border: 2px solid #42a2d1; background: #73c7f02e; }
-.board[data-mode="attack"] .tile[data-attack-range="true"] .range-overlay { border: 2px solid #42a2d1; background: #73c7f02e; }
+.preview-attack .board .tile[data-attack-range="true"] .range-overlay { border: 3px solid #205b73; background: #205b731a; box-shadow: 0 0 0 1px #fffc; }
+.board[data-mode="attack"] .tile[data-attack-range="true"] .range-overlay { border: 3px solid #205b73; background: #205b731a; box-shadow: 0 0 0 1px #fffc; }
 .board[data-mode="skill"] .tile[data-skill-range="true"] .range-overlay,
-.preview-skill .board .tile[data-skill-range="true"] .range-overlay { border: 2px solid #a57ce3; background: #b996ef30; }
-.board[data-mode="skill"] .tile.available::after { border-color: #a57ce3; background: #b996ef1c; }
-.board[data-mode="attack"] .tile.available::after { border-color: #e39b36; background: #ffbe521f; }
+.preview-skill .board .tile[data-skill-range="true"] .range-overlay { border: 3px solid #674688; background: #67468820; box-shadow: 0 0 0 1px #fffc; }
+.board[data-mode="skill"] .tile.available::after { border-color: #674688; background: #6746881c; }
+.board[data-mode="attack"] .tile.available::after { border-color: #8a480b; background: #b9671524; }
 .board[data-mode="move"] .tile.available::after,
-.board[data-mode^="item-"] .tile.available::after { border-color: #4496b0; background: #7dc8e922; }
+.board[data-mode^="item-"] .tile.available::after { border-color: #24636b; background: #24636b22; }
 .range-grid .in-range, .range-key { background: #7ca9ba; }
 .range-grid .skill-in-range { box-shadow: inset 0 0 0 2px #ab86de; }
 .skill-key { display: inline-block; width: 8px; height: 8px; border: 2px solid #ab86de; }
@@ -47,6 +47,23 @@
 @media (max-width: 680px) { .turn-controls { flex-wrap: wrap; } .turn-controls button.primary { margin-left: auto; } .range-overlay { inset: 1px; } }
 #turn-clock { display: inline-block; min-width: 32px; margin-right: 12px; color: var(--ink); font: 600 13px monospace; }
 #turn-clock[data-urgent="true"] { color: #db795e; }
+.board-heading.your-turn { border-left: 4px solid var(--ink); padding-left: 10px; }
+.board-heading.your-turn h1 { font-weight: 750; font-size: 20px; }
+.board-heading.your-turn h1::before { content: '●'; margin-right: 8px; font-size: 11px; vertical-align: middle; }
+.your-turn #turn-clock { padding: 5px 7px; border-radius: 3px; background: var(--ink); color: var(--surface); }
+.your-turn #turn-clock[data-urgent="true"] { background: #943c27; color: #fff; }
+#turn-notice { position: fixed; z-index: 35; top: 80px; left: 50%; transform: translateX(-50%); padding: 12px 25px; border: 1px solid var(--ink); border-radius: 4px; background: var(--ink); color: var(--surface); box-shadow: 0 5px 20px #0003; font-size: 19px; font-weight: 700; pointer-events: none; animation: turn-enter .2s ease-out; }
+@keyframes turn-enter { from { opacity: 0; translate: 0 -8px; } to { opacity: 1; translate: 0 0; } }
+@media (prefers-reduced-motion: reduce) { #turn-notice { animation: none; } }
+#card-tooltip .inspect-art { max-height: 90px; }
+#card-tooltip .range-diagram { width: 150px; margin: 14px auto 0; }
+#card-tooltip .range-grid span { background: #414141; color: #f3f3f3; }
+#card-tooltip .range-grid .in-range { background: #6594aa; }
+#card-tooltip .range-grid .range-center { outline-color: #fff; }
+#card-tooltip .range-diagram figcaption { color: #d4d4d4; }
+[data-theme="dark"] .own-tile::before { border-color: #e6e6e6; box-shadow: 0 0 0 1px #111; }
+[data-theme="dark"] .preview-attack .range-overlay,
+[data-theme="dark"] .board[data-mode="attack"] .tile[data-attack-range="true"] .range-overlay { border-color: #b9b9b9; background: #ffffff12; box-shadow: 0 0 0 1px #111; }
 .reveal-cover { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
 .reveal-cover img { width: 100%; height: 100%; display: block; }
 .reveal-cover .night-fog { display: none; }

@@ -59,16 +59,27 @@ test('camp and ruins preserve unused effects and never stack shield or overflow 
   a.items.pop(); enterTile(room, a, tile); assert.equal(a.items.length, 4);
 });
 
-test('armory changes weapon once, clamps HP and does not restore spent skills', context => {
+test('armory changes weapon once, clamps HP and restores spent skills', context => {
   const { room, a, tile } = game();
-  tile.type = 'armory'; a.weapon = 'sniper'; a.hp = 5; a.skillUsed = true;
+  tile.type = 'armory'; a.weapon = 'sniper'; a.hp = 5; a.skillUsed = true; a.sniperSkillUsed = true;
   context.mock.method(Math, 'random', () => 0);
   enterTile(room, a, tile);
   assert.equal(a.weapon, 'sniper');
   activateTerrain(room, a);
-  assert.equal(a.weapon, 'rifle'); assert.equal(a.hp, 4); assert.equal(a.skillUsed, true);
+  assert.equal(a.weapon, 'rifle'); assert.equal(a.hp, 4); assert.equal(a.skillUsed, false); assert.equal(a.sniperSkillUsed, false);
   enterTile(room, a, tile); assert.equal(a.weapon, 'rifle'); assert.equal(tile.spent, false);
   assert.throws(() => activateTerrain(room, a));
+});
+
+test('armory refreshes a newly drawn sniper ability without granting an extra attack', context => {
+  const { room, a, tile } = game();
+  tile.type = 'armory'; a.weapon = 'rifle'; a.skillUsed = a.sniperSkillUsed = true;
+  a.x = tile.x; a.y = tile.y;
+  room.actions.attacked = true;
+  context.mock.method(Math, 'random', () => 0);
+  activateTerrain(room, a);
+  assert.equal(a.weapon, 'sniper'); assert.equal(a.skillUsed, false); assert.equal(a.sniperSkillUsed, false);
+  assert.equal(room.actions.attacked, true);
 });
 
 test('image feed distinguishes blocked hits, revival and elimination', () => {

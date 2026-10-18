@@ -24,8 +24,8 @@ export function weaponCard(player) {
   const weapon = WEAPONS[player.weapon];
   return `<article class="game-card weapon-card" style="--card-accent:${weaponColors[player.weapon]}" data-card-kind="weapons" data-card-key="${player.weapon}" data-card-used="${player.skillUsed}" tabindex="0" aria-label="装备：${e(weapon.name)}">
     ${artwork('weapons', player.weapon)}
-    <div class="card-body"><h2>${e(weapon.name)}</h2><span class="weapon-damage" aria-label="伤害 1">${icon('attack')}1</span>${hearts(player)}</div>
-    ${weapon.skill ? `<span class="skill-tag ${player.skillUsed ? 'used' : ''}" title="每局一次">${icon('skill')}${e(weapon.skillName)}${player.skillUsed ? ' · 已用' : ''}</span>` : ''}
+    <div class="card-body"><h2>${e(weapon.name)}</h2><span class="weapon-damage" title="伤害" aria-label="伤害 ${weapon.damage ?? 1}">${icon('damage')}${weapon.damage ?? 1}</span>${hearts(player)}</div>
+    ${weapon.skill ? `<span class="skill-tag ${player.skillUsed ? 'used' : ''}" title="军械库可恢复技能">${icon('skill')}${e(weapon.skillName)}${player.skillUsed ? ' · 已用' : ''}</span>` : ''}
     ${description('weapons', player.weapon)}
   </article>`;
 }

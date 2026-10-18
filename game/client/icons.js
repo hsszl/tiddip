@@ -5,6 +5,7 @@ const paths = {
   sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l2 2m10 10 2 2M5 19l2-2M17 7l2-2"/>',
   move: '<path d="M12 3v18M3 12h18m-12-6 3-3 3 3m-6 12 3 3 3-3M6 9l-3 3 3 3m12-6 3 3-3 3"/>',
   attack: '<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/>',
+  damage: '<path d="m12 6-3-3H5L2 6v5l10 10 10-10V6l-3-3h-4Z"/><path d="M8 11h8"/>',
   skill: '<path d="m14 2-9 12h6l-1 8 9-12h-6Z"/>',
   end: '<path d="M4 12h15m-6-6 6 6-6 6M21 4v16"/>',
   info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v.1"/>',

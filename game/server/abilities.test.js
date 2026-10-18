@@ -74,13 +74,13 @@ test('new items respect movement, skill, hand and fog constraints', () => {
   assert.equal(room.actions.moved, true);
 });
 
-test('sniper close shot remains once per match, including ammunition and weapon swaps', () => {
+test('sniper close shot cannot be restored by ammunition or a flag reset without an armory', () => {
   const { room, a, b } = game(); a.weapon = 'sniper'; b.x = 0;
   applyAction(room, a, { type: 'skill', targetId: b.id });
   a.items = [{ id: 'ammo', key: 'ammo' }];
   assert.throws(() => applyAction(room, a, { type: 'item', itemId: 'ammo' }), /不能补充/);
   assert.equal(a.items.length, 1);
-  // A refreshed different weapon must never revive a spent close shot.
+  // Only the armory may explicitly reset the persistent close-shot flag.
   a.skillUsed = false;
   assert.equal(canAttack(a, b, true), false);
 });

@@ -6,12 +6,12 @@ import { icon } from './icons.js';
 
 export function status(state, me, mode) {
   if (state.phase === 'lobby') return '等待开始';
-  if (state.phase === 'spawn') return me.x === null ? '选一格作为出生点' : '等待其他人选出生点';
+  if (state.phase === 'spawn') return me.x === null ? '选择出生点' : '等待其他玩家';
   if (state.phase === 'finished') return `${state.players.find(player => player.id === state.winnerId)?.name || '无人'}获胜`;
-  if (!me.alive) return '你已被淘汰，可以继续观战';
-  if (!myTurn(state, me)) return `轮到${state.players.find(player => player.id === state.currentPlayerId)?.name}`;
+  if (!me.alive) return '观战';
+  if (!myTurn(state, me)) return `${state.players.find(player => player.id === state.currentPlayerId)?.name}的回合`;
   if (state.pending) return '选一个已翻开的格子落地';
-  return { move: '选择移动位置', attack: '选择攻击目标', skill: `选择${WEAPONS[me.weapon].skillName}目标`, 'item-cell': `选择${ITEMS[mode.key]?.name}目标`, 'item-player': '选择身边的对手' }[mode.type] || '轮到你了';
+  return { move: '选择位置', attack: '选择目标', skill: `选择${WEAPONS[me.weapon].skillName}目标`, 'item-cell': '选择位置', 'item-player': '选择对手' }[mode.type] || '你的回合';
 }
 
 export function playersPanel(state, me) {
@@ -29,7 +29,7 @@ export function controls(state, me, mode) {
   if (state.phase === 'lobby') return `<div class="lobby-controls"><p>${state.players.length} / 6 人</p>${host
     ? `<button data-action="addBot" ${state.players.length >= 6 ? 'disabled' : ''}>添加电脑</button><button class="primary" data-action="start" ${state.players.length < 2 ? 'disabled' : ''}>开始</button>`
     : '<span class="quiet">等待房主开始</span>'}</div>`;
-  if (state.phase === 'finished') return `<div class="lobby-controls">${host ? '<button class="primary" data-action="restart">再来一局</button>' : '<span class="quiet">等待房主再开一局</span>'}</div>`;
+  if (state.phase === 'finished') return `<div class="lobby-controls">${host ? '<button class="primary" data-action="restart">重新开始</button>' : '<span class="quiet">等待房主</span>'}</div>`;
   if (state.phase !== 'playing') return '';
   const canAct = myTurn(state, me) && !state.pending;
   const weapon = WEAPONS[me.weapon], kind = skillMode(me.weapon);
