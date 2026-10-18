@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 140">
+  <title>护盾</title>
+  <rect width="240" height="140" fill="#bccdc7"/>
+  <circle cx="120" cy="64" r="51" fill="#d9e0cc"/>
+  <ellipse cx="120" cy="125" rx="42" ry="6" fill="#5e7b6d" opacity=".18"/>
+  <g stroke="#415c50" stroke-width="3" stroke-linejoin="round">
+    <path d="m120 16 40 14v35q0 32-40 53-40-21-40-53V30Z" fill="#748e73"/>
+    <path d="m120 25 31 11v29q0 25-31 43-31-18-31-43V36Z" fill="#aabb91"/>
+    <path d="M120 25v83q31-18 31-43V36Z" fill="#8fa680" stroke="none"/>
+    <path d="m120 45 16 20-16 22-16-22Z" fill="#e7d2a0" stroke="#657958" stroke-width="2"/>
+  </g>
+  <path d="m120 51 10 14-10 14-10-14Z" fill="#f6e6be"/>
+  <g stroke="#f2ebce" stroke-width="3" stroke-linecap="round"><path d="m57 35 5 9m-7 1h10m117 41 5 9m-7 1h10"/></g>
+  <path d="m63 88-9 9m116-67 8-8" stroke="#7d9b8b" stroke-width="3" stroke-linecap="round"/>
+</svg>

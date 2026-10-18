@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <title>空地</title>
+  <rect width="160" height="160" fill="#cad4a5"/>
+  <path d="M0 104Q40 86 74 107T160 91V160H0Z" fill="#b6c88e"/>
+  <path d="M-8 147Q61 116 71 83T127-8" fill="none" stroke="#e9d6a8" stroke-width="33"/>
+  <path d="M-8 147Q61 116 71 83T127-8" fill="none" stroke="#f2e4c2" stroke-width="19"/>
+  <g stroke="#52664c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m23 48-5-12m5 12 5-18m-5 18 11-7M119 107l-4-13m4 13 5-17m-5 17 11-6" fill="none"/>
+    <path d="M24 106q-13-3-12-14 3-14 13-12 14-1 17 13-1 13-18 13Z" fill="#78966a"/>
+    <path d="m22 93 8 3m-4-12-4 9" fill="none" stroke="#b7c78d"/>
+    <path d="m116 53 7-13 17 3 5 13-13 7Z" fill="#b3b7a4" stroke="#7d8873"/>
+    <path d="m123 40 4 12 18 4" fill="none" stroke="#d8d9c6"/>
+  </g>
+  <g fill="#f6f0cf"><circle cx="42" cy="29" r="4"/><circle cx="140" cy="111" r="4"/></g>
+  <g fill="#c39c51"><circle cx="42" cy="29" r="1.5"/><circle cx="140" cy="111" r="1.5"/></g>
+  <path d="m52 109 5-2m28-47 5 2m-25 73 4-2" stroke="#c3ad80" stroke-width="3" stroke-linecap="round"/>
+</svg>

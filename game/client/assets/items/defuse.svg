@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 140">
+  <title>拆弹钳</title>
+  <rect width="240" height="140" fill="#d9bfb1"/><circle cx="120" cy="63" r="52" fill="#efdbca"/>
+  <ellipse cx="124" cy="122" rx="60" ry="6" fill="#7a594b" opacity=".18"/>
+  <path d="M48 79q0-17 26-17h21v30H73q-25 0-25 17" fill="none" stroke="#a15b4b" stroke-width="4"/>
+  <g transform="rotate(-17 129 72)" stroke="#57574d" stroke-width="3.5" stroke-linejoin="round">
+    <path d="m108 58-13-25 11-15 6 24 16 16 16-16 6-24 11 15-13 25-15 21Z" fill="#9ba295"/>
+    <path d="m120 74-15 42q-3 7-11 3-5-3-2-10l22-41m24 6 15 42q3 7 11 3 5-3 2-10l-22-41" fill="#b97550"/>
+    <circle cx="129" cy="66" r="9" fill="#c0bfa7"/>
+    <circle cx="129" cy="66" r="2" fill="#57574d" stroke="none"/>
+  </g>
+  <path d="m64 37 9 9m-9 0 9-9m106 57 10-8m-9-3 6 4m2 6 6 2" fill="none" stroke="#bf8a68" stroke-width="2" stroke-linecap="round"/>
+</svg>

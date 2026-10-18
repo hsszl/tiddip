@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 140">
+  <title>巧手</title>
+  <rect width="240" height="140" fill="#cbc2d9"/><circle cx="120" cy="65" r="52" fill="#e5daeb"/>
+  <ellipse cx="124" cy="123" rx="55" ry="6" fill="#655673" opacity=".18"/>
+  <g stroke="#5d5269" stroke-width="3" stroke-linejoin="round">
+    <rect x="116" y="28" width="40" height="56" rx="4" transform="rotate(17 136 56)" fill="#e5cc9c"/>
+    <rect x="100" y="24" width="40" height="56" rx="4" transform="rotate(-5 120 52)" fill="#f2e7cf"/>
+    <path d="m119 36 11 15-11 15-11-15Z" fill="#a9a17f"/>
+    <path d="m81 114 4-34q1-8 8-6l4-23q2-9 9-6l-1 35 9-17q4-7 10-2l-5 23 15-15q7-6 12 0l-12 24 15-7q9-4 12 3l-23 21-13 9Z" fill="#82739e"/>
+    <path d="m91 109 27 8-4 10-25-8Z" fill="#a79abd"/>
+    <path d="m104 87 9 4m4-1 8 5" stroke="#c7b8d7" stroke-width="2"/>
+  </g>
+  <path d="m171 36 8 8-8 8-8-8ZM59 75h11m-5-5v10" fill="none" stroke="#a390b9" stroke-width="2"/>
+</svg>

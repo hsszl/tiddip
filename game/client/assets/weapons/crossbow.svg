@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 140">
+  <title>十字弩</title>
+  <rect width="240" height="140" fill="#ced0af"/>
+  <circle cx="121" cy="66" r="49" fill="#e0dfc2"/>
+  <ellipse cx="121" cy="120" rx="69" ry="6" fill="#767850" opacity=".2"/>
+  <g transform="rotate(23 120 69)" stroke="#555a43" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M113 39h14v77h-14Z" fill="#ad8151"/>
+    <path d="M107 98h26v19h-26Z" fill="#866447"/>
+    <path d="M63 42q57-42 114 0l-8 11q-49-29-98 0Z" fill="#8b9b77"/>
+    <path d="M65 43 120 88l55-45" fill="none" stroke="#f2e7bc" stroke-width="2"/>
+    <path d="M120 82V18" fill="none" stroke="#5c654c"/>
+    <path d="m120 13-6 11h12Z" fill="#d4d6b7"/>
+    <path d="m116 69-4 11 8-3 8 3-4-11Z" fill="#b1734f" stroke-width="2"/>
+    <path d="M108 53h24v9h-24Z" fill="#627356"/>
+    <circle cx="120" cy="57" r="2" fill="#dfcfa0" stroke="none"/>
+  </g>
+</svg>

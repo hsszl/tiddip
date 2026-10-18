@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <title>军械库</title>
+  <rect width="160" height="160" fill="#c4c8be"/>
+  <path d="M0 119q33-20 78-6t82-9v56H0Z" fill="#aab5a0"/>
+  <ellipse cx="80" cy="124" rx="50" ry="8" fill="#6e7e68" opacity=".35"/>
+  <g stroke="#4e594b" stroke-width="3" stroke-linejoin="round">
+    <path d="M39 57h83v64H39Z" fill="#8b9579"/>
+    <path d="m30 58 50-27 51 27Z" fill="#667762"/>
+    <path d="M48 68h64v45H48Z" fill="#c4b48e"/>
+    <path d="M48 84h64M48 99h64" fill="none" stroke="#8d7e61" stroke-width="2"/>
+    <path d="m57 106 7-32h7l-6 33Z" fill="#8c6548"/>
+    <path d="m66 81 9-37 5 1-9 37Z" fill="#596c60"/>
+    <path d="m81 107 8-30h8l-9 30Z" fill="#9c764e"/>
+    <path d="m92 80 9-34 5 2-9 34Z" fill="#64796a"/>
+    <path d="M41 121h78" stroke-width="5"/>
+  </g>
+  <path d="m69 45 20-10m-20 0 20 10" stroke="#e0d5b4" stroke-width="3" stroke-linecap="round"/>
+  <path d="m24 128-3-11m3 11 7-10m105 4 5-10" stroke="#72865f" stroke-width="3" stroke-linecap="round"/>
+</svg>

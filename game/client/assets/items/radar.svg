@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 140">
+  <title>雷达</title>
+  <rect width="240" height="140" fill="#b8d2c8"/><circle cx="120" cy="65" r="53" fill="#deead5"/>
+  <ellipse cx="122" cy="123" rx="49" ry="6" fill="#44695a" opacity=".18"/>
+  <g stroke="#426458" stroke-width="3" stroke-linejoin="round">
+    <rect x="76" y="21" width="88" height="95" rx="12" fill="#719488"/>
+    <circle cx="120" cy="64" r="31" fill="#304e47"/>
+    <circle cx="120" cy="64" r="21" fill="none" stroke="#719c80" stroke-width="1.5"/>
+    <circle cx="120" cy="64" r="10" fill="none" stroke="#719c80" stroke-width="1.5"/>
+    <path d="M89 64h62m-31-31v62" stroke="#719c80" stroke-width="1.5"/>
+    <path d="m120 64 21-23a30 30 0 0 0-21-8Z" fill="#97c689" opacity=".7" stroke="none"/>
+    <circle cx="132" cy="54" r="4" fill="#e5edaa" stroke="none"/>
+    <circle cx="108" cy="76" r="3" fill="#a3d39c" stroke="none"/>
+    <path d="M95 105h28" stroke="#d7dfbc"/>
+    <circle cx="145" cy="104" r="3" fill="#d7dfbc" stroke="none"/>
+  </g>
+  <path d="M56 45q-13 19 0 38m130-38q13 19 0 38" fill="none" stroke="#729f8a" stroke-width="3" stroke-linecap="round"/>
+</svg>

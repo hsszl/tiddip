@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 140">
+  <title>弹药</title>
+  <rect width="240" height="140" fill="#d8c8ad"/><circle cx="121" cy="63" r="51" fill="#efe0c6"/>
+  <ellipse cx="122" cy="123" rx="52" ry="6" fill="#725f3f" opacity=".2"/>
+  <g stroke="#625640" stroke-width="3" stroke-linejoin="round">
+    <path d="M78 80h85v35H78Z" fill="#839079"/><path d="M78 80h85l-10-13H88Z" fill="#a2ad8c"/>
+    <path d="M84 83h73v26H84Z" fill="#b6b38a"/>
+    <path d="M95 31q8-22 16 0v48H95Zm31 0q8-22 16 0v48h-16Z" fill="#d8af64"/>
+    <path d="M95 42h16m15 0h16M95 70h16m15 0h16" fill="none"/>
+    <path d="M95 31h16m15 0h16" stroke="#e8d3a1" stroke-width="4"/>
+    <path d="M106 95h29m-14-6v12" stroke="#6d785b"/>
+  </g>
+  <g transform="rotate(24 173 70)" stroke="#625640" stroke-width="3"><path d="M166 48q7-19 14 0v49h-14Z" fill="#d8af64"/><path d="M166 60h14m-14 30h14"/></g>
+  <path d="M53 49v12m-6-6h12" stroke="#b89b63" stroke-width="2" stroke-linecap="round"/>
+</svg>

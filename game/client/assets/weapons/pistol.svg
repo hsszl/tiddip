@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 140">
+  <title>手枪</title>
+  <rect width="240" height="140" fill="#d7c6bd"/>
+  <circle cx="120" cy="68" r="49" fill="#e6d7cb"/>
+  <ellipse cx="122" cy="119" rx="58" ry="7" fill="#78675e" opacity=".18"/>
+  <g transform="rotate(-12 121 66)" stroke="#464b45" stroke-width="3.5" stroke-linejoin="round">
+    <path d="M69 37h108v23H75Z" fill="#78827a"/>
+    <path d="M164 36h13v25h-13Z" fill="#aab1a0"/>
+    <path d="M81 59h72v11h-41l-7 40H77l8-40H73Z" fill="#5c675c"/>
+    <path d="m87 74 16 1-7 28H82Z" fill="#b78d63"/>
+    <path d="M112 69v21h25l8-21M125 70v9" fill="none"/>
+    <path d="M79 42v12m7-12v12m7-12v12" fill="none" stroke="#bcc1ac" stroke-width="2"/>
+    <path d="M163 37v-6m-90 7v-6h7" fill="none" stroke-width="3"/>
+  </g>
+  <g stroke="#ad8771" stroke-width="2" stroke-linecap="round"><path d="M197 41v14m-7-7h14M43 88v10m-5-5h10"/></g>
+</svg>

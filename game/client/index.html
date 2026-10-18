@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eee9df">
+  <title>tiddip · 迷雾棋盘</title>
+  <link rel="icon" href="/game/client/assets/mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/game/client/styles/base.css">
+  <link rel="stylesheet" href="/game/client/styles/board.css">
+  <link rel="stylesheet" href="/game/client/styles/panels.css">
+  <link rel="stylesheet" href="/game/client/styles/cards.css">
+  <link rel="stylesheet" href="/game/client/styles/activity.css">
+  <link rel="stylesheet" href="/game/client/styles/inspect.css">
+  <link rel="stylesheet" href="/game/client/styles/feedback.css">
+  <link rel="stylesheet" href="/game/client/styles/theme.css">
+  <link rel="stylesheet" href="/game/client/styles/combat.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/game/">tiddip<span>迷雾棋盘</span></a>
+    <div class="top-actions"><span id="connection" role="status">连接中</span><button id="theme-toggle" class="text-button" aria-label="切换黑暗模式"></button><button id="rules-open" class="text-button">规则</button></div>
+  </header>
+  <main>
+    <section id="welcome" class="welcome" hidden>
+      <h1>开一局？</h1>
+      <form id="entry-form">
+        <label for="nickname">昵称</label>
+        <input id="nickname" name="nickname" maxlength="16" autocomplete="nickname" value="玩家" required>
+        <div class="entry-buttons"><button type="submit" name="intent" value="create" class="primary">创建房间</button><button type="submit" name="intent" value="solo">和电脑玩</button></div>
+        <div class="join-row"><input id="room-code" name="room" aria-label="房间号" placeholder="6 位房间号" maxlength="6" autocomplete="off"><button type="submit" name="intent" value="join">加入</button></div>
+      </form>
+      <p class="quiet">朋友加入后，由房主开始。也可以先和电脑试一局。</p>
+      <button id="resume-session" class="text-button" hidden>返回原对局</button>
+    </section>
+    <section id="match" hidden aria-label="对局"></section>
+    <p id="message" class="message" role="status" aria-live="polite"></p>
+  </main>
+  <dialog id="rules-dialog" aria-labelledby="rules-title">
+    <div class="dialog-top"><h2 id="rules-title">怎么玩</h2><button data-close aria-label="关闭规则">×</button></div>
+    <p>选出生点后，轮流行动。每回合最多移动一次、攻击一次；自己的回合，道具不限次数。顺序自由，也可以跳过。</p>
+    <p>移动是上下左右一格。踩到哪里，就翻开哪里的地图，所有人都能看见。攻击伤害均为 1。最后一名存活者获胜。</p>
+    <h3>武器</h3>
+    <div id="weapon-catalog" class="rules-catalog"></div>
+    <h3>道具</h3>
+    <div id="item-catalog" class="rules-catalog"></div>
+    <h3>地形</h3>
+    <div id="terrain-catalog" class="rules-catalog"></div>
+    <h3>补充</h3>
+    <ul>
+      <li>回血不能超过武器上限；满血不消耗急救包。</li>
+      <li>地雷只能落在已翻开的合法格子，可连锁。</li>
+      <li>出生不触发地形。道具用后弃牌，手牌上限五张。护盾不叠加。</li>
+      <li>武器公开，手牌私有。攻击与能力范围画在棋盘上；武器 ⓘ 查看范围图。</li>
+      <li>突进、侧步、疾跑占用本回合移动，只触发落点。军械库需主动使用，每人每座一次。</li>
+    </ul>
+    <p class="quiet">8×8 地图，2–6 人。数值先用于试玩。武器 ⓘ 查看范围；手牌悬停查看效果。房间保存在内存中，服务重启后消失。</p>
+  </dialog>
+  <dialog id="targets-dialog" aria-labelledby="targets-title"><div class="dialog-top"><h2 id="targets-title">攻击谁？</h2><button data-close aria-label="取消选择">×</button></div><div id="targets"></div></dialog>
+  <dialog id="inspect-dialog" aria-labelledby="inspect-title"><div class="dialog-top"><h2 id="inspect-title">卡牌</h2><button data-close aria-label="关闭详情">×</button></div><div id="inspect-content"></div></dialog>
+  <dialog id="invite-dialog" aria-labelledby="invite-title"><div class="dialog-top"><h2 id="invite-title">邀请朋友</h2><button data-close aria-label="关闭邀请">×</button></div><strong id="invite-code"></strong><label for="invite-link">邀请链接</label><input id="invite-link" readonly><div class="invite-actions"><button id="invite-copy">复制链接</button><button id="invite-share" class="primary" hidden>分享</button></div><p id="invite-note" class="quiet"></p><p id="invite-status" class="quiet" role="status"></p></dialog>
+  <div id="card-tooltip" role="tooltip" hidden></div>
+  <div id="feedback-root" aria-hidden="true"></div>
+  <div id="action-notices" aria-live="polite" aria-label="最新动作"></div>
+  <script type="module" src="/game/client/app.js"></script>
+</body>
+</html>

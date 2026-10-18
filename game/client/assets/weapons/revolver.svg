@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 140">
+  <title>左轮</title>
+  <rect width="240" height="140" fill="#dcc6a8"/><circle cx="119" cy="64" r="50" fill="#efe0c6"/>
+  <ellipse cx="121" cy="120" rx="65" ry="7" fill="#795b3c" opacity=".18"/>
+  <g transform="rotate(-13 122 65)" stroke="#534d43" stroke-width="3.5" stroke-linejoin="round">
+    <path d="M133 42h62v16h-64" fill="#87918a"/>
+    <path d="M180 41v-6h9v6M94 44l-10-10-7 5 8 14" fill="#7b8178"/>
+    <path d="M87 48h67v25h-42l-9 39H77l10-41H75V56Z" fill="#757d75"/>
+    <rect x="101" y="40" width="39" height="31" rx="6" fill="#b5b9a6"/>
+    <path d="M108 44v23m12-23v23m12-23v23" stroke="#737d72" stroke-width="3"/>
+    <path d="m89 78 16 1-7 28H82Z" fill="#a5754f"/>
+    <path d="M111 73v19h23l8-19m-16 0v9" fill="none"/>
+    <circle cx="95" cy="92" r="2" fill="#dfc399" stroke="none"/>
+  </g>
+  <g stroke="#b28d59" stroke-width="2" fill="none"><path d="M43 47h17m-9-8v16m149 31 8-8m-8 0 8 8"/><path d="m46 99 7-7 7 7-7 7Z"/></g>
+</svg>

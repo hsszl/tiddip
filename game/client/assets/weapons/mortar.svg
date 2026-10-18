@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 140">
+  <title>迫击炮</title>
+  <rect width="240" height="140" fill="#c5c9c0"/>
+  <path d="M124 34q47-39 79 17" fill="none" stroke="#e6e2c9" stroke-width="2" stroke-dasharray="6 5"/>
+  <ellipse cx="122" cy="122" rx="69" ry="7" fill="#6b7c69" opacity=".2"/>
+  <g stroke="#49594a" stroke-width="3" stroke-linejoin="round">
+    <ellipse cx="111" cy="113" rx="44" ry="10" fill="#7d8d72"/>
+    <path d="m102 105 20-57 20 8-22 55Z" fill="#87967a"/>
+    <path d="m123 47 6-15 21 8-6 17Z" fill="#b1bba0"/>
+    <ellipse cx="140" cy="36" rx="11" ry="5" transform="rotate(21 140 36)" fill="#414f44"/>
+    <path d="m133 75 22 36m-22-36 2 36m-2-32 8 2" fill="none" stroke="#68795f" stroke-width="5"/>
+    <path d="m86 107-5-28h9l6 28Z" fill="#a4ad8b"/>
+    <path d="m80 78 4-9 5 9Z" fill="#d3c194"/>
+    <path d="M80 96h12" stroke="#d9c79e" stroke-width="2"/>
+  </g>
+  <path d="m199 44 4 9 5-7" fill="none" stroke="#89937c" stroke-width="2" stroke-linejoin="round"/>
+  <path d="m35 61 7 0m-3-3v6" stroke="#f4edce" stroke-width="2" stroke-linecap="round"/>
+</svg>

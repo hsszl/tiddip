@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <title>医疗站</title>
+  <rect width="160" height="160" fill="#e6c6bb"/>
+  <path d="M0 116q35-17 80-1t80-4v49H0Z" fill="#d5b0a3"/>
+  <ellipse cx="80" cy="125" rx="53" ry="10" fill="#b78d80" opacity=".4"/>
+  <g stroke="#6b534a" stroke-width="3" stroke-linejoin="round">
+    <path d="m34 117 12-57h68l13 57Z" fill="#f2e4c9"/>
+    <path d="m80 27-34 33h68Z" fill="#c8ba9d"/>
+    <path d="m80 27-46 90 12-57Zm0 0 47 90-13-57Z" fill="#dfcfb0"/>
+    <path d="M67 118V86q13-15 26 0v32" fill="#8a8471"/>
+    <path d="M80 82v36" stroke="#f4e9cd" stroke-width="2"/>
+    <path d="M43 118h74" stroke-width="5"/>
+    <path d="M126 83V38" stroke="#786652"/>
+    <path d="M126 39h23v20h-23Z" fill="#f8ecd4" stroke-width="2"/>
+  </g>
+  <path d="M76 51h8v9h9v8h-9v9h-8v-9h-9v-8h9Z" fill="#b85e4f"/>
+  <path d="M135 43h5v4h4v5h-4v4h-5v-4h-4v-5h4Z" fill="#b85e4f"/>
+  <path d="m26 125 11-8m-7-5 4 9m97 4-9-8m4-7-3 10" stroke="#9a9272" stroke-width="3" stroke-linecap="round"/>
+</svg>

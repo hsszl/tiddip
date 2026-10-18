@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 140">
+  <title>传送</title>
+  <rect width="240" height="140" fill="#c7c9d7"/>
+  <circle cx="120" cy="63" r="52" fill="#e0dce2"/>
+  <ellipse cx="120" cy="119" rx="54" ry="8" fill="#818199" opacity=".22"/>
+  <g stroke="#51556a" stroke-width="3" stroke-linejoin="round">
+    <ellipse cx="120" cy="105" rx="44" ry="13" fill="#a6a6b5"/>
+    <ellipse cx="120" cy="101" rx="44" ry="13" fill="#d2cecb"/>
+    <ellipse cx="120" cy="100" rx="31" ry="7" fill="#8b95a7"/>
+    <path d="M89 95V58q0-37 31-37t31 37v37" fill="none" stroke="#737a90" stroke-width="10"/>
+    <path d="M89 95V58q0-37 31-37t31 37v37" fill="none" stroke="#c3c6d2" stroke-width="4"/>
+  </g>
+  <path d="M102 93V59q0-25 18-25t18 25v34" fill="#899fb0"/>
+  <path d="M109 86V59q0-17 11-17t11 17v27" fill="#bacfd0"/>
+  <path d="m120 49-6 16h9l-6 18 15-22h-10l6-12Z" fill="#fff2ce"/>
+  <g fill="#faf1d4"><path d="m59 49 3-7 3 7 7 3-7 3-3 7-3-7-7-3Zm114 21 2-6 3 6 6 3-6 2-3 6-2-6-6-2Z"/><circle cx="175" cy="30" r="3"/><circle cx="69" cy="94" r="2"/></g>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <title>迷雾牌背</title>
+  <rect width="160" height="160" rx="7" fill="#1c1c1c"/>
+  <rect x="7" y="7" width="146" height="146" rx="4" fill="none" stroke="#303030"/>
+  <path d="m80 63 17 17-17 17-17-17Z" fill="none" stroke="#424242"/>
+  <circle cx="80" cy="80" r="2" fill="#626262"/>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 140">
+  <title>匕首</title>
+  <rect width="240" height="140" fill="#c2cdd0"/>
+  <circle cx="123" cy="65" r="48" fill="#dbe0d6"/>
+  <ellipse cx="122" cy="119" rx="60" ry="6" fill="#697d7b" opacity=".18"/>
+  <g transform="rotate(40 120 70)" stroke="#4d5c57" stroke-width="3" stroke-linejoin="round">
+    <path d="m120 14 14 24-3 42h-22l-3-42Z" fill="#a1b6b0"/>
+    <path d="m120 14 2 66h-13l-3-42Z" fill="#dce6d5" stroke="none"/>
+    <path d="M101 77h38v8h-38Z" fill="#bf9e67"/>
+    <path d="M111 86h18v31h-18Z" fill="#887054"/>
+    <path d="m111 91 18 6m-18 2 18 6m-18 2 18 6" stroke="#d6be8c" stroke-width="2"/>
+    <path d="M109 115h22v8h-22Z" fill="#bca478"/>
+  </g>
+  <path d="m184 28 3-7 3 7 7 3-7 3-3 7-3-7-7-3Z" fill="#f5efd5"/>
+  <path d="m47 78 11 0m-5-5v10" stroke="#8ba09b" stroke-width="2" stroke-linecap="round"/>
+</svg>

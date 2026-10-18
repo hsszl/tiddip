@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 140">
+  <title>回旋镖</title>
+  <rect width="240" height="140" fill="#dfc4a0"/>
+  <path d="M53 109C5 42 80 1 157 22q59 16 55 56" fill="none" stroke="#f2e0bf" stroke-width="3" stroke-dasharray="8 6"/>
+  <path d="m204 69 8 12 8-12" fill="none" stroke="#a78862" stroke-width="2" stroke-linejoin="round"/>
+  <ellipse cx="124" cy="119" rx="62" ry="7" fill="#8b6b45" opacity=".16"/>
+  <g stroke="#644d35" stroke-width="3" stroke-linejoin="round">
+    <path d="M64 87 115 31q7-7 13 1l49 55q7 11-5 15l-51-37-46 37q-14 1-11-15Z" fill="#b97d48"/>
+    <path d="m77 88 44-45 43 45" fill="none" stroke="#ddb27a" stroke-width="5"/>
+    <path d="m89 61 10-11 16 18-12 9Z" fill="#566d62" stroke-width="2"/>
+    <path d="m141 51 11 12-15 14-12-9Z" fill="#566d62" stroke-width="2"/>
+  </g>
+  <path d="m97 57 12 13m34-12-12 13" stroke="#e8d6af" stroke-width="2"/>
+  <g fill="#f7e9c9"><circle cx="71" cy="27" r="3"/><circle cx="184" cy="104" r="3"/></g>
+</svg>

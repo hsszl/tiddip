@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 140">
+  <title>急救包</title>
+  <rect width="240" height="140" fill="#e1c9bc"/>
+  <circle cx="121" cy="64" r="49" fill="#f0ded0"/>
+  <ellipse cx="121" cy="120" rx="61" ry="7" fill="#987b69" opacity=".18"/>
+  <g stroke="#6e584c" stroke-width="3" stroke-linejoin="round">
+    <path d="M101 41V29q20-10 40 0v12" fill="none" stroke-width="6"/>
+    <rect x="67" y="41" width="108" height="70" rx="10" fill="#bd6c56"/>
+    <path d="M68 52q53 10 106 0v14q-53 9-106 0Z" fill="#d18b6c"/>
+    <path d="M76 84v17h15" fill="none" stroke="#e9b293" stroke-width="2"/>
+    <path d="M151 96h14V80" fill="none" stroke="#8e5144" stroke-width="2"/>
+    <path d="M87 45v23m67-23v23" fill="none" stroke="#ead7b4" stroke-width="5"/>
+  </g>
+  <path d="M114 71h14v10h10v14h-10v10h-14V95h-10V81h10Z" fill="#fff0d0"/>
+  <path d="M191 35v14m-7-7h14M41 82v10m-5-5h10" stroke="#fff1d8" stroke-width="3" stroke-linecap="round"/>
+</svg>

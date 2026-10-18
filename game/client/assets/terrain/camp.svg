@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <title>营地</title>
+  <rect width="160" height="160" fill="#c8d0b3"/>
+  <path d="M0 112q42-23 83-6t77-4v58H0Z" fill="#adb994"/>
+  <ellipse cx="76" cy="113" rx="48" ry="8" fill="#7c906d" opacity=".3"/>
+  <g stroke="#5d6047" stroke-width="3" stroke-linejoin="round">
+    <path d="m25 104 29-62 38 62Z" fill="#dbb67b"/>
+    <path d="m54 42 43-12 39 62-44 12Z" fill="#85926c"/>
+    <path d="m39 104 15-34 17 34Z" fill="#75654b"/>
+    <path d="M55 30v14m-29 59-11 10m122-22 9 14" fill="none" stroke-width="2"/>
+    <path d="m75 45 24-7 10 19q4 16-6 25-15-2-23-16Z" fill="#bec69c"/>
+    <path d="m83 49 14-4 7 14q2 11-3 16-10-3-14-12Z" fill="#dce0b6" stroke-width="2"/>
+  </g>
+  <g stroke="#78664d" stroke-width="3" stroke-linecap="round"><path d="m88 130 31-13m-29-1 28 14"/></g>
+  <path d="M100 123q-19-7-4-25 1 11 7 12-1-12 8-21-1 13 8 22 5 15-19 12Z" fill="#b77049" stroke="#8d5c3e" stroke-width="2"/>
+  <path d="M102 121q-9-7 2-16-1 7 5 10 2 9-7 6Z" fill="#f0ca82"/>
+  <path d="m26 130-4-10m4 10 5-14" fill="none" stroke="#6f855f" stroke-width="3" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,109 @@
+/* Paper cards: illustrations carry the identity; text stays near the action. */
+body { background: #e9e3d7; }
+.topbar, main { max-width: 1260px; }
+.ui-icon { width: 20px; height: 20px; flex: 0 0 auto; vertical-align: middle; }
+.game-layout { grid-template-columns: minmax(0, 800px) minmax(210px, 1fr); gap: 28px; }
+.sidebar { padding-top: 52px; }
+.board { padding: 7px; gap: 5px; background: #d4c9b6; border: 1px solid #c2b49c; border-radius: 7px; box-shadow: inset 0 1px 5px #65543c18; }
+.tile { border: 1px solid #b3a68e; border-radius: 4px; box-shadow: 0 2px 1px #695a3e35; }
+.tile-art { border-radius: 3px; image-rendering: auto; }
+.revealed .tile-art { opacity: 1; }
+.fog .cell-coordinate { color: #e0d3ac; }
+.terrain { left: 4px; right: auto; bottom: 4px; max-width: calc(100% - 8px); border: 0; border-radius: 2px; padding: 0 4px; background: #faf6e7eb; font-size: 10px; }
+.terrain.spent { text-decoration: line-through; color: #696756; }
+.terrain-clinic { --terrain-color: #a84844; }
+.terrain-tower { --terrain-color: #5d638f; }
+.terrain-brambles { --terrain-color: #795363; }
+.terrain-camp { --terrain-color: #7f8958; }
+.terrain-ruins { --terrain-color: #8c8667; }
+.terrain-armory { --terrain-color: #65755f; }
+.tile.recent-arrival:not(.available)::after { content: ''; position: absolute; inset: 2px; border: 2px solid #aa7d35; border-radius: 2px; pointer-events: none; }
+.pieces { inset: 12px 3px 20px; }
+.piece { box-shadow: 0 2px 4px #26372c70; }
+.cell-coordinate { font-size: 8px; }
+.players { margin-bottom: 16px; }
+.player, .player:first-child { align-items: center; gap: 8px; padding: 9px 7px; margin: 0; border: 0; border-bottom: 1px solid #cec4b3; background: none; }
+.player.current { background: #f8f3e8; border-radius: 4px; box-shadow: inset 3px 0 var(--accent); }
+.player-name { display: flex; align-items: center; flex-wrap: wrap; gap: 3px; font-size: 12px; }
+.player-name .ui-icon { width: 13px; height: 13px; color: #787f69; }
+.player-detail { flex: 1; }
+.player-weapon { width: 48px; height: 32px; object-fit: cover; border-radius: 3px; }
+.player .health { margin-top: 5px; }
+.player .hearts { gap: 2px; }
+.player .hearts img { width: 12px; height: 11px; }
+.player .hp-number { display: none; }
+.section-label { font-size: 11px; font-weight: 500; color: #81765f; margin: 0; }
+.turn-controls { display: flex; align-items: center; gap: 7px; margin-top: 14px; }
+.turn-controls button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 9px 14px; font-size: 12px; border-radius: 4px; }
+.turn-controls button.primary { margin-left: auto; }
+.cancel { width: auto; display: block; margin-left: auto; }
+.lobby-controls { margin-top: 14px; }
+.lobby-controls p { width: auto; margin-right: auto; }
+.lobby-controls button { flex: 0 0 auto; }
+.hand { display: grid; grid-template-columns: 126px minmax(0, 1fr); gap: 22px; margin-top: 20px; padding-top: 16px; border-top: 1px solid #cfc2ac; align-items: start; }
+.equipment, .hand-items { min-width: 0; }
+.hand-heading { height: 22px; margin-bottom: 5px; }
+.hand-heading .section-label { display: flex; align-items: center; gap: 5px; font: 10px monospace; }
+.hand-heading .ui-icon { width: 15px; height: 15px; }
+.items { display: flex; gap: 10px; overflow-x: auto; padding: 3px 3px 10px; align-items: flex-start; }
+.game-card { display: flex; flex-direction: column; width: 120px; min-height: 158px; padding: 5px; position: relative; border: 1px solid #aa987b; border-radius: 6px; background: #faf5e9; box-shadow: 0 2px 0 #c6b598; text-align: left; color: var(--ink); }
+.game-card::before { content: ''; position: absolute; inset: 3px; border: 1px solid #dfd1b9; border-radius: 4px; pointer-events: none; }
+.card-slot { position: relative; flex: 0 0 120px; }
+.card-art { display: block; height: 70px; margin: 1px 1px 9px; overflow: hidden; border-radius: 3px; background: #e1d6bd; }
+.card-art img { width: 100%; height: 100%; object-fit: cover; image-rendering: auto; }
+.card-body { display: flex; flex-direction: column; gap: 6px; padding: 0 5px 7px; flex: 1; }
+.card-body h2, .card-body > strong { display: block; font-size: 13px; font-weight: 600; margin: 0; }
+.card-body small, .range-label { display: flex; align-items: center; gap: 4px; font-size: 10px; color: #7c725d; line-height: 1.5; }
+.range-label .ui-icon { width: 12px; height: 12px; }
+.card-bottom { display: block; padding: 0 5px 6px; font-size: 10px; color: #8b795a; }
+.weapon-card { width: 126px; min-height: 194px; background: #f3eddc; }
+.weapon-card .health { gap: 4px; flex-wrap: wrap; }
+.weapon-card .hearts { gap: 2px; }
+.weapon-card .hearts img { width: 13px; height: 12px; }
+.weapon-card .hp-number { font-size: 9px; }
+.skill-tag { display: flex; align-items: center; gap: 3px; margin: 0 5px 7px; font-size: 9px; color: #728061; }
+.skill-tag .ui-icon { width: 12px; height: 12px; }
+.skill-tag.used { color: #a39885; text-decoration: line-through; }
+.item:hover:not(:disabled) { background: #fffaf0; border-color: #72805c; }
+.item:disabled { opacity: .65; }
+.item.selected { outline: 2px solid var(--accent); outline-offset: 1px; }
+.card-info { position: absolute; top: 9px; right: 9px; z-index: 3; }
+.card-info summary { display: flex; list-style: none; cursor: pointer; color: #465244; border-radius: 50%; background: #faf5e9e8; }
+.card-info summary::-webkit-details-marker { display: none; }
+.card-info .ui-icon { width: 17px; height: 17px; }
+.card-info[open] { inset: 7px; padding: 6px; border: 1px solid #c3b394; border-radius: 4px; background: #faf5e9; }
+.card-info[open] summary { width: 17px; margin-left: auto; }
+.card-info p { font-size: 10px; line-height: 1.7; padding-top: 4px; color: #625e50; }
+.empty-hand { font-size: 12px; color: var(--muted); margin: 22px 0; }
+.tile-details { display: flex; gap: 9px; margin-top: 18px; padding: 10px 0; border: 0; border-top: 1px solid #d3c8b6; background: none; }
+.terrain-preview { width: 44px; height: 44px; flex: 0 0 auto; border-radius: 3px; }
+.tile-details h2 { font-size: 11px; margin: 0 0 4px; }
+.tile-details h2 small { float: none; margin-left: 8px; font: 9px monospace; }
+.tile-details p { font-size: 10px; }
+@media (max-width: 1000px) {
+  .game-layout { grid-template-columns: minmax(0, 1fr) 220px; gap: 18px; }
+  .board { gap: 4px; padding: 5px; }
+  .hand { gap: 14px; }
+}
+@media (max-width: 680px) {
+  .game-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .sidebar { padding-top: 0; }
+  .board { gap: 3px; padding: 4px; }
+  .terrain { font-size: 8px; left: 2px; bottom: 2px; padding: 0 2px; }
+  .pieces { inset: 2px 2px 13px; }
+  .turn-controls { gap: 5px; }
+  .turn-controls button { padding: 9px 10px; gap: 4px; font-size: 11px; }
+  .turn-controls .ui-icon { width: 17px; height: 17px; }
+  .hand { grid-template-columns: 114px minmax(0, 1fr); gap: 10px; margin-top: 15px; }
+  .weapon-card { width: 114px; }
+  .game-card { width: 106px; }
+  .weapon-card.game-card { width: 114px; }
+  .card-slot { flex-basis: 106px; }
+  .card-art { height: 62px; }
+  .card-body h2, .card-body > strong { font-size: 12px; }
+  .players { grid-template-columns: 1fr 1fr; gap: 6px; }
+  .player, .player:first-child { padding: 8px 5px; gap: 5px; }
+  .player-weapon { width: 33px; height: 25px; }
+  .player-name { font-size: 11px; }
+}
+

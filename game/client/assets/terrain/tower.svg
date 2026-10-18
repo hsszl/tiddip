@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <title>瞭望塔</title>
+  <rect width="160" height="160" fill="#c3ccd4"/>
+  <path d="m0 102 34-21 29 16 38-23 59 25v61H0Z" fill="#a8b8b1"/>
+  <path d="m0 122 45-18 29 14 46-20 40 14v48H0Z" fill="#94a797"/>
+  <ellipse cx="80" cy="129" rx="34" ry="8" fill="#688273" opacity=".4"/>
+  <g stroke="#4b544a" stroke-width="3" stroke-linejoin="round">
+    <path d="m60 64-8 64m48-64 8 64M58 86h44M55 111h50m-46-29 44 30m-44 0 42-31" fill="none" stroke="#736d55" stroke-width="5"/>
+    <path d="M51 42h58v27H51Z" fill="#d8c6a0"/>
+    <path d="M51 42h58v14H51Z" fill="#556f68"/>
+    <path d="m44 42 36-24 36 24Z" fill="#73898a"/>
+    <path d="M47 70h66" fill="none" stroke-width="5"/>
+    <path d="M72 75v52m15-52v52m-15-39h15m-15 12h15m-15 12h15" fill="none" stroke="#e4d9b9" stroke-width="2.5"/>
+    <path d="M80 23V10m0 0 20 5-20 4" fill="#b66850" stroke-width="2"/>
+  </g>
+  <path d="M17 41h17m-8-8v16m103 16h13m-6-6v12" stroke="#f0ecd6" stroke-width="2" stroke-linecap="round"/>
+  <path d="M18 22h24m76 0h24" stroke="#9aadb5" stroke-width="2" stroke-linecap="round"/>
+</svg>

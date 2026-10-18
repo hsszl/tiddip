@@ -1,0 +1,29 @@
+/* CS-style event strips: names, equipment and outcome; full text stays in tooltips. */
+.activity-panel { margin: 0 0 20px; }
+.activity-panel ol { list-style: none; padding: 0; margin: 0; }
+.recent-events { display: grid; gap: 5px; }
+.feed-row { display: flex; align-items: center; justify-content: flex-end; gap: 5px; min-height: 32px; width: 100%; padding: 5px 7px; border: 1px solid #c9b99e; border-radius: 3px; color: #5d6251; background: #f8f3e8; text-align: right; }
+button.feed-row:hover { border-color: #8c9779; background: #fff9ec; }
+.feed-row.own-event { border-color: #c8c6b5; background: #e4e5d8; }
+.feed-name { min-width: 0; max-width: 72px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--player); font-size: 11px; font-weight: 600; }
+.feed-image { flex: 0 0 auto; width: 25px; height: 25px; object-fit: cover; border-radius: 2px; }
+.feed-weapons { width: 38px; height: 23px; }
+.feed-row .ui-icon { width: 16px; height: 16px; }
+.feed-result { display: inline-flex; align-items: center; flex: 0 0 auto; }
+.result-hit, .result-eliminated { color: #ab5b4d; }
+.result-shield { color: #647e69; }
+.result-revived { color: #8d9464; }
+.feed-coordinate, .feed-row small { font: 10px monospace; white-space: nowrap; color: #8a816f; }
+.feed-arrow { color: #a59880; font-size: 12px; }
+.feed-system { font-size: 10px; color: #938873; text-align: left; }
+.older-events { margin-top: 7px; text-align: right; }
+.older-events summary { font-size: 10px; color: #94866f; cursor: pointer; }
+.older-events ol { max-height: 260px; overflow-y: auto; overscroll-behavior: contain; display: grid; gap: 4px; margin-top: 7px; }
+.older-events .feed-row { border: 0; background: #f1ecdf; }
+@media (max-width: 680px) {
+  .sidebar { display: flex; flex-direction: column; }
+  .players { order: 1; }
+  .activity-panel { order: 0; }
+  .tile-details { order: 2; }
+  .feed-name { max-width: 100px; }
+}

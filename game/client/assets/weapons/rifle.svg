@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 140">
+  <title>步枪</title>
+  <rect width="240" height="140" fill="#d7c6a5"/>
+  <path d="m-20 57 68-68m-29 159L177-10m-13 161 88-88" stroke="#e4d5b7" stroke-width="24"/>
+  <ellipse cx="120" cy="117" rx="83" ry="7" fill="#7c6748" opacity=".18"/>
+  <g transform="rotate(-12 120 70)" stroke="#484b3e" stroke-width="3" stroke-linejoin="round">
+    <path d="M153 57h60v9h-60Z" fill="#67705e"/>
+    <path d="M203 50h5v10m-5-10h9" fill="none"/>
+    <path d="M76 50h82v26H76Z" fill="#7f896a"/>
+    <path d="m31 57 47-7v26L31 88Z" fill="#a7764e"/>
+    <path d="M31 57h8v29l-8 2Z" fill="#53614b"/>
+    <path d="M129 54h40v16h-40Z" fill="#bb8c58"/>
+    <path d="M137 57v10m10-10v10m10-10v10" stroke="#805f40" stroke-width="2"/>
+    <path d="m107 76 7 27 19-4-9-23Z" fill="#57634d"/>
+    <path d="m81 76 1 22h12l7-22" fill="#aa7b51"/>
+    <path d="M96 77q12 13 20 3" fill="none"/>
+    <path d="M85 51v-8h28v8" fill="none"/>
+    <path d="M82 59h36" stroke="#c7c9a2" stroke-width="2"/>
+  </g>
+</svg>

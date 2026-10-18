@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <title>地雷</title>
+  <rect width="160" height="160" fill="#d7bd9c"/>
+  <path d="m0 120 34-20 48 17 42-22 36 10v55H0Z" fill="#c5ab87"/>
+  <g fill="none" stroke="#b18c68" stroke-width="3" stroke-linejoin="round">
+    <path d="m16 70 17 9-8 12 12 11M113 102l12-8 13 9 18-4M69 21l-4 16 14 10"/>
+  </g>
+  <ellipse cx="78" cy="96" rx="39" ry="12" fill="#a0896e"/>
+  <g stroke="#41473f" stroke-width="3.5" stroke-linejoin="round">
+    <path d="M43 78v15q35 25 70 0V78Z" fill="#5c6653"/>
+    <ellipse cx="78" cy="78" rx="35" ry="17" fill="#899272"/>
+    <path d="M58 74v-9q20-14 40 0v9q-20 13-40 0Z" fill="#b4b78e"/>
+    <ellipse cx="78" cy="65" rx="20" ry="8" fill="#c5c59a"/>
+  </g>
+  <circle cx="78" cy="66" r="4" fill="#b25342"/>
+  <g fill="#e4d6b7"><circle cx="51" cy="78" r="2"/><circle cx="105" cy="78" r="2"/><circle cx="79" cy="88" r="2"/></g>
+  <path d="M120 80V28" stroke="#65553f" stroke-width="4" stroke-linecap="round"/>
+  <path d="m120 29 28 9-28 11Z" fill="#b45340" stroke="#8b4436" stroke-width="2"/>
+  <path d="m13 130 8-8m-8 0 8 8M133 125l8-8m-8 0 8 8" stroke="#a66c4b" stroke-width="3" stroke-linecap="round"/>
+</svg>

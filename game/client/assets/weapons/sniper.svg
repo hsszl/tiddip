@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 140">
+  <title>狙击枪</title>
+  <rect width="240" height="140" fill="#cbd4c1"/>
+  <circle cx="180" cy="42" r="35" fill="none" stroke="#afbea8" stroke-width="2"/>
+  <circle cx="180" cy="42" r="22" fill="none" stroke="#afbea8" stroke-width="2"/>
+  <path d="M180 1v82m-41-41h82" stroke="#afbea8" stroke-width="2"/>
+  <ellipse cx="119" cy="113" rx="89" ry="7" fill="#62755e" opacity=".18"/>
+  <g transform="rotate(-13 120 73)" stroke="#394941" stroke-width="3" stroke-linejoin="round">
+    <path d="M100 67h114v7H100Z" fill="#64726b"/>
+    <path d="M203 65h15v11h-15Z" fill="#43554d"/>
+    <path d="M72 62h65v20H72Z" fill="#7d8c71"/>
+    <path d="m31 70 47-8v21l-47 15Z" fill="#af8861"/>
+    <path d="M31 70h9v26l-9 2Z" fill="#45564c"/>
+    <path d="m87 82 8 21h11l-4-22" fill="#a47b55"/>
+    <path d="M106 81q15 19-6 20" fill="none"/>
+    <path d="M95 61V49m29 12V49" fill="none" stroke-width="4"/>
+    <rect x="86" y="40" width="47" height="13" rx="3" fill="#465950"/>
+    <path d="M83 38h10v17H83Zm43-1h13v19h-13Z" fill="#7e8e78"/>
+    <path d="m145 81-7 22m7-22 9 22" fill="none" stroke-width="2.5"/>
+  </g>
+  <path d="m19 24 7 0m-3-3v6" stroke="#faf2d7" stroke-width="2" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 140">
+  <title>疾跑</title>
+  <rect width="240" height="140" fill="#e0cea8"/><circle cx="125" cy="65" r="51" fill="#f0e3bf"/>
+  <ellipse cx="129" cy="121" rx="59" ry="6" fill="#806b42" opacity=".18"/>
+  <g transform="rotate(-12 124 75)" stroke="#5b5547" stroke-width="3" stroke-linejoin="round">
+    <path d="M106 30h43l-7 48 35 14q11 4 10 16H91V76Z" fill="#b39057"/>
+    <path d="M91 101h96v13H88Z" fill="#777969"/>
+    <path d="m108 31 6 47 31 2 4-49Z" fill="#c9aa73"/>
+    <path d="m118 46 22 3m-24 9 22 3m-23 8 21 3" stroke="#eee1b8" stroke-width="4" stroke-linecap="round"/>
+    <path d="m145 80-9 13h33" fill="none"/>
+    <path d="M98 106v8m14-8v8m46-8v8m14-8v8" stroke="#4b5148"/>
+  </g>
+  <path d="M44 47h36M34 63h40M47 80h25" stroke="#b5955b" stroke-width="4" stroke-linecap="round"/>
+  <path d="m186 35 12 8-12 8" fill="none" stroke="#c29c54" stroke-width="3"/>
+</svg>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <title>遗迹</title>
+  <rect width="160" height="160" fill="#ccc8b6"/>
+  <path d="M0 115q42-18 77-7t83-9v61H0Z" fill="#a8b194"/>
+  <ellipse cx="81" cy="120" rx="54" ry="9" fill="#7e8977" opacity=".4"/>
+  <g stroke="#646a5b" stroke-width="3" stroke-linejoin="round">
+    <path d="M36 113V65q0-34 39-34h31v20H76q-19 0-19 18v44Z" fill="#adad94"/>
+    <path d="M104 60h20v53h-20Z" fill="#b9b9a0"/>
+    <path d="m104 60 11-13 9 13m-88 4 19 7M73 32v18m15-18v18M38 88h18m49 0h18" fill="none" stroke="#808675" stroke-width="2"/>
+    <path d="M33 112h27v9H33Zm68 0h26v9h-26Z" fill="#c8c6aa"/>
+    <path d="m87 32-8 9 8 5-7 5M49 86l-8 9 8 6" fill="none" stroke-width="2"/>
+    <path d="m68 109-4-28 22-3 4 28Z" fill="#f0dfb7"/>
+    <path d="m85 109 5-30 23 4-5 29Z" fill="#d5bd90"/>
+  </g>
+  <path d="m74 88 8 1-4 8-7-1Z" fill="#b37a54"/>
+  <path d="m95 90 8 2-5 7-8-2Z" fill="#76886b"/>
+  <path d="M43 42q-11 13 1 25m-1-12-11-2m12 8 11-3m62 30q14 9 4 23" fill="none" stroke="#7e9068" stroke-width="4" stroke-linecap="round"/>
+  <path d="m23 101 3-6 3 6 6 3-6 3-3 6-3-6-6-3Z" fill="#f9eac0"/>
+</svg>

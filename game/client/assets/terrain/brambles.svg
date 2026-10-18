@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160">
+  <title>荆棘地</title>
+  <rect width="160" height="160" fill="#b7bea0"/>
+  <path d="M0 102q35-23 79-7t81-5v70H0Z" fill="#9ca582"/>
+  <ellipse cx="81" cy="115" rx="56" ry="12" fill="#72836b" opacity=".45"/>
+  <g fill="none" stroke="#654e52" stroke-width="6" stroke-linecap="round">
+    <path d="M27 112Q11 59 49 56T89 82q-4 30 38 21M40 118Q64 93 54 63t15-30M61 117q-7-40 32-45t36-32M100 117q27-38-7-58T103 23M125 114q-9-41 15-51"/>
+  </g>
+  <g fill="#654e52">
+    <path d="m25 77-12-7 11-3m23-10 4-14 4 14m9 32 13 3-13 5m7-49-11-8 12 1m42 22 14-4-9 11m1 26 10 11-13-5m25-31 13 6-14 2m-68-1-10 10 2-13M99 34l-12-7 13-2"/>
+  </g>
+  <g fill="#7e8e66" stroke="#56684f" stroke-width="2" stroke-linejoin="round">
+    <path d="M46 54q-18-20-22-7 1 12 22 7Zm34 21q-3-26 10-22 9 10-10 22Zm43 27q23-20 22-5-4 12-22 5ZM68 35q17-16 19-4-6 12-19 4Z"/>
+  </g>
+  <g fill="#b56c69"><circle cx="35" cy="95" r="4"/><circle cx="89" cy="51" r="4"/><circle cx="129" cy="68" r="3"/></g>
+  <path d="m16 132 4-8m120 9 5-9" stroke="#dce0b7" stroke-width="3" stroke-linecap="round"/>
+</svg>

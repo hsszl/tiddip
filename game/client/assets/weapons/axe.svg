@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 140">
+  <title>战斧</title>
+  <rect width="240" height="140" fill="#d6bfb1"/>
+  <path d="m-5 111 64-116m72 151L211-6" stroke="#e7d4bf" stroke-width="28"/>
+  <ellipse cx="121" cy="121" rx="63" ry="6" fill="#806c5a" opacity=".2"/>
+  <g transform="rotate(32 120 68)" stroke="#555a4c" stroke-width="3" stroke-linejoin="round">
+    <path d="M115 24h11v95h-11Z" fill="#a67c51"/>
+    <path d="M111 93h19v8h-19Zm0 18h19v8h-19Z" fill="#ddc293"/>
+    <path d="M113 31q-22 10-38-5l-9 31q27 24 47-3Z" fill="#a5b6a5"/>
+    <path d="M126 31q22 10 38-5l9 31q-27 24-47-3Z" fill="#90a48f"/>
+    <path d="m75 26-9 31 9 6 10-33Zm89 0 9 31-9 6-10-33Z" fill="#d4ddc4"/>
+    <rect x="109" y="28" width="23" height="32" rx="3" fill="#737d67"/>
+    <path d="M120 35v18" stroke="#c6c7a2" stroke-width="2"/>
+  </g>
+</svg>
