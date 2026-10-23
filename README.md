@@ -4,7 +4,6 @@
 | --- | --- | --- |
 | gaogame/ | 多人卡牌游戏 | Node.js 服务端 + 浏览器客户端 |
 | loopland/ | 同屏双人围地游戏 | 直接打开 index.html，无需服务器 |
-| docs/ | 最初需求记录 | 不上传到网站 |
 
 首页 `index.html` 链接到 `/gaogame/`。`/game` 保留给将来的项目，不自动跳转。
 

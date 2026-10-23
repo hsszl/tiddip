@@ -7,7 +7,7 @@ Node.js 服务端 + 原生 JS 客户端，无安装依赖。2–6 人，默认 8
 在 PowerShell 中：
 
 ```powershell
-cd D:\MyProjects\tiddip.com\game
+cd D:\MyProjects\tiddip.com\gaogame
 npm start
 ```
 
