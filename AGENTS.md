@@ -5,3 +5,4 @@
 - `/game` 留给将来的项目，不自动重定向。
 - 不修改 `D:\TEMP\loopland` 的原项目、模型或训练存档。
 - 只做必要验证；使用 Git，要求同步 GitHub 时需要实际 push。
+- 日常默认在 `main` 开发；需要并行或实验隔离时可自行选择分支/worktree，优先复用 Hermes 原生 Git 功能。

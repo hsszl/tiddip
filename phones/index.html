@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171919">
+  <title>手机筛选</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css?v=8b1767ebc8">
+  <script src="data.js" defer></script>
+  <script src="model.js?v=51f62a0c05" defer></script>
+  <script src="app.js?v=5ada8dcc65" defer></script>
+</head>
+<body>
+  <main>
+    <section class="filters" aria-label="手机筛选条件">
+      <div class="toolbar">
+        <input id="search" type="search" placeholder="型号 / 芯片 / 任意参数" aria-label="搜索手机或参数" autocomplete="off" spellcheck="false">
+        <div class="sort-controls">
+          <select id="sort" aria-label="排序参数"></select>
+          <button id="direction" type="button" title="切换升降序" aria-label="当前升序，点击降序">↑</button>
+          <button id="reset" type="button">重置</button>
+        </div>
+      </div>
+      <div id="brands" class="brands" role="group" aria-label="品牌，可多选"></div>
+      <div id="primary-ranges" class="range-grid"></div>
+      <details id="more-filters" class="more-filters">
+        <summary>更多参数 <span id="more-active"></span></summary>
+        <div id="extra-ranges" class="range-grid"></div>
+        <div id="facet-filters" class="facet-grid"></div>
+      </details>
+    </section>
+    <div class="result-bar">
+      <output id="count" aria-live="polite"></output>
+      <span class="source"><a href="https://mingqimiao.cn/" target="_blank" rel="noopener noreferrer" title="公开参数快照，非实时成交价；原始字段及跑分来源可在机型详情中查看。">数据：名其喵</a><span id="updated"></span></span>
+    </div>
+    <div class="column-head row-grid" aria-hidden="true">
+      <span>机型 / 配置</span><span>最近价</span><span>芯片与跑分 / 电池 / 后摄</span><span>屏幕大小 / 充电 / 前摄</span>
+    </div>
+    <div id="results" aria-label="手机列表"></div>
+    <div id="empty" hidden>没有符合条件的机型。<button id="empty-reset" type="button">重置筛选</button></div>
+    <noscript>请启用 JavaScript 以使用范围筛选。</noscript>
+  </main>
+</body>
+</html>

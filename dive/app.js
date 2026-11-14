@@ -14,6 +14,8 @@
     get(key) { try { return localStorage.getItem(`tiddip.dive.${key}.v1`); } catch { return null; } },
     set(key, value) { try { localStorage.setItem(`tiddip.dive.${key}.v1`, String(value)); } catch { /* Private browsing still works. */ } },
   };
+  game.hellMode = storage.get('hellMode') !== 'false';
+  let settingsOpen = false;
   let best = Math.max(0, Math.floor(Number(storage.get('best')) || 0));
   if (!Number.isFinite(best)) best = 0;
   let sound = storage.get('sound') === 'true';
@@ -55,24 +57,28 @@
       $('best').textContent = best;
       renderer.best = best;
     }
-    if (game.state === previousState) return;
-    previousState = game.state;
-    stage.dataset.state = game.state;
-    document.body.dataset.state = game.state;
-    $('overlay').hidden = game.state === 'playing';
-    $('pause').setAttribute('aria-label', game.state === 'ready' ? '返回首页' : game.state === 'playing' ? '暂停游戏' : '返回游戏菜单');
+    const viewState = settingsOpen ? 'settings' : game.state;
+    if (viewState === previousState) return;
+    const oldView = previousState;
+    previousState = viewState;
+    stage.dataset.state = viewState;
+    document.body.dataset.state = viewState;
+    $('overlay').hidden = settingsOpen || game.state === 'playing';
+    $('settings').hidden = !settingsOpen;
+    $('pause').setAttribute('aria-label', settingsOpen ? '返回结算页面' : game.state === 'over' ? '关于与设置' : game.state === 'ready' ? '返回首页' : game.state === 'playing' ? '暂停游戏' : '返回游戏菜单');
+    if (settingsOpen) return;
     $('result').hidden = game.state !== 'over';
     if (game.state === 'over') {
       overAt = performance.now();
       $('title').textContent = 'GAME OVER';
-      $('message').textContent = '（地狱模式）';
+      $('message').textContent = game.hellMode ? '（地狱模式）' : '';
       $('result').textContent = `MAX ${best}`;
       $('action').setAttribute('aria-label', '重新开始');
       $('hint').textContent = '';
-      tone(145, 0.18);
+      if (oldView !== 'settings') tone(145, 0.18);
     } else if (game.state === 'paused') {
       $('title').textContent = '暂停';
-      $('message').textContent = '（地狱模式）';
+      $('message').textContent = game.hellMode ? '（地狱模式）' : '';
       $('action').setAttribute('aria-label', '继续游戏');
       $('hint').textContent = '点击继续 · 空格 · P';
     } else if (game.state === 'ready') {
@@ -105,7 +111,7 @@
   }
 
   function play() {
-    if (!renderer.loaded) return;
+    if (!renderer.loaded || settingsOpen) return;
     if (game.state === 'ready' && navigator.userActivation?.isActive) enterFullscreen();
     if (game.state === 'over') game.reset();
     if (game.state === 'paused') game.resume();
@@ -124,6 +130,14 @@
     accumulator = 0;
     syncUI();
     renderer.draw(game, animationTime, reducedMotion.matches);
+  }
+
+  function showSettings(open) {
+    settingsOpen = open;
+    renderer.settingsOpen = open;
+    syncUI();
+    renderer.draw(game, animationTime, reducedMotion.matches);
+    $('pause').focus({ preventScroll: true });
   }
 
   function resize() {
@@ -150,17 +164,26 @@
   });
 
   stage.addEventListener('pointerdown', event => {
-    if (event.target.closest('button, a') || !event.isPrimary || event.button !== 0) return;
+    if (settingsOpen || event.target.closest('button, a') || !event.isPrimary || event.button !== 0) return;
     event.preventDefault();
     if (game.state === 'paused' || (game.state === 'over' && performance.now() - overAt < 280)) return;
     if (game.state === 'ready' || game.state === 'over') play();
-    else { game.flap(); tone(480); stage.focus({ preventScroll: true }); }
+    else { if (game.flap()) tone(480); stage.focus({ preventScroll: true }); }
   });
   $('action').addEventListener('click', play);
   $('pause').addEventListener('click', () => {
-    if (game.state === 'ready') location.href = '../';
+    if (settingsOpen) showSettings(false);
+    else if (game.state === 'over') showSettings(true);
+    else if (game.state === 'ready') location.href = '../';
     else if (game.state === 'playing') pause();
     else { game.reset(); lastTime = 0; syncUI(); schedule(); }
+  });
+  $('hellMode').setAttribute('aria-checked', String(game.hellMode));
+  $('hellMode').addEventListener('click', () => {
+    game.hellMode = !game.hellMode;
+    storage.set('hellMode', game.hellMode);
+    $('hellMode').setAttribute('aria-checked', String(game.hellMode));
+    renderer.draw(game, animationTime, reducedMotion.matches);
   });
   $('sound').addEventListener('click', () => {
     sound = !sound;
@@ -175,12 +198,16 @@
     if (![' ', 'arrowup', 'w', 'enter', 'p', 'escape'].includes(key)) return;
     event.preventDefault();
     if (event.repeat) return;
+    if (settingsOpen) {
+      if (key === 'escape') showSettings(false);
+      return;
+    }
     if (key === 'p' || key === 'escape') {
       if (game.state === 'playing') pause();
       else if (game.state === 'paused') play();
     } else if (game.state === 'over') {
       if (key === 'enter') play();
-    } else if (game.state === 'playing') { game.flap(); tone(480); }
+    } else if (game.state === 'playing') { if (game.flap()) tone(480); }
     else play();
   });
   window.addEventListener('blur', () => { if (!switchingFullscreen) pause(); });

@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="424" height="1040" viewBox="0 0 424 1040">
   <defs>
     <filter id="softLight" x="-35%" y="-15%" width="170%" height="130%"><feGaussianBlur stdDeviation="8"/></filter>
-    <linearGradient id="water" x2="0" y2="1"><stop stop-color="#0bc9e9"/><stop offset=".25" stop-color="#05afea"/><stop offset=".58" stop-color="#0785e7"/><stop offset="1" stop-color="#0753cf"/></linearGradient>
-    <linearGradient id="light" x2="0" y2="1"><stop stop-color="#b3fff1" stop-opacity=".72"/><stop offset=".35" stop-color="#64efe9" stop-opacity=".25"/><stop offset="1" stop-color="#38d7ef" stop-opacity="0"/></linearGradient>
+    <linearGradient id="water" x2="0" y2="1"><stop stop-color="#14b5f3"/><stop offset=".25" stop-color="#0b97ef"/><stop offset=".58" stop-color="#0879e2"/><stop offset="1" stop-color="#0756cb"/></linearGradient>
+    <linearGradient id="light" x2="0" y2="1"><stop stop-color="#c6f6ff" stop-opacity=".62"/><stop offset=".35" stop-color="#7cdbff" stop-opacity=".2"/><stop offset="1" stop-color="#38a7ef" stop-opacity="0"/></linearGradient>
     <linearGradient id="kelp" x2="1" y2=".2"><stop stop-color="#82bb6b"/><stop offset=".55" stop-color="#acd379"/><stop offset="1" stop-color="#6fb569"/></linearGradient>
     <g id="plant" stroke="#296c8c" stroke-width="1.6" stroke-linejoin="round">
       <path d="M0 0Q8-36 4-72T9-124" fill="none" stroke="#5c9e6f" stroke-width="3"/>

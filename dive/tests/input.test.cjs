@@ -6,23 +6,23 @@ const vm = require('node:vm');
 require('../game.js');
 
 // Exercise the actual app event handlers; graphics and browser I/O are inert.
-function inputHarness() {
+function inputHarness(saved = new Map()) {
   const events = new Map(), nodes = new Map();
   let game;
-  const buttons = new Set(['action', 'pause', 'sound', 'fullscreen']);
+  const buttons = new Set(['action', 'pause', 'sound', 'fullscreen', 'hellMode']);
   const node = id => {
     if (!nodes.has(id)) nodes.set(id, {
-      dataset: {}, classList: { remove() {} }, textContent: '', hidden: false,
+      dataset: {}, attributes: {}, classList: { remove() {} }, textContent: '', hidden: false,
       closest(selector) { return buttons.has(id) && selector.split(',').map(x => x.trim()).includes('button') ? this : null; },
       addEventListener(type, fn) { events.set(`${id}:${type}`, fn); },
-      setAttribute() {}, focus() {},
+      setAttribute(name, value) { this.attributes[name] = value; }, focus() {},
     });
     return nodes.get(id);
   };
   const context = {
     URL, location: { href: 'https://tiddip.com/dive/' }, history: { replaceState() {} },
     navigator: {}, performance: { now: () => 1000 },
-    localStorage: { getItem: () => null, setItem() {} },
+    localStorage: { getItem: key => saved.get(key) ?? null, setItem(key, value) { saved.set(key, value); } },
     matchMedia: () => ({ matches: false, addEventListener() {} }),
     requestAnimationFrame: () => 1, cancelAnimationFrame() {},
     window: { addEventListener() {} },
@@ -41,13 +41,33 @@ function inputHarness() {
   };
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../app.js'), 'utf8'), context);
   return {
-    game,
+    game, saved, node,
+    get pageState() { return context.document.body.dataset.state; },
     click(id) { events.get(`${id}:click`)({ target: node(id) }); },
     key(key, target = 'stage') {
       events.get('document:keydown')({ key, target: node(target), repeat: false, preventDefault() {} });
     },
   };
 }
+
+test('the result menu opens settings, preserves the round, and persists the difficulty switch', () => {
+  const app = inputHarness();
+  app.click('action');
+  app.game.player.y = Dive.FLOOR;
+  app.game.step(1 / 120);
+  const frozen = JSON.stringify(app.game.player);
+  app.click('pause');
+  assert.equal(app.pageState, 'settings');
+  app.key(' ');
+  assert.equal(app.game.state, 'over');
+  assert.equal(JSON.stringify(app.game.player), frozen);
+  app.click('hellMode');
+  assert.equal(app.game.hellMode, false);
+  assert.equal(app.node('hellMode').attributes['aria-checked'], 'false');
+  app.key('escape');
+  assert.equal(app.pageState, 'over');
+  assert.equal(inputHarness(app.saved).game.hellMode, false);
+});
 
 for (const target of ['stage', 'pause']) {
   test(`pause/resume preserves velocity when focus is on ${target}`, () => {

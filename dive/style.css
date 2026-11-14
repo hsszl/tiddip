@@ -1,22 +1,30 @@
 :root {
   font-family: Arial, "Microsoft YaHei", sans-serif;
   color: white;
-  background: #080b0e;
+  background: #141a22;
   -webkit-tap-highlight-color: transparent;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; overscroll-behavior: none; }
 [hidden] { display: none !important; }
 .game-layout { position: fixed; inset: 0; display: grid; place-items: center; }
+.watch {
+  --watch-width: min(calc(100vw - 24px), calc((100vh - 24px) * 256 / 564));
+  --watch-width: min(calc(100dvw - 24px), calc((100dvh - 24px) * 256 / 564));
+  width: var(--watch-width);
+  height: calc(var(--watch-width) * 564 / 256);
+  padding: calc(var(--watch-width) * 22 / 256);
+  border-radius: 999px;
+  background: #020408;
+  box-shadow: 0 0 0 1px #78828b, 0 0 0 3px #d7dcdf;
+}
 .stage {
   position: relative;
-  width: min(calc(100vw - 28px), calc((100vh - 28px) * 212 / 520));
-  width: min(calc(100dvw - 28px), calc((100dvh - 28px) * 212 / 520));
-  aspect-ratio: 212 / 520;
+  width: 100%; height: 100%;
   border-radius: 999px;
   overflow: hidden;
   background: #137ed4;
-  box-shadow: 0 0 0 5px #101721, 0 0 0 7px #eeefeb;
+
   container-type: size;
   touch-action: none; user-select: none; -webkit-user-select: none;
 }
@@ -28,8 +36,10 @@ button:focus-visible, a:focus-visible { outline: 2px solid white; outline-offset
 .navigation { position: absolute; }
 .pause {
   position: absolute; z-index: 3; top: 2cqw; left: 50%; transform: translateX(-50%);
-  display: grid; place-items: center; width: 52cqw; height: max(44px, 32cqw); padding: 0; border: 0; border-radius: 50%;
-  background: #048cab80; color: #ebfff2;
+  display: grid; place-items: center; width: 48cqw; height: max(44px, 32cqw); padding: 0;
+  border: 1px solid #c1d0e026; border-radius: 13cqw;
+  background: #187ec54d; color: #f6fcff;
+  box-shadow: inset 0 1px 2px #d4e8ff0d;
 }
 .fullscreen {
   width: 44px; height: 44px; border: 0; border-radius: 50%; background: #0876bc44; font-size: 25px;
@@ -40,16 +50,30 @@ button:focus-visible, a:focus-visible { outline: 2px solid white; outline-offset
 .action {
   position: absolute; bottom: 2.5cqw; left: 50%; transform: translateX(-50%);
   display: grid; place-items: center; pointer-events: auto;
-  width: 55cqw; height: 38cqw; min-height: 44px; padding: 0;
-  border: 0; border-radius: 50%; background: #416d83b8; color: #effff1;
+  width: 52cqw; height: 38cqw; min-height: 44px; padding: 0;
+  border: 1px solid #dbe6ee3b; border-radius: 16cqw; background: #63657eb8; color: #f6fcff;
 }
-.action:hover { background: #416d83dc; }
+.action:hover { background: #63657ed4; }
 .action:disabled { opacity: .45; cursor: wait; }
-.pause svg, .action svg { width: 26cqw; height: 26cqw; fill: none; stroke: currentColor; stroke-width: 3.3; stroke-linecap: round; stroke-linejoin: round; }
-.action svg { width: 23cqw; height: 23cqw; }
+.pause svg, .action svg { width: 24cqw; height: 24cqw; fill: none; stroke: currentColor; stroke-width: 2.8; stroke-linecap: round; stroke-linejoin: round; }
+.action svg { width: 26cqw; height: 26cqw; stroke-width: 2.4; }
 .more-icon, .restart-icon { display: none; }
 .stage[data-state="over"] .back-icon, .stage[data-state="over"] .play-icon { display: none; }
 .stage[data-state="over"] .more-icon, .stage[data-state="over"] .restart-icon { display: inline; }
+.stage[data-state="settings"] .pause { top: 9cqw; background: #272e42; border-color: #53607866; }
+.settings { position: absolute; inset: 0; pointer-events: none; }
+.mode-switch {
+  position: absolute; left: 50%; bottom: 4cqh; transform: translateX(-50%);
+  width: 48cqw; height: 31cqw; min-height: 44px; border: 0; padding: 0;
+  border-radius: 32cqw; background: #485166; pointer-events: auto;
+}
+.mode-switch::after {
+  content: ''; position: absolute; left: 5cqw; top: 50%;
+  width: 22cqw; height: 22cqw; border-radius: 50%; background: #f3ffff;
+  transform: translateY(-50%);
+}
+.mode-switch[aria-checked="true"] { background: linear-gradient(140deg, #02caff, #008cff); }
+.mode-switch[aria-checked="true"]::after { transform: translate(16cqw, -50%); }
 body[data-state="playing"] #sound { display: none; }
 .options { position: fixed; z-index: 3; right: max(12px, env(safe-area-inset-right)); bottom: max(8px, env(safe-area-inset-bottom)); }
 .options { display: flex; align-items: center; }

@@ -4,19 +4,22 @@
   const W = 212, H = 520, FLOOR = 476;
   const PIPE_SPEED = 232, PIPE_SPACING = 264, PIPE_WIDTH = 34, GAP = 132;
   const GRAVITY = 1160, FLAP_SPEED = -330, MAX_FALL = 145;
+  const KICK_RECOVERY = .3;
 
   class Game {
-    constructor({ random = Math.random } = {}) {
+    constructor({ random = Math.random, hellMode = true } = {}) {
       this.random = random;
+      this.hellMode = hellMode;
       this.width = W;
       this.reset();
     }
 
     reset() {
       this.state = 'ready';
-      this.player = { x: this.width * .34, y: 260, vy: 0, radius: 9 };
+      this.player = { x: this.width * .34, y: 260, vy: 0, radius: 9, kickAge: KICK_RECOVERY };
       this.score = 0;
       this.time = 0;
+      this.distance = 0;
       this.pipes = [];
       this.addPipe(this.player.x + 140);
     }
@@ -38,7 +41,10 @@
 
     flap() {
       if (this.state === 'ready') this.state = 'playing';
-      if (this.state === 'playing') this.player.vy = FLAP_SPEED;
+      if (this.state !== 'playing' || this.player.kickAge + 1e-9 < KICK_RECOVERY) return false;
+      this.player.vy = FLAP_SPEED;
+      this.player.kickAge = 0;
+      return true;
     }
 
     pause() {
@@ -53,6 +59,7 @@
       if (this.state !== 'playing' || !Number.isFinite(dt) || dt <= 0) return;
       dt = Math.min(dt, 1 / 30);
       this.time += dt;
+      this.player.kickAge += dt;
       const fallingTime = Math.min(dt, Math.max(0, (MAX_FALL - this.player.vy) / GRAVITY));
       this.player.y += this.player.vy * fallingTime + GRAVITY * fallingTime ** 2 / 2 + MAX_FALL * (dt - fallingTime);
       this.player.vy = Math.min(MAX_FALL, this.player.vy + GRAVITY * dt);
@@ -61,7 +68,9 @@
         this.state = 'over';
         return;
       }
-      const speed = PIPE_SPEED;
+      // Normal mode is confirmed slower; its exact rate still needs a reference clip.
+      const speed = this.hellMode ? PIPE_SPEED : PIPE_SPEED / 2;
+      this.distance += speed * dt;
       for (const pipe of this.pipes) {
         pipe.x -= speed * dt;
         const nearestX = Math.max(pipe.x - 3.75, Math.min(pipe.x + pipe.width + 3.75, p.x));

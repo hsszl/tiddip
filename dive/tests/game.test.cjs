@@ -32,7 +32,35 @@ test('tap starts a round and gives an upward impulse; gravity brings the swimmer
   assert.ok(game.player.vy > 0);
 });
 
-test('ascent follows the tracked helmet arc and falling reaches the observed speed limit', () => {
+test('rapid taps do not restart the current swim kick or its animation', () => {
+  const game = new Dive.Game({ random: () => .5 });
+  game.flap();
+  for (let i = 0; i < 12; i++) game.step(1 / 120);
+  const before = { ...game.player };
+  for (let i = 0; i < 8; i++) game.flap();
+  assert.equal(game.player.vy, before.vy);
+  assert.equal(game.player.kickAge, before.kickAge);
+  for (let i = 0; i < 30; i++) game.step(1 / 120);
+  assert.equal(game.flap(), true);
+  assert.equal(game.player.vy, -330);
+  assert.equal(game.player.kickAge, 0);
+});
+
+test('normal mode slows pipes without removing the shared kick recovery', () => {
+  const hard = new Dive.Game({ random: () => .5, hellMode: true });
+  const normal = new Dive.Game({ random: () => .5, hellMode: false });
+  for (const game of [hard, normal]) {
+    game.flap();
+    for (let i = 0; i < 12; i++) game.step(1 / 120);
+    assert.equal(game.flap(), false, 'both modes reject a rapid second tap');
+  }
+  assert.ok(normal.pipes[0].x > hard.pipes[0].x, 'normal pipes travel less in the same time');
+  assert.equal(normal.pipes[0].bottom - normal.pipes[0].top, hard.pipes[0].bottom - hard.pipes[0].top);
+  normal.reset();
+  assert.equal(normal.hellMode, false);
+});
+
+test('ascent follows the tracked head arc and falling reaches the observed speed limit', () => {
   const game = new Dive.Game({ random: () => .5 });
   game.flap();
   assert.equal(game.player.vy, -330);

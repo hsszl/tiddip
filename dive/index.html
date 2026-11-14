@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#080b0e">
+  <meta name="theme-color" content="#141a22">
   <meta name="description" content="兔潜奇境网页复刻：点击上浮，穿过海底管道。">
   <title>兔潜奇境 · tiddip</title>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
@@ -19,8 +19,9 @@
 
       <span class="sr-only">最佳 <b id="best">0</b></span>
     </header>
+    <div class="watch">
     <div id="stage" class="stage" tabindex="0" aria-label="兔潜奇境：点击、空格或上方向键上浮，P 键暂停">
-      <canvas id="canvas" width="720" height="1280" aria-label="蓝色潜水兔穿越海底绿色管道"></canvas>
+      <canvas id="canvas" width="212" height="520" aria-label="蓝色潜水兔穿越海底绿色管道"></canvas>
       <output id="score" class="sr-only" aria-live="polite">得分 0</output>
       <button id="pause" class="pause" type="button" aria-label="返回首页">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path class="back-icon" d="m19 8-8 8 8 8"/><g class="more-icon" fill="currentColor" stroke="none"><circle cx="8" cy="16" r="2"/><circle cx="16" cy="16" r="2"/><circle cx="24" cy="16" r="2"/></g></svg>
@@ -35,6 +36,12 @@
         </button>
         <p id="hint" class="sr-only">点击 / 空格上浮</p>
       </section>
+      <section id="settings" class="settings" aria-labelledby="settingsTitle" hidden>
+        <h2 id="settingsTitle" class="sr-only">兔潜奇境 · 关于与设置</h2>
+        <p class="sr-only">原作版本 1.0.5，NEORUAA，无源流沙。</p>
+        <button id="hellMode" class="mode-switch" type="button" role="switch" aria-checked="true" aria-label="地狱模式"></button>
+      </section>
+    </div>
     </div>
     <footer class="options">
       <button id="sound" type="button" aria-pressed="false">声音：关</button>

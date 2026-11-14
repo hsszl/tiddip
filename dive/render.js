@@ -1,7 +1,14 @@
 (() => {
   'use strict';
   const { W, H, FLOOR } = Dive;
-
+  // Natural glyph bounds: a serif title and MiSans UI, without nonuniform stretching.
+  const LETTERS = {
+    title: [0, 0, 157, 39], over: [0, 52, 205, 29], max: [0, 90, 65, 24],
+    hell: [0, 124, 128, 27], settingsTitle: [0, 232, 126, 32],
+    version: [0, 274, 73, 29], author: [0, 316, 160, 28],
+    designer: [0, 358, 126, 31], settingHell: [0, 400, 126, 31],
+    paused: [0, 442, 57, 29], tap: [0, 478, 22, 10],
+  };
 
   class Renderer {
     constructor(canvas) {
@@ -11,6 +18,9 @@
       this.foreground = document.createElement('canvas');
       this.width = W;
       this.best = 0;
+      this.tilt = 0;
+      this.tiltPose = false;
+      this.lastMotionTime = 0;
       this.loaded = false;
       this.rabbit = new Image();
       this.sea = new Image();
@@ -69,11 +79,38 @@
       }
     }
 
-    swimmer(ctx, x, y, vy, idleFrame) {
-      const frame = idleFrame ?? (vy < -185 ? 2 : vy < 35 ? 0 : 1);
-      const scale = .6;
+    swimmer(ctx, x, y, player, idleFrame, scale = .65) {
+      if (idleFrame === undefined) {
+        if (player.kickAge < .08 || player.kickAge >= .52) this.tiltPose = false;
+        else if (this.tilt < -23) this.tiltPose = true;
+      }
+      const recovering = player.kickAge >= .52 && player.kickAge < .7;
+      const frame = idleFrame ?? (this.tiltPose ? 2 : player.kickAge < .3 || recovering ? 0 : 1);
+      const angle = idleFrame === undefined ? this.tilt - (frame === 2 ? -30 : 0) : 0;
+      ctx.save(); ctx.translate(x, y); ctx.rotate(angle * Math.PI / 180);
       ctx.drawImage(this.rabbit, frame * 112, 0, 112, 112,
-        x - 76 * scale, y - 40 * scale, 112 * scale, 112 * scale);
+        -76 * scale, -40 * scale, 112 * scale, 112 * scale);
+      ctx.restore();
+    }
+
+    label(ctx, name, center, y, alignLeft = false) {
+      const [sx, sy, width, height] = LETTERS[name];
+      ctx.drawImage(this.lettering, sx, sy, width, height,
+        alignLeft ? center : center - width / 2, y, width, height);
+    }
+
+    settings(ctx) {
+      ctx.fillStyle = '#111722'; ctx.fillRect(0, 0, W, H);
+      const card = ctx.createLinearGradient(14, 104, 198, 292);
+      card.addColorStop(0, '#29374b'); card.addColorStop(1, '#203247');
+      ctx.fillStyle = card; ctx.strokeStyle = '#45577177'; ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.roundRect(14, 104, 184, 188, 34); ctx.fill(); ctx.stroke();
+      this.label(ctx, 'settingsTitle', 30, 129, true);
+      this.label(ctx, 'version', 30, 176, true);
+      this.swimmer(ctx, 147, 220, { kickAge: 1 }, 0, .9);
+      this.label(ctx, 'author', W / 2, 309);
+      this.label(ctx, 'designer', W / 2, 347);
+      this.label(ctx, 'settingHell', W / 2, 389);
     }
 
     number(ctx, value, center, y, white = false) {
@@ -89,8 +126,8 @@
       for (const path of ['M48 303H82L89 311 82 319H48Z', 'M131 303H165V319H131L124 311Z']) {
         const arrow = new Path2D(path); ctx.fill(arrow); ctx.stroke(arrow);
       }
-      ctx.fillStyle = '#fffbe9'; ctx.textAlign = 'center'; ctx.font = '700 11px Arial';
-      ctx.fillText('TAP', 66, 315); ctx.fillText('TAP', 147, 315);
+      ctx.fillStyle = '#fffbe9';
+      this.label(ctx, 'tap', 66, 307); this.label(ctx, 'tap', 147, 307);
       ctx.fill(new Path2D('M100 338v-18q0-4 3-4t3 4v7q3-3 5 0q5-1 6 4v10q-4 6-10 3l-8-7q-2-4 1-5Z'));
       ctx.fill(new Path2D('m116 286 5-7 5 7h-3v6h-4v-6Z'));
     }
@@ -102,7 +139,15 @@
       ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       if (!this.loaded) return;
       ctx.setTransform(this.canvas.width / W, 0, 0, this.canvas.height / H, 0, 0);
-      const offset = game.time * 116 % (W * 2);
+      if (this.settingsOpen) { this.settings(ctx); return; }
+      if (game.state === 'ready' || game.time < this.lastMotionTime) {
+        this.tilt = 0; this.tiltPose = false; this.lastMotionTime = game.time;
+      }
+      const dt = Math.max(0, Math.min(.1, game.time - this.lastMotionTime));
+      const rising = game.player.vy < 0;
+      this.tilt += ((rising ? -32 : 0) - this.tilt) * (1 - Math.exp(-dt / (rising ? .25 : .55)));
+      this.lastMotionTime = game.time;
+      const offset = game.distance * .5 % (W * 2);
       const layer = image => {
         ctx.drawImage(image, -offset, 0, W * 2, H);
         if (offset > W) ctx.drawImage(image, W * 2 - offset, 0, W * 2, H);
@@ -114,25 +159,24 @@
       sand.addColorStop(0, '#fffbe9'); sand.addColorStop(1, '#edbac8');
       ctx.fillStyle = sand; ctx.fillRect(0, FLOOR, W, H - FLOOR);
       if (game.state === 'ready') {
-        ctx.drawImage(this.lettering, 0, 0, 162, 42, 25, 166, 162, 42);
-        this.swimmer(ctx, W / 2, 260, 0, reducedMotion ? 0 : Math.floor(t * 5) % 2);
+        this.label(ctx, 'title', W / 2, 166);
+        this.swimmer(ctx, W / 2 + 8, 260, game.player, reducedMotion ? 0 : Math.floor(t * 5) % 2);
         this.tutorial(ctx);
       } else {
-        this.swimmer(ctx, game.player.x, game.player.y, game.player.vy);
+        this.swimmer(ctx, game.player.x, game.player.y, game.player);
         this.number(ctx, game.score, W / 2, 97);
       }
       if (game.state === 'over') {
         ctx.fillStyle = '#02183220'; ctx.fillRect(0, 0, W, H);
-        ctx.drawImage(this.lettering, 0, 52, 204, 30, 4, 215, 204, 30);
-        const lineWidth = 71 + String(this.best).length * 21;
+        this.label(ctx, 'over', W / 2, 215);
+        const lineWidth = 74 + String(this.best).length * 21;
         const left = (W - lineWidth) / 2;
-        ctx.drawImage(this.lettering, 0, 90, 61, 25, left, 259, 61, 25);
-        this.number(ctx, this.best, left + 71 + String(this.best).length * 10.5, 258, true);
-        ctx.drawImage(this.lettering, 0, 124, 140, 25, 36, 300, 140, 25);
+        this.label(ctx, 'max', left, 259, true);
+        this.number(ctx, this.best, left + 74 + String(this.best).length * 10.5, 258, true);
+        if (game.hellMode) this.label(ctx, 'hell', W / 2, 300);
       } else if (game.state === 'paused') {
         ctx.fillStyle = '#02183233'; ctx.fillRect(0, 0, W, H);
-        ctx.fillStyle = '#fff'; ctx.font = '28px SimSun, serif'; ctx.textAlign = 'center';
-        ctx.fillText('暂停', W / 2, 243);
+        this.label(ctx, 'paused', W / 2, 219);
       }
     }
   }
