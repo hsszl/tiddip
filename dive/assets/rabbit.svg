@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="336" height="112" viewBox="0 0 336 112">
+  <defs>
+    <linearGradient id="fur" x2=".3" y2="1"><stop stop-color="#ffffeb"/><stop offset=".62" stop-color="#eef9e7"/><stop offset="1" stop-color="#c5e6da"/></linearGradient>
+    <linearGradient id="helmet" x1=".15" y1="0" x2=".75" y2="1"><stop stop-color="#397bb1"/><stop offset=".4" stop-color="#225e9b"/><stop offset="1" stop-color="#16467f"/></linearGradient>
+    <linearGradient id="glass" x2="1" y2=".3"><stop stop-color="#4c91c2"/><stop offset=".6" stop-color="#78badc"/><stop offset="1" stop-color="#9bd9e4"/></linearGradient>
+    <g id="head" stroke="#285b92" stroke-width="1.4" stroke-linejoin="round">
+      <path fill="url(#fur)" d="M68 29 65 23Q60 15 63 10Q66 6 70 11L79 26Z"/>
+      <path fill="#b1d8df" stroke="none" d="M66 12Q68 12 71 18L75 26 71 26Z"/>
+      <path fill="url(#fur)" d="M79 27 80 17Q79 10 83 12Q88 12 90 22L94 30Z"/>
+      <path fill="#9bc9da" stroke="none" d="M83 14Q85 16 87 24L85 28 82 24Z"/>
+      <path fill="url(#helmet)" d="M65 27Q72 22 81 25Q90 24 95 33Q99 40 97 47Q95 54 88 57L75 57Q66 55 62 50Q57 45 59 36Q59 30 65 27Z"/>
+      <path fill="#2d6ca7" stroke="none" d="M65 28Q73 24 80 27L76 35Q68 36 64 43Q60 40 62 34Z"/>
+      <path fill="#154779" stroke="none" d="M62 43Q69 49 77 48L83 54 87 56Q70 58 63 50Z"/>
+      <path fill="url(#glass)" d="M84 34Q90 33 94 38Q97 43 93 49Q90 54 84 52Q79 50 79 44Q79 38 84 34Z"/>
+      <path fill="#effff0" stroke="none" d="M86 38Q91 36 92 41L91 47Q89 50 85 48Q82 46 83 42Q83 39 86 38Z"/>
+      <path fill="#326fa0" stroke="none" d="M89 39Q91 39 91 42L90 46 88 46Q87 43 89 39Z"/>
+      <path fill="#c4edf0" stroke="none" d="M82 36Q87 33 90 36L86 37 82 40Z"/>
+      <path d="m66 30 5-2" stroke="#6cadd1" stroke-width="1.2" stroke-linecap="round"/>
+    </g>
+    <g id="tuck" stroke="#2e648f" stroke-width="1.4" stroke-linejoin="round">
+      <path fill="url(#fur)" d="M30 52Q23 48 20 52Q15 55 20 60Q24 64 32 61Z"/>
+      <path fill="url(#fur)" d="M31 48Q37 43 43 47Q50 51 59 47L67 51 68 58Q57 65 45 64L33 62Q25 60 27 55Z"/>
+      <path fill="url(#fur)" d="M36 60Q29 60 28 68Q26 73 32 78Q37 82 44 79Q50 77 48 71L45 66 57 65 61 60Z"/>
+      <path fill="#f7ffed" stroke="none" d="M32 65Q37 62 42 67L44 73Q41 77 37 76Q31 74 32 70Z"/>
+      <path fill="url(#fur)" d="M58 56Q66 53 72 56L88 59Q95 58 98 63Q100 67 94 69L87 67 79 64 65 64 58 62Z"/>
+      <path fill="#d4e9dc" stroke="none" d="m61 60 16 2 11 3 7 1-2 2-8-2-9-3-14 1Z"/>
+      <path d="M29 54Q30 59 35 60M44 65l3 4" fill="none" stroke="#b1d5d4" stroke-width="1"/>
+      <use href="#head"/>
+    </g>
+    <g id="stretch" stroke="#2e648f" stroke-width="1.4" stroke-linejoin="round">
+      <path fill="url(#fur)" d="M25 52Q20 48 16 51L15 56Q9 54 10 61Q8 65 14 68L23 69 35 66 47 66 55 61 49 56Z"/>
+      <path fill="url(#fur)" d="M23 61 37 59Q45 56 51 54L65 51 71 56 67 62Q60 66 49 66L38 70 22 73Q15 74 13 70L15 66Z"/>
+      <path fill="#f7ffec" stroke="none" d="M18 64 30 64 44 60 52 60 45 64 32 68 19 69Z"/>
+      <path fill="url(#fur)" d="M63 54Q68 51 74 54Q79 57 75 62L70 69Q67 75 63 74Q58 73 61 68L65 60 60 60Z"/>
+      <path d="m22 70 12-2m26-12 5 2" fill="none" stroke="#aacfd1" stroke-width="1"/>
+      <use href="#head"/>
+    </g>
+  </defs>
+  <use href="#tuck"/>
+  <use href="#stretch" transform="translate(112)"/>
+  <g transform="translate(224)"><use href="#stretch" transform="rotate(-36 76 40)"/></g>
+</svg>

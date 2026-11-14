@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="424" height="1040" viewBox="0 0 424 1040">
+  <defs>
+    <filter id="softLight" x="-35%" y="-15%" width="170%" height="130%"><feGaussianBlur stdDeviation="8"/></filter>
+    <linearGradient id="water" x2="0" y2="1"><stop stop-color="#0bc9e9"/><stop offset=".25" stop-color="#05afea"/><stop offset=".58" stop-color="#0785e7"/><stop offset="1" stop-color="#0753cf"/></linearGradient>
+    <linearGradient id="light" x2="0" y2="1"><stop stop-color="#b3fff1" stop-opacity=".72"/><stop offset=".35" stop-color="#64efe9" stop-opacity=".25"/><stop offset="1" stop-color="#38d7ef" stop-opacity="0"/></linearGradient>
+    <linearGradient id="kelp" x2="1" y2=".2"><stop stop-color="#82bb6b"/><stop offset=".55" stop-color="#acd379"/><stop offset="1" stop-color="#6fb569"/></linearGradient>
+    <g id="plant" stroke="#296c8c" stroke-width="1.6" stroke-linejoin="round">
+      <path d="M0 0Q8-36 4-72T9-124" fill="none" stroke="#5c9e6f" stroke-width="3"/>
+      <g fill="url(#kelp)">
+        <path d="M4-12Q-14-16-13-38Q-1-39 7-20Z"/><path d="M7-30Q26-34 22-55Q9-57 5-39Z"/>
+        <path d="M5-48Q-13-51-14-75Q-1-75 6-57Z"/><path d="M4-67Q22-69 21-93Q8-93 3-77Z"/>
+        <path d="M5-85Q-8-88-7-108Q3-110 8-95Z"/><path d="M7-101Q22-104 20-123Q10-124 6-111Z"/>
+        <path d="M8-117Q-1-133 7-143Q17-131 8-117Z"/>
+      </g>
+    </g>
+    <g id="coral" fill="none" stroke="#173c70" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+      <path id="branches" d="M0 0Q-4-17 1-32L-2-62M0-12Q-19-20-20-43M-14-23Q-33-24-36-43M-20-34-29-53M1-27Q16-31 20-56M13-36 10-47M0-40Q-12-44-12-64M-1-52 6-69M3-14Q23-14 30-32"/>
+      <use href="#branches" stroke="currentColor" stroke-width="6.4"/>
+    </g>
+    <g id="blueCoral" stroke="#14518b" stroke-width="1.6" fill="#39c6d3" stroke-linejoin="round">
+      <path d="M-20 0-23-12Q-40-13-40-23Q-36-34-28-24L-24-19-27-36Q-29-45-21-46Q-13-44-16-33L-12-18-7-25-10-47Q-11-63-4-64Q5-64 3-48L4-34 11-40Q5-56 12-57Q22-57 19-42L17-31Q32-39 34-30Q36-22 19-20L13-8 24 0Z"/>
+      <path d="M-12-5-18-26M4-7 3-34M9-10 17-25" stroke="#83e3dc" fill="none"/>
+    </g>
+    <g id="bubble" fill="none" stroke="#b2f6db" stroke-width="1.1" opacity=".85">
+      <circle r="4.7" fill="#59d9c8" fill-opacity=".3"/><path d="M-2.5.8Q-4-2-1-3M1 3Q4 2 3-1" stroke-width="1.2"/>
+    </g>
+  </defs>
+  <path fill="url(#water)" d="M0 0H424V520H0Z"/>
+  <g fill="url(#light)" filter="url(#softLight)">
+    <path d="M8 0H69Q51 117 70 258Q54 306 36 362Q48 208 24 143Q32 68 8 0Z"/>
+    <path d="M98 0H135Q131 87 117 152Q111 247 127 296Q90 217 104 156Q111 81 98 0Z" opacity=".62"/>
+    <path d="M225 0H276Q266 104 290 184Q263 284 270 337Q232 260 252 165Q232 86 225 0Z"/>
+    <path d="M341 0H388Q369 125 384 242L349 357Q356 204 343 140Q356 68 341 0Z" opacity=".55"/>
+  </g>
+  <g fill="#105fc9" opacity=".58">
+    <path d="M27 483Q30 384 59 354Q48 416 68 444Q68 351 115 295Q90 377 112 426Q123 342 158 325Q128 397 145 483Z"/>
+    <path d="M227 483Q215 402 242 365Q238 421 259 446Q257 348 301 311Q278 384 293 434Q321 369 347 362Q318 419 324 483Z"/>
+    <path d="M375 483Q377 394 409 350Q396 414 424 462V483Z"/>
+  </g>
+  <use href="#bubble" transform="translate(98 112)"/>
+  <use href="#bubble" transform="translate(65 243)"/>
+  <use href="#bubble" transform="translate(208 204) scale(.9)"/>
+  <use href="#bubble" transform="translate(269 315) scale(1.15)"/>
+  <use href="#bubble" transform="translate(384 155) scale(.8)"/>
+  <use href="#bubble" transform="translate(343 406) scale(.8)"/>
+  <use href="#plant" transform="translate(62 463)"/>
+  <use href="#plant" transform="translate(322 476) scale(.65)"/>
+  <g transform="translate(0 520)">
+  <use href="#blueCoral" transform="translate(141 479) scale(.8)"/>
+  <use href="#blueCoral" transform="translate(244 480) scale(.72)"/>
+  <use href="#coral" color="#f56aaf" transform="translate(32 477) scale(.88)"/>
+  <use href="#coral" color="#f8c178" transform="translate(188 478) scale(.94) rotate(-10)"/>
+  <use href="#coral" color="#ee75a7" transform="translate(364 478) scale(.92) rotate(8)"/>
+  <use href="#coral" color="#ed9c83" transform="translate(422 481) scale(.65)"/>
+  </g>
+</svg>

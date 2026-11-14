@@ -1,0 +1,133 @@
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const source = path.join(__dirname, '../game.js');
+if (fs.existsSync(source)) require(source);
+
+test('pipe travel follows the measured long-video track rather than the old slow layout', () => {
+  assert.equal(Dive.W, 212);
+  assert.equal(Dive.H, 520);
+  const game = new Dive.Game({ random: () => .5 });
+  game.flap();
+  const pipe = game.pipes[0];
+  const start = pipe.x;
+  for (let i = 0; i < 30; i++) game.step(1 / 120);
+  assert.ok(Math.abs(start - pipe.x - 58) < .01, '232 logical px/s, measured over 0.25 seconds');
+  assert.equal(pipe.width, 34);
+  assert.equal(pipe.bottom - pipe.top, 132);
+  assert.equal(game.pipes[1].x - pipe.x, 264);
+});
+
+test('tap starts a round and gives an upward impulse; gravity brings the swimmer down', () => {
+  assert.ok(globalThis.Dive, 'the standalone game engine exists');
+  const game = new Dive.Game({ random: () => 0.5 });
+  assert.equal(game.state, 'ready');
+  const start = game.player.y;
+  game.flap();
+  assert.equal(game.state, 'playing');
+  for (let i = 0; i < 12; i++) game.step(1 / 120);
+  assert.ok(game.player.y < start);
+  for (let i = 0; i < 60; i++) game.step(1 / 120);
+  assert.ok(game.player.vy > 0);
+});
+
+test('ascent follows the tracked helmet arc and falling reaches the observed speed limit', () => {
+  const game = new Dive.Game({ random: () => .5 });
+  game.flap();
+  assert.equal(game.player.vy, -330);
+  game.pipes = [];
+  const scale = 212 / 192;
+  const track = [192.216, 187.399, 178.799, 173.897, 168.691, 166.954, 163.056, 162.65, 163.471, 166.187];
+  game.player.y = track[0] * scale;
+  game.player.vy = -254.8 * scale;
+  for (const y of track.slice(1)) {
+    for (let i = 0; i < 4; i++) game.step(1 / 120);
+    assert.ok(Math.abs(game.player.y - y * scale) < 4.5, 'within tracked video uncertainty');
+  }
+  game.pipes = [];
+  game.player.y = 100;
+  game.player.vy = 0;
+  for (let i = 0; i < 70; i++) game.step(1 / 120);
+  assert.equal(game.player.vy, 145);
+});
+
+test('passing a pipe awards one point; hitting a pipe or the seabed ends the round', () => {
+  const game = new Dive.Game({ random: () => 0.5 });
+  game.flap();
+  assert.ok(game.pipes.length, 'a round contains pipe obstacles');
+  game.pipes = [{ x: -60, width: 34, top: 170, bottom: 390, scored: false }];
+  game.step(1 / 120);
+  assert.equal(game.score, 1);
+  game.step(1 / 120);
+  assert.equal(game.score, 1);
+  game.pipes = [{ x: game.player.x, width: 34, top: 340, bottom: 450, scored: false }];
+  game.step(1 / 120);
+  assert.equal(game.state, 'over');
+  game.reset();
+  game.flap();
+  game.player.y = Dive.FLOOR;
+  game.step(1 / 120);
+  assert.equal(game.state, 'over');
+});
+
+test('pause freezes a round, resume preserves it, and reset clears the score', () => {
+  const game = new Dive.Game({ random: () => 0.5 });
+  game.flap();
+  game.step(1 / 120);
+  game.pause();
+  assert.equal(game.state, 'paused');
+  const frozen = JSON.stringify(game.player);
+  game.flap();
+  game.step(1);
+  assert.equal(JSON.stringify(game.player), frozen);
+  game.resume();
+  assert.equal(game.state, 'playing');
+  game.score = 9;
+  game.reset();
+  assert.equal(game.score, 0);
+  assert.equal(game.state, 'ready');
+  assert.equal(game.pipes.length, 1);
+});
+
+test('the video score advances when the pipe leaves the screen, not at the rabbit', () => {
+  const game = new Dive.Game({ random: () => .5 });
+  game.flap();
+  game.pipes = [{ x: game.player.x - 60, width: 34, top: 100, bottom: 400, scored: false }];
+  game.step(1 / 120);
+  assert.equal(game.score, 0);
+  game.pipes[0].x = -37.1;
+  game.step(.001);
+  assert.ok(game.pipes[0].x + 34 + 3.75 > 0, 'the cap stroke is still visible');
+  assert.equal(game.score, 0);
+  game.pipes[0].x = -40;
+  game.step(1 / 120);
+  assert.equal(game.score, 1);
+});
+
+test('pipe collision uses the visible cap edges without invisible padding inside the opening', () => {
+  const game = new Dive.Game({ random: () => .5 });
+  game.flap();
+  game.pipes = [{ x: game.player.x - 17, width: 34, top: 180, bottom: 312, scored: false }];
+  game.player.y = 190;
+  game.player.vy = 0;
+  game.step(1 / 120);
+  assert.equal(game.state, 'playing');
+  game.player.y = 187;
+  game.step(1 / 120);
+  assert.equal(game.state, 'over');
+});
+
+test('fullscreen resize expands the world without stretching height or changing nearby collisions', () => {
+  const game = new Dive.Game({ random: () => 0.5 });
+  game.flap();
+  game.step(1 / 120);
+  const relative = game.pipes[0].x - game.player.x;
+  const y = game.player.y;
+  game.resize(1024);
+  assert.equal(game.width, 1024);
+  assert.equal(game.player.y, y);
+  assert.equal(game.pipes[0].x - game.player.x, relative);
+  game.reset();
+  assert.ok(game.pipes[0].x - game.player.x < 360, 'first obstacle is not delayed by a wide display');
+});
