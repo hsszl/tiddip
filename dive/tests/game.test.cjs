@@ -113,6 +113,17 @@ test('transparent margins of the sprite frame no longer cause a collision', () =
   assert.equal(game.state, 'playing', 'the pipe only touches padding outside the visible rabbit');
 });
 
+test('ears above the dark head do not collide with a pipe', () => {
+  const game = new Dive.Game();
+  game.flap();
+  game.player.vy = 0;
+  const dt = 1 / 120;
+  game.pipes = [{ x: game.player.x - 35 + 232 * dt, width: 34,
+    top: game.player.y - 15, bottom: 400, scored: false }];
+  game.step(dt);
+  assert.equal(game.state, 'playing', 'only the ears overlap, not the body or dark head');
+});
+
 test('pause freezes a round, resume preserves it, and reset clears the score', () => {
   const game = new Dive.Game({ random: () => 0.5 });
   game.flap();
@@ -175,24 +186,39 @@ test('fullscreen resize expands the world without stretching height or changing 
   assert.ok(game.pipes[0].x - game.player.x < 360, 'first obstacle is not delayed by a wide display');
 });
 
-test('all four rectangle corners count on contact, while a separated rectangle remains safe', () => {
-  for (const side of ['left', 'right']) for (const edge of ['top', 'bottom']) {
-    for (const separation of [0, .1]) {
-      const game = new Dive.Game({ random: () => .5 });
-      game.flap();
-      game.player.vy = 0;
-      const dt = 1 / 120, dy = 1160 * dt ** 2 / 2;
-      const box = game.playerBounds();
-      const x = side === 'right' ? box.right + separation + 3.75 : box.left - separation - 34 - 3.75;
-      game.pipes = [{
-        x: x + 232 * dt, width: 34,
-        top: edge === 'top' ? box.top + dy - .75 : 0,
-        bottom: edge === 'bottom' ? box.bottom + dy + .75 : Dive.FLOOR,
-        scored: false,
-      }];
-      game.step(dt);
-      assert.equal(game.state, separation ? 'playing' : 'over', `${side}/${edge}, separation=${separation}`);
-    }
+test('tilted rectangles ignore their empty enclosing corners but count edge contact', () => {
+  const diamond = [[0, 2], [2, 0], [4, 2], [2, 4]];
+  assert.equal(Dive.hitboxOverlapsRect(diamond, { left: 0, top: 0, right: .5, bottom: .5 }), false);
+  assert.equal(Dive.hitboxOverlapsRect(diamond, { left: 4, top: 2, right: 5, bottom: 3 }), true);
+  assert.equal(Dive.hitboxOverlapsRect(diamond, { left: 4.01, top: 2, right: 5, bottom: 3 }), false);
+  assert.equal(Dive.hitboxOverlapsRect(diamond, { left: 1.9, top: -1, right: 2.1, bottom: 5 }), true);
+  assert.equal(Dive.hitboxOverlapsRect(diamond, { left: 1, top: 1, right: 3, bottom: 3 }), true);
+});
+
+test('the empty corner between body and head does not become a third collision box', () => {
+  const game = new Dive.Game(); game.flap(); game.player.vy = 0;
+  const dt = 1 / 120, right = game.player.x - 13;
+  game.pipes = [{ x: right - 34 - 3.75 + 232 * dt, width: 34,
+    top: game.player.y + 3 - .75, bottom: 400, scored: false }];
+  assert.ok(game.playerBounds().left < right && game.playerBounds().top < game.pipes[0].top);
+  game.step(dt);
+  assert.equal(game.state, 'playing');
+});
+
+test('both body and head independently end a round when touched by a pipe', () => {
+  for (const part of ['body', 'head']) {
+    const game = new Dive.Game(); game.flap(); game.player.vy = 0;
+    const box = game.playerHitboxes().find(box => box.part === part);
+    const x = box.points.reduce((s, p) => s + p[0], 0) / 4;
+    const y = box.points.reduce((s, p) => s + p[1], 0) / 4;
+    const obstacle = { left: x - 20.75, right: x + 20.75,
+      top: part === 'body' ? y : 0, bottom: part === 'body' ? Dive.FLOOR : y };
+    const other = game.playerHitboxes().find(box => box.part !== part);
+    assert.equal(Dive.hitboxOverlapsRect(other.points, obstacle), false, 'the other part is clear');
+    game.pipes = [{ x: x - 17 + 232 / 120, width: 34,
+      top: part === 'head' ? y - .75 : 0, bottom: part === 'body' ? y + .75 : 400, scored: false }];
+    game.step(1 / 120);
+    assert.equal(game.state, 'over', part);
   }
 });
 

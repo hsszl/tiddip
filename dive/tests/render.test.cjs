@@ -24,26 +24,24 @@ test('green kelp belongs to the foreground atlas and covers pipes with the coral
   assert.deepEqual(order, ['background', 'pipe', 'foreground', 'rabbit', 'score']);
 });
 
-test('collision bounds match the actual SVG outline at the rendered pose and angle', () => {
-  const svg = require('node:fs').readFileSync(require('node:path').join(__dirname, '../assets/rabbit.svg'), 'utf8');
-  assert.ok(svg.includes('transform="scale(2)"'));
-  const vertices = [[], [], []];
-  for (const [, data] of svg.matchAll(/<path[^>]+\bd="([^"]+)"/g)) {
-    const tokens = data.match(/[A-Za-z]|-?\d+(?:\.\d+)?/g);
-    let i = 0, x, y, startX, startY, frame;
-    while (i < tokens.length) {
-      const command = tokens[i++];
-      if (command === 'M') { x = +tokens[i++]; y = +tokens[i++]; startX = x; startY = y; frame = Math.floor(x / 56); }
-      else if (command === 'h') x += +tokens[i++];
-      else if (command === 'v') y += +tokens[i++];
-      else if (command === 'z') { x = startX; y = startY; }
-      else assert.fail(`unsupported SVG command: ${command}`);
-      vertices[frame].push([x * 2 - frame * 112, y * 2]);
-    }
-  }
+test('both hitboxes use the actual rendered frame, anchor, scale and rotation', () => {
   const renderer = Object.create(Dive.Renderer.prototype);
   renderer.rabbit = {};
   const game = new Dive.Game();
+  const local = [
+    { kickAge: 0, tilt: 0, tiltPose: false },
+    { kickAge: .85, tilt: 0, tiltPose: false },
+    { kickAge: .4, tilt: -30, tiltPose: true },
+  ].map(pose => {
+    Object.assign(game.player, pose);
+    const boxes = game.playerHitboxes();
+    assert.deepEqual(boxes.map(box => box.part), ['body', 'head']);
+    return boxes.map(box => box.points.map(([x, y]) => [
+      (x - game.player.x) / Dive.SWIMMER.scale + Dive.SWIMMER.anchorX,
+      (y - game.player.y) / Dive.SWIMMER.scale + Dive.SWIMMER.anchorY,
+    ]));
+  });
+  for (const boxes of local) assert.ok(Math.min(...boxes[1].map(p => p[1])) > 20, 'head box excludes the ears');
   let destination, rotation, frame;
   const ctx = {
     save() {}, restore() {}, translate() {}, rotate(angle) { rotation = angle; },
@@ -52,17 +50,14 @@ test('collision bounds match the actual SVG outline at the rendered pose and ang
   for (const kickAge of [0, .4, .56, .85]) for (const tilt of [0, -12, -28]) for (const tiltPose of [false, true]) {
     Object.assign(game.player, { kickAge, tilt, tiltPose });
     renderer.swimmer(ctx, game.player.x, game.player.y, game.player);
-    const points = vertices[frame].map(([sx, sy]) => {
+    const expected = local[frame].map(points => points.map(([sx, sy]) => {
       const x = destination.dx + sx * destination.width / destination.sw;
       const y = destination.dy + sy * destination.height / destination.sh;
       return [game.player.x + x * Math.cos(rotation) - y * Math.sin(rotation), game.player.y + x * Math.sin(rotation) + y * Math.cos(rotation)];
-    });
-    const expected = {
-      left: Math.min(...points.map(p => p[0])), right: Math.max(...points.map(p => p[0])),
-      top: Math.min(...points.map(p => p[1])), bottom: Math.max(...points.map(p => p[1])),
-    };
-    const box = game.playerBounds();
-    for (const side of ['left', 'top', 'right', 'bottom']) assert.ok(Math.abs(box[side] - expected[side]) < 1e-9, `${frame}/${tilt}/${side}`);
+    }));
+    game.playerHitboxes().forEach((box, b) => box.points.forEach((point, p) => {
+      for (let axis = 0; axis < 2; axis++) assert.ok(Math.abs(point[axis] - expected[b][p][axis]) < 1e-9, `${frame}/${tilt}/${box.part}`);
+    }));
   }
 });
 
