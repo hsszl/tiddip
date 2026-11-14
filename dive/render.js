@@ -91,10 +91,10 @@
       ctx.restore();
     }
 
-    label(ctx, name, center, y, alignLeft = false) {
+    label(ctx, name, center, y, alignLeft = false, scale = 1) {
       const [sx, sy, width, height] = LETTERS[name];
       ctx.drawImage(this.lettering, sx, sy, width, height,
-        alignLeft ? center : center - width / 2, y, width, height);
+        alignLeft ? center : center - width * scale / 2, y, width * scale, height * scale);
     }
 
     settings(ctx) {
@@ -158,12 +158,12 @@
         this.number(ctx, game.score, W / 2, 97);
       }
       if (game.state === 'over') {
-        this.label(ctx, 'over', W / 2, 215);
+        this.label(ctx, 'over', W / 2, 225);
         const lineWidth = 74 + String(this.best).length * 21;
         const left = (W - lineWidth) / 2;
-        this.label(ctx, 'max', left, 259, true);
-        this.number(ctx, this.best, left + 74 + String(this.best).length * 10.5, 258, true);
-        if (game.hellMode) this.label(ctx, 'hell', W / 2, 300);
+        this.label(ctx, 'max', left, 270, true);
+        this.number(ctx, this.best, left + 74 + String(this.best).length * 10.5, 269, true);
+        if (game.hellMode) this.label(ctx, 'hell', W / 2, 307, false, 1.12);
       } else if (game.state === 'paused') {
         ctx.fillStyle = '#02183233'; ctx.fillRect(0, 0, W, H);
         this.label(ctx, 'paused', W / 2, 219);
