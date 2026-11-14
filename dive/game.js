@@ -5,6 +5,14 @@
   const PIPE_SPEED = 232, PIPE_SPACING = 264, PIPE_WIDTH = 34, GAP = 132;
   const GRAVITY = 1160, FLAP_SPEED = -330, MAX_FALL = 145;
   const KICK_RECOVERY = .3;
+  const SWIMMER = Object.freeze({ size: 112, anchorX: 76, anchorY: 40, scale: .65 });
+  // Round the full sprite frame outward, then keep one fixed square for all poses.
+  const BOX_LEFT = Math.floor(-SWIMMER.anchorX * SWIMMER.scale);
+  const BOX_TOP = Math.floor(-SWIMMER.anchorY * SWIMMER.scale);
+  const BOX_SIZE = Math.max(
+    Math.ceil((SWIMMER.size - SWIMMER.anchorX) * SWIMMER.scale) - BOX_LEFT,
+    Math.ceil((SWIMMER.size - SWIMMER.anchorY) * SWIMMER.scale) - BOX_TOP,
+  );
 
   class Game {
     constructor({ random = Math.random, hellMode = true } = {}) {
@@ -16,7 +24,7 @@
 
     reset() {
       this.state = 'ready';
-      this.player = { x: this.width * .34, y: 260, vy: 0, radius: 9, kickAge: KICK_RECOVERY };
+      this.player = { x: this.width * .34, y: 260, vy: 0, kickAge: KICK_RECOVERY };
       this.score = 0;
       this.time = 0;
       this.distance = 0;
@@ -31,6 +39,11 @@
       for (const pipe of this.pipes) pipe.x += shift;
       this.player.x = nextX;
       this.width = width;
+    }
+
+    playerBounds() {
+      const left = this.player.x + BOX_LEFT, top = this.player.y + BOX_TOP;
+      return { left, top, right: left + BOX_SIZE, bottom: top + BOX_SIZE };
     }
 
     addPipe(x) {
@@ -63,8 +76,8 @@
       const fallingTime = Math.min(dt, Math.max(0, (MAX_FALL - this.player.vy) / GRAVITY));
       this.player.y += this.player.vy * fallingTime + GRAVITY * fallingTime ** 2 / 2 + MAX_FALL * (dt - fallingTime);
       this.player.vy = Math.min(MAX_FALL, this.player.vy + GRAVITY * dt);
-      const p = this.player;
-      if (p.y - p.radius <= 0 || p.y + p.radius >= FLOOR) {
+      const box = this.playerBounds();
+      if (box.top <= 0 || box.bottom >= FLOOR) {
         this.state = 'over';
         return;
       }
@@ -73,9 +86,8 @@
       this.distance += speed * dt;
       for (const pipe of this.pipes) {
         pipe.x -= speed * dt;
-        const nearestX = Math.max(pipe.x - 3.75, Math.min(pipe.x + pipe.width + 3.75, p.x));
-        const dy = Math.max(0, Math.min(p.y - pipe.top - .75, pipe.bottom - .75 - p.y));
-        if ((p.x - nearestX) ** 2 + dy ** 2 < p.radius ** 2) {
+        if (box.right >= pipe.x - 3.75 && box.left <= pipe.x + pipe.width + 3.75 &&
+            (box.top <= pipe.top + .75 || box.bottom >= pipe.bottom - .75)) {
           this.state = 'over';
           return;
         }
@@ -90,5 +102,5 @@
     }
   }
 
-  globalThis.Dive = { Game, W, H, FLOOR };
+  globalThis.Dive = { Game, W, H, FLOOR, SWIMMER };
 })();

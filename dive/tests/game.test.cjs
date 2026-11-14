@@ -99,6 +99,20 @@ test('passing a pipe awards one point; hitting a pipe or the seabed ends the rou
   assert.equal(game.state, 'over');
 });
 
+test('the full rabbit square collides at its upper-right corner, not just the head circle', () => {
+  const game = new Dive.Game({ random: () => .5 });
+  game.flap();
+  game.player.vy = 0;
+  const dt = 1 / 120;
+  const nextY = game.player.y + 1160 * dt ** 2 / 2;
+  game.pipes = [{
+    x: game.player.x + 20 + 3.75 + 232 * dt, width: 34,
+    top: nextY - 20 - .75, bottom: 400, scored: false,
+  }];
+  game.step(dt);
+  assert.equal(game.state, 'over', 'a corner inside the full sprite square must not slip past the pipe cap');
+});
+
 test('pause freezes a round, resume preserves it, and reset clears the score', () => {
   const game = new Dive.Game({ random: () => 0.5 });
   game.flap();
@@ -133,15 +147,16 @@ test('the video score advances when the pipe leaves the screen, not at the rabbi
   assert.equal(game.score, 1);
 });
 
-test('pipe collision uses the visible cap edges without invisible padding inside the opening', () => {
+test('square collision uses the visible cap edges without extra padding inside the opening', () => {
   const game = new Dive.Game({ random: () => .5 });
   game.flap();
   game.pipes = [{ x: game.player.x - 17, width: 34, top: 180, bottom: 312, scored: false }];
-  game.player.y = 190;
+  const topOffset = game.playerBounds().top - game.player.y;
+  game.player.y = 181.75 - topOffset;
   game.player.vy = 0;
   game.step(1 / 120);
   assert.equal(game.state, 'playing');
-  game.player.y = 187;
+  game.player.y -= 2;
   game.step(1 / 120);
   assert.equal(game.state, 'over');
 });
@@ -158,4 +173,50 @@ test('fullscreen resize expands the world without stretching height or changing 
   assert.equal(game.pipes[0].x - game.player.x, relative);
   game.reset();
   assert.ok(game.pipes[0].x - game.player.x < 360, 'first obstacle is not delayed by a wide display');
+});
+
+test('all four square corners count on contact, while a separated square remains safe', () => {
+  for (const side of ['left', 'right']) for (const edge of ['top', 'bottom']) {
+    for (const separation of [0, .1]) {
+      const game = new Dive.Game({ random: () => .5 });
+      game.flap();
+      game.player.vy = 0;
+      const dt = 1 / 120, dy = 1160 * dt ** 2 / 2;
+      const box = game.playerBounds();
+      const x = side === 'right' ? box.right + separation + 3.75 : box.left - separation - 34 - 3.75;
+      game.pipes = [{
+        x: x + 232 * dt, width: 34,
+        top: edge === 'top' ? box.top + dy - .75 : 0,
+        bottom: edge === 'bottom' ? box.bottom + dy + .75 : Dive.FLOOR,
+        scored: false,
+      }];
+      game.step(dt);
+      assert.equal(game.state, separation ? 'playing' : 'over', `${side}/${edge}, separation=${separation}`);
+    }
+  }
+});
+
+test('the square reaches ceiling and floor before the old head-only circle', () => {
+  for (const edge of ['top', 'bottom']) {
+    const game = new Dive.Game();
+    game.flap();
+    game.pipes = [];
+    game.player.vy = 0;
+    const box = game.playerBounds();
+    game.player.y += edge === 'top' ? -box.top - .1 : Dive.FLOOR - box.bottom;
+    game.step(1 / 120);
+    assert.equal(game.state, 'over', edge);
+  }
+});
+
+test('the hitbox stays square and unchanged through kick poses and difficulty settings', () => {
+  const game = new Dive.Game();
+  const box = game.playerBounds();
+  assert.equal(box.right - box.left, 74);
+  assert.equal(box.bottom - box.top, 74);
+  for (const age of [0, .3, .56, .85]) for (const mode of [false, true]) {
+    game.player.kickAge = age;
+    game.hellMode = mode;
+    assert.deepEqual(game.playerBounds(), box);
+  }
 });

@@ -8,7 +8,7 @@ require('../game.js');
 // Exercise the actual app event handlers; graphics and browser I/O are inert.
 function inputHarness(saved = new Map()) {
   const events = new Map(), nodes = new Map();
-  let game;
+  let game, scheduled;
   const buttons = new Set(['action', 'pause', 'sound', 'fullscreen', 'hellMode']);
   const node = id => {
     if (!nodes.has(id)) nodes.set(id, {
@@ -24,7 +24,7 @@ function inputHarness(saved = new Map()) {
     navigator: {}, performance: { now: () => 1000 },
     localStorage: { getItem: key => saved.get(key) ?? null, setItem(key, value) { saved.set(key, value); } },
     matchMedia: () => ({ matches: false, addEventListener() {} }),
-    requestAnimationFrame: () => 1, cancelAnimationFrame() {},
+    requestAnimationFrame(callback) { scheduled = callback; return 1; }, cancelAnimationFrame() {},
     window: { addEventListener() {} },
     document: {
       getElementById: node, hidden: false, body: { dataset: {} }, documentElement: {},
@@ -43,6 +43,7 @@ function inputHarness(saved = new Map()) {
   return {
     game, saved, node,
     get pageState() { return context.document.body.dataset.state; },
+    tick(now = 1000) { const callback = scheduled; scheduled = null; callback(now); },
     click(id) { events.get(`${id}:click`)({ target: node(id) }); },
     key(key, target = 'stage') {
       events.get('document:keydown')({ key, target: node(target), repeat: false, preventDefault() {} });
@@ -67,6 +68,35 @@ test('the result menu opens settings, preserves the round, and persists the diff
   app.key('escape');
   assert.equal(app.pageState, 'over');
   assert.equal(inputHarness(app.saved).game.hellMode, false);
+});
+
+test('MAX persists only in local browser storage across reloads and never decreases', () => {
+  const app = inputHarness();
+  app.click('action');
+  app.game.pipes = [{ x: -60, width: 34, top: 100, bottom: 400, scored: false }];
+  app.game.step(1 / 120);
+  app.tick();
+  assert.equal(app.saved.get('tiddip.dive.best.v1'), '1');
+  const reloaded = inputHarness(app.saved);
+  assert.equal(Number(reloaded.node('best').textContent), 1);
+  reloaded.click('action');
+  reloaded.game.player.y = Dive.FLOOR;
+  reloaded.game.step(1 / 120);
+  reloaded.tick();
+  assert.equal(reloaded.node('result').textContent, 'MAX 1');
+  assert.equal(app.saved.get('tiddip.dive.best.v1'), '1', 'a lower-scoring round must not overwrite MAX');
+  assert.equal(Number(inputHarness().node('best').textContent), 0, 'another browser has its own MAX');
+});
+
+test('blocked local storage still allows a session-only MAX without a backend fallback', () => {
+  const blocked = { get() { throw Error('blocked'); }, set() { throw Error('blocked'); } };
+  const app = inputHarness(blocked);
+  app.click('action');
+  app.game.pipes = [{ x: -60, width: 34, top: 100, bottom: 400, scored: false }];
+  app.game.step(1 / 120);
+  app.tick();
+  assert.equal(Number(app.node('best').textContent), 1);
+  assert.equal(Number(inputHarness(blocked).node('best').textContent), 0);
 });
 
 for (const target of ['stage', 'pause']) {

@@ -3,6 +3,27 @@ const assert = require('node:assert/strict');
 require('../game.js');
 require('../render.js');
 
+test('the fixed collision square covers the full rendered frame at the shared off-center anchor', () => {
+  const renderer = Object.create(Dive.Renderer.prototype);
+  renderer.rabbit = {};
+  const game = new Dive.Game();
+  const box = game.playerBounds();
+  let destination;
+  const ctx = {
+    save() {}, restore() {}, translate() {}, rotate() {},
+    drawImage(image, sx, sy, sw, sh, dx, dy, width, height) { destination = { dx, dy, width, height }; },
+  };
+  for (const frame of [0, 1, 2]) {
+    renderer.swimmer(ctx, game.player.x, game.player.y, game.player, frame);
+    assert.ok(box.left <= game.player.x + destination.dx);
+    assert.ok(box.top <= game.player.y + destination.dy);
+    assert.ok(box.right >= game.player.x + destination.dx + destination.width);
+    assert.ok(box.bottom >= game.player.y + destination.dy + destination.height);
+    assert.equal(destination.width, Dive.SWIMMER.size * Dive.SWIMMER.scale);
+    assert.equal(destination.width, destination.height);
+  }
+});
+
 test('the pose selector preserves an existing raised pose through recovery instead of switching on velocity alone', () => {
   const renderer = Object.create(Dive.Renderer.prototype);
   renderer.rabbit = {};

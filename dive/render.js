@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const { W, H, FLOOR } = Dive;
+  const { W, H, FLOOR, SWIMMER } = Dive;
   // Natural glyph bounds: a serif title and MiSans UI, without nonuniform stretching.
   const LETTERS = {
     title: [0, 0, 157, 39], over: [0, 52, 205, 29], max: [0, 90, 65, 24],
@@ -79,7 +79,7 @@
       }
     }
 
-    swimmer(ctx, x, y, player, idleFrame, scale = .65) {
+    swimmer(ctx, x, y, player, idleFrame, scale = SWIMMER.scale) {
       if (idleFrame === undefined) {
         if (player.kickAge < .08 || player.kickAge >= .52) this.tiltPose = false;
         else if (this.tilt < -23) this.tiltPose = true;
@@ -88,8 +88,8 @@
       const frame = idleFrame ?? (this.tiltPose ? 2 : player.kickAge < .3 || recovering ? 0 : 1);
       const angle = idleFrame === undefined ? this.tilt - (frame === 2 ? -30 : 0) : 0;
       ctx.save(); ctx.translate(x, y); ctx.rotate(angle * Math.PI / 180);
-      ctx.drawImage(this.rabbit, frame * 112, 0, 112, 112,
-        -76 * scale, -40 * scale, 112 * scale, 112 * scale);
+      ctx.drawImage(this.rabbit, frame * SWIMMER.size, 0, SWIMMER.size, SWIMMER.size,
+        -SWIMMER.anchorX * scale, -SWIMMER.anchorY * scale, SWIMMER.size * scale, SWIMMER.size * scale);
       ctx.restore();
     }
 
