@@ -60,6 +60,14 @@ button:focus-visible, a:focus-visible { outline: 2px solid white; outline-offset
 .more-icon, .restart-icon { display: none; }
 .stage[data-state="over"] .back-icon, .stage[data-state="over"] .play-icon { display: none; }
 .stage[data-state="over"] .more-icon, .stage[data-state="over"] .restart-icon { display: inline; }
+.stage[data-state="over"] .pause {
+  height: 36cqw; background: #276c83e6; border-color: #87b8cd55;
+}
+.stage[data-state="over"] .action {
+  width: 50cqw; height: 38cqw; border-radius: 50%; background: #435870eb; border-color: #91a1b366;
+}
+.stage[data-state="over"] .action svg { width: 24cqw; height: 24cqw; stroke-width: 4; }
+.restart-icon .arrow-tip { fill: currentColor; stroke-width: 1; }
 .stage[data-state="settings"] .pause { top: 9cqw; background: #272e42; border-color: #53607866; }
 .settings { position: absolute; inset: 0; pointer-events: none; }
 .mode-switch {

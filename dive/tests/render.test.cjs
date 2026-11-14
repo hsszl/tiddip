@@ -3,6 +3,27 @@ const assert = require('node:assert/strict');
 require('../game.js');
 require('../render.js');
 
+test('green kelp belongs to the foreground atlas and covers pipes with the corals', () => {
+  const svg = require('node:fs').readFileSync(require('node:path').join(__dirname, '../assets/sea.svg'), 'utf8');
+  const foreground = svg.match(/<g\b[^>]*transform="translate\(0 520\)"[^>]*>/);
+  assert.ok(foreground);
+  const plants = [...svg.matchAll(/<use\s+href="#plant"/g)];
+  assert.ok(plants.length >= 2);
+  assert.ok(plants.every(plant => plant.index > foreground.index), 'green kelp must not be baked into the layer behind pipes');
+  const renderer = Object.create(Dive.Renderer.prototype), order = [];
+  Object.assign(renderer, { loaded: true, canvas: { width: Dive.W, height: Dive.H }, background: {}, foreground: {} });
+  renderer.ctx = {
+    setTransform() {}, clearRect() {}, fillRect() {},
+    createLinearGradient() { return { addColorStop() {} }; },
+    drawImage(image) { order.push(image === renderer.background ? 'background' : 'foreground'); },
+  };
+  renderer.pipe = () => order.push('pipe');
+  renderer.swimmer = () => order.push('rabbit');
+  renderer.number = () => order.push('score');
+  const game = new Dive.Game(); game.flap(); renderer.draw(game, 0);
+  assert.deepEqual(order, ['background', 'pipe', 'foreground', 'rabbit', 'score']);
+});
+
 test('collision bounds match the actual SVG outline at the rendered pose and angle', () => {
   const svg = require('node:fs').readFileSync(require('node:path').join(__dirname, '../assets/rabbit.svg'), 'utf8');
   assert.ok(svg.includes('transform="scale(2)"'));

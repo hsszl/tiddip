@@ -63,16 +63,23 @@
     pipe(ctx, pipe) {
       const { x, width, top, bottom } = pipe;
       const green = ctx.createLinearGradient(x, 0, x + width, 0);
-      green.addColorStop(0, '#81af57'); green.addColorStop(.16, '#c9e67b');
-      green.addColorStop(.35, '#d2ed8b'); green.addColorStop(.77, '#b7d66e'); green.addColorStop(1, '#659857');
-      ctx.fillStyle = green; ctx.strokeStyle = '#30767e'; ctx.lineWidth = 1.5;
+      green.addColorStop(0, '#82a456'); green.addColorStop(.2, '#b0c96d');
+      green.addColorStop(.65, '#b9ce73'); green.addColorStop(1, '#85a65c');
+      ctx.fillStyle = '#508d79'; ctx.strokeStyle = '#31566d'; ctx.lineWidth = 1.5;
       ctx.fillRect(x, -2, width, top - 5); ctx.strokeRect(x, -2, width, top - 5);
       ctx.fillRect(x, bottom + 6, width, FLOOR - bottom); ctx.strokeRect(x, bottom + 6, width, FLOOR - bottom);
-      ctx.fillStyle = '#edfac066'; ctx.fillRect(x + 6, 0, 2, top - 6); ctx.fillRect(x + 6, bottom + 7, 2, FLOOR - bottom);
+      ctx.fillStyle = green;
+      ctx.beginPath(); ctx.roundRect(x + 3, -4, width - 6, top - 14, 3); ctx.fill();
+      ctx.beginPath(); ctx.roundRect(x + 3, bottom + 18, width - 6, FLOOR - bottom - 14, 3); ctx.fill();
+      ctx.fillStyle = '#dae48c33'; ctx.fillRect(x + 5, 0, 1.5, top - 20); ctx.fillRect(x + 5, bottom + 21, 1.5, FLOOR - bottom);
       for (const y of [top - 7, bottom]) {
-        ctx.fillStyle = '#f3b5ac'; ctx.strokeStyle = '#31577d'; ctx.lineWidth = 1.5;
-        ctx.beginPath(); ctx.roundRect(x - 3, y, width + 6, 7, 2); ctx.fill(); ctx.stroke();
-        ctx.fillStyle = '#fff0c7'; ctx.fillRect(x - 1, y + 1.5, width + 2, 2);
+        const cap = ctx.createLinearGradient(x - 3, y, x + width + 3, y);
+        cap.addColorStop(0, '#9cbb98'); cap.addColorStop(.28, '#e2c38e');
+        cap.addColorStop(.72, '#e2c38e'); cap.addColorStop(1, '#99b899');
+        ctx.fillStyle = cap; ctx.strokeStyle = '#31546c'; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.roundRect(x - 3, y, width + 6, 7, 3); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = '#6c918166'; ctx.fillRect(x + 6, y + 1, 1, 5); ctx.fillRect(x + width - 7, y + 1, 1, 5);
+        ctx.fillStyle = '#ffd4bcbb'; ctx.fillRect(x, y + 5.5, width, .8);
       }
     }
 
@@ -151,7 +158,6 @@
         this.number(ctx, game.score, W / 2, 97);
       }
       if (game.state === 'over') {
-        ctx.fillStyle = '#02183220'; ctx.fillRect(0, 0, W, H);
         this.label(ctx, 'over', W / 2, 215);
         const lineWidth = 74 + String(this.best).length * 21;
         const left = (W - lineWidth) / 2;
