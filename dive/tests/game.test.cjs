@@ -99,7 +99,7 @@ test('passing a pipe awards one point; hitting a pipe or the seabed ends the rou
   assert.equal(game.state, 'over');
 });
 
-test('the full rabbit square collides at its upper-right corner, not just the head circle', () => {
+test('transparent margins of the sprite frame no longer cause a collision', () => {
   const game = new Dive.Game({ random: () => .5 });
   game.flap();
   game.player.vy = 0;
@@ -110,7 +110,7 @@ test('the full rabbit square collides at its upper-right corner, not just the he
     top: nextY - 20 - .75, bottom: 400, scored: false,
   }];
   game.step(dt);
-  assert.equal(game.state, 'over', 'a corner inside the full sprite square must not slip past the pipe cap');
+  assert.equal(game.state, 'playing', 'the pipe only touches padding outside the visible rabbit');
 });
 
 test('pause freezes a round, resume preserves it, and reset clears the score', () => {
@@ -147,7 +147,7 @@ test('the video score advances when the pipe leaves the screen, not at the rabbi
   assert.equal(game.score, 1);
 });
 
-test('square collision uses the visible cap edges without extra padding inside the opening', () => {
+test('rectangle collision uses the visible cap edges without extra padding inside the opening', () => {
   const game = new Dive.Game({ random: () => .5 });
   game.flap();
   game.pipes = [{ x: game.player.x - 17, width: 34, top: 180, bottom: 312, scored: false }];
@@ -175,7 +175,7 @@ test('fullscreen resize expands the world without stretching height or changing 
   assert.ok(game.pipes[0].x - game.player.x < 360, 'first obstacle is not delayed by a wide display');
 });
 
-test('all four square corners count on contact, while a separated square remains safe', () => {
+test('all four rectangle corners count on contact, while a separated rectangle remains safe', () => {
   for (const side of ['left', 'right']) for (const edge of ['top', 'bottom']) {
     for (const separation of [0, .1]) {
       const game = new Dive.Game({ random: () => .5 });
@@ -196,7 +196,7 @@ test('all four square corners count on contact, while a separated square remains
   }
 });
 
-test('the square reaches ceiling and floor before the old head-only circle', () => {
+test('the visible rectangle reaches ceiling and floor before the old head-only circle', () => {
   for (const edge of ['top', 'bottom']) {
     const game = new Dive.Game();
     game.flap();
@@ -209,14 +209,20 @@ test('the square reaches ceiling and floor before the old head-only circle', () 
   }
 });
 
-test('the hitbox stays square and unchanged through kick poses and difficulty settings', () => {
+test('bounds follow the visible pose and rotation instead of a fixed square', () => {
   const game = new Dive.Game();
-  const box = game.playerBounds();
-  assert.equal(box.right - box.left, 74);
-  assert.equal(box.bottom - box.top, 74);
-  for (const age of [0, .3, .56, .85]) for (const mode of [false, true]) {
-    game.player.kickAge = age;
+  game.flap();
+  const folded = game.playerBounds();
+  game.player.kickAge = .4;
+  const extended = game.playerBounds();
+  assert.notDeepEqual(extended, folded);
+  assert.ok(extended.left < folded.left, 'extended limbs change the visible bounds');
+  assert.notEqual(extended.right - extended.left, extended.bottom - extended.top);
+  game.player.tilt = -25;
+  const rotated = game.playerBounds();
+  assert.notDeepEqual(rotated, extended, 'the same pose changes bounds as it rotates');
+  for (const mode of [false, true]) {
     game.hellMode = mode;
-    assert.deepEqual(game.playerBounds(), box);
+    assert.deepEqual(game.playerBounds(), rotated);
   }
 });

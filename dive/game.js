@@ -6,13 +6,21 @@
   const GRAVITY = 1160, FLAP_SPEED = -330, MAX_FALL = 145;
   const KICK_RECOVERY = .3;
   const SWIMMER = Object.freeze({ size: 112, anchorX: 76, anchorY: 40, scale: .65 });
-  // Round the full sprite frame outward, then keep one fixed square for all poses.
-  const BOX_LEFT = Math.floor(-SWIMMER.anchorX * SWIMMER.scale);
-  const BOX_TOP = Math.floor(-SWIMMER.anchorY * SWIMMER.scale);
-  const BOX_SIZE = Math.max(
-    Math.ceil((SWIMMER.size - SWIMMER.anchorX) * SWIMMER.scale) - BOX_LEFT,
-    Math.ceil((SWIMMER.size - SWIMMER.anchorY) * SWIMMER.scale) - BOX_TOP,
-  );
+  // Convex hulls of the actual SVG paths, in each frame's unscaled coordinates.
+  // Transforming these vertices gives tight bounds without transparent frame padding.
+  const OUTLINES = [
+    [[20,54],[66,8],[68,8],[84,12],[88,14],[90,16],[98,30],[100,34],[102,62],[102,66],[100,68],[96,70],[50,82],[40,82],[34,80],[28,74],[20,60]],
+    [[10,60],[14,56],[64,12],[72,12],[86,14],[88,16],[98,34],[100,40],[100,46],[96,52],[90,58],[72,74],[68,76],[26,76],[18,74],[12,70],[10,66]],
+    [[34,94],[48,24],[50,22],[70,12],[82,12],[90,20],[94,26],[98,34],[98,44],[94,52],[78,74],[70,84],[52,104],[40,104],[36,102],[34,100]],
+  ];
+
+  function swimmerPose(player, idleFrame) {
+    const raised = player.tiltPose && player.kickAge >= .08 && player.kickAge < .52;
+    const recovering = player.kickAge >= .52 && player.kickAge < .7;
+    const frame = idleFrame ?? (raised ? 2 : player.kickAge < .3 || recovering ? 0 : 1);
+    const angle = idleFrame === undefined ? player.tilt + (frame === 2 ? 30 : 0) : 0;
+    return { frame, angle };
+  }
 
   class Game {
     constructor({ random = Math.random, hellMode = true } = {}) {
@@ -24,7 +32,7 @@
 
     reset() {
       this.state = 'ready';
-      this.player = { x: this.width * .34, y: 260, vy: 0, kickAge: KICK_RECOVERY };
+      this.player = { x: this.width * .34, y: 260, vy: 0, kickAge: KICK_RECOVERY, tilt: 0, tiltPose: false };
       this.score = 0;
       this.time = 0;
       this.distance = 0;
@@ -42,8 +50,18 @@
     }
 
     playerBounds() {
-      const left = this.player.x + BOX_LEFT, top = this.player.y + BOX_TOP;
-      return { left, top, right: left + BOX_SIZE, bottom: top + BOX_SIZE };
+      const { frame, angle } = swimmerPose(this.player);
+      const radians = angle * Math.PI / 180, cos = Math.cos(radians), sin = Math.sin(radians);
+      let left = Infinity, top = Infinity, right = -Infinity, bottom = -Infinity;
+      for (const [sx, sy] of OUTLINES[frame]) {
+        const x = (sx - SWIMMER.anchorX) * SWIMMER.scale;
+        const y = (sy - SWIMMER.anchorY) * SWIMMER.scale;
+        const rx = this.player.x + x * cos - y * sin;
+        const ry = this.player.y + x * sin + y * cos;
+        left = Math.min(left, rx); right = Math.max(right, rx);
+        top = Math.min(top, ry); bottom = Math.max(bottom, ry);
+      }
+      return { left, top, right, bottom };
     }
 
     addPipe(x) {
@@ -57,6 +75,7 @@
       if (this.state !== 'playing' || this.player.kickAge + 1e-9 < KICK_RECOVERY) return false;
       this.player.vy = FLAP_SPEED;
       this.player.kickAge = 0;
+      this.player.tiltPose = false;
       return true;
     }
 
@@ -76,6 +95,11 @@
       const fallingTime = Math.min(dt, Math.max(0, (MAX_FALL - this.player.vy) / GRAVITY));
       this.player.y += this.player.vy * fallingTime + GRAVITY * fallingTime ** 2 / 2 + MAX_FALL * (dt - fallingTime);
       this.player.vy = Math.min(MAX_FALL, this.player.vy + GRAVITY * dt);
+      // Physics and drawing consume the same pose; rendering never advances motion.
+      const p = this.player, rising = p.vy < 0;
+      p.tilt += ((rising ? -32 : 0) - p.tilt) * (1 - Math.exp(-dt / (rising ? .25 : .55)));
+      if (p.kickAge < .08 || p.kickAge >= .52) p.tiltPose = false;
+      else if (p.tilt < -23) p.tiltPose = true;
       const box = this.playerBounds();
       if (box.top <= 0 || box.bottom >= FLOOR) {
         this.state = 'over';
@@ -102,5 +126,5 @@
     }
   }
 
-  globalThis.Dive = { Game, W, H, FLOOR, SWIMMER };
+  globalThis.Dive = { Game, W, H, FLOOR, SWIMMER, swimmerPose };
 })();

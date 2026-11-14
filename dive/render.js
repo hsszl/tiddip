@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const { W, H, FLOOR, SWIMMER } = Dive;
+  const { W, H, FLOOR, SWIMMER, swimmerPose } = Dive;
   // Natural glyph bounds: a serif title and MiSans UI, without nonuniform stretching.
   const LETTERS = {
     title: [0, 0, 157, 39], over: [0, 52, 205, 29], max: [0, 90, 65, 24],
@@ -18,9 +18,6 @@
       this.foreground = document.createElement('canvas');
       this.width = W;
       this.best = 0;
-      this.tilt = 0;
-      this.tiltPose = false;
-      this.lastMotionTime = 0;
       this.loaded = false;
       this.rabbit = new Image();
       this.sea = new Image();
@@ -80,13 +77,7 @@
     }
 
     swimmer(ctx, x, y, player, idleFrame, scale = SWIMMER.scale) {
-      if (idleFrame === undefined) {
-        if (player.kickAge < .08 || player.kickAge >= .52) this.tiltPose = false;
-        else if (this.tilt < -23) this.tiltPose = true;
-      }
-      const recovering = player.kickAge >= .52 && player.kickAge < .7;
-      const frame = idleFrame ?? (this.tiltPose ? 2 : player.kickAge < .3 || recovering ? 0 : 1);
-      const angle = idleFrame === undefined ? this.tilt - (frame === 2 ? -30 : 0) : 0;
+      const { frame, angle } = swimmerPose(player, idleFrame);
       ctx.save(); ctx.translate(x, y); ctx.rotate(angle * Math.PI / 180);
       ctx.drawImage(this.rabbit, frame * SWIMMER.size, 0, SWIMMER.size, SWIMMER.size,
         -SWIMMER.anchorX * scale, -SWIMMER.anchorY * scale, SWIMMER.size * scale, SWIMMER.size * scale);
@@ -140,13 +131,6 @@
       if (!this.loaded) return;
       ctx.setTransform(this.canvas.width / W, 0, 0, this.canvas.height / H, 0, 0);
       if (this.settingsOpen) { this.settings(ctx); return; }
-      if (game.state === 'ready' || game.time < this.lastMotionTime) {
-        this.tilt = 0; this.tiltPose = false; this.lastMotionTime = game.time;
-      }
-      const dt = Math.max(0, Math.min(.1, game.time - this.lastMotionTime));
-      const rising = game.player.vy < 0;
-      this.tilt += ((rising ? -32 : 0) - this.tilt) * (1 - Math.exp(-dt / (rising ? .25 : .55)));
-      this.lastMotionTime = game.time;
       const offset = game.distance * .5 % (W * 2);
       const layer = image => {
         ctx.drawImage(image, -offset, 0, W * 2, H);

@@ -3,40 +3,60 @@ const assert = require('node:assert/strict');
 require('../game.js');
 require('../render.js');
 
-test('the fixed collision square covers the full rendered frame at the shared off-center anchor', () => {
+test('collision bounds match the actual SVG outline at the rendered pose and angle', () => {
+  const svg = require('node:fs').readFileSync(require('node:path').join(__dirname, '../assets/rabbit.svg'), 'utf8');
+  assert.ok(svg.includes('transform="scale(2)"'));
+  const vertices = [[], [], []];
+  for (const [, data] of svg.matchAll(/<path[^>]+\bd="([^"]+)"/g)) {
+    const tokens = data.match(/[A-Za-z]|-?\d+(?:\.\d+)?/g);
+    let i = 0, x, y, startX, startY, frame;
+    while (i < tokens.length) {
+      const command = tokens[i++];
+      if (command === 'M') { x = +tokens[i++]; y = +tokens[i++]; startX = x; startY = y; frame = Math.floor(x / 56); }
+      else if (command === 'h') x += +tokens[i++];
+      else if (command === 'v') y += +tokens[i++];
+      else if (command === 'z') { x = startX; y = startY; }
+      else assert.fail(`unsupported SVG command: ${command}`);
+      vertices[frame].push([x * 2 - frame * 112, y * 2]);
+    }
+  }
   const renderer = Object.create(Dive.Renderer.prototype);
   renderer.rabbit = {};
   const game = new Dive.Game();
-  const box = game.playerBounds();
-  let destination;
+  let destination, rotation, frame;
   const ctx = {
-    save() {}, restore() {}, translate() {}, rotate() {},
-    drawImage(image, sx, sy, sw, sh, dx, dy, width, height) { destination = { dx, dy, width, height }; },
+    save() {}, restore() {}, translate() {}, rotate(angle) { rotation = angle; },
+    drawImage(image, sx, sy, sw, sh, dx, dy, width, height) { frame = sx / sw; destination = { dx, dy, width, height, sw, sh }; },
   };
-  for (const frame of [0, 1, 2]) {
-    renderer.swimmer(ctx, game.player.x, game.player.y, game.player, frame);
-    assert.ok(box.left <= game.player.x + destination.dx);
-    assert.ok(box.top <= game.player.y + destination.dy);
-    assert.ok(box.right >= game.player.x + destination.dx + destination.width);
-    assert.ok(box.bottom >= game.player.y + destination.dy + destination.height);
-    assert.equal(destination.width, Dive.SWIMMER.size * Dive.SWIMMER.scale);
-    assert.equal(destination.width, destination.height);
+  for (const kickAge of [0, .4, .56, .85]) for (const tilt of [0, -12, -28]) for (const tiltPose of [false, true]) {
+    Object.assign(game.player, { kickAge, tilt, tiltPose });
+    renderer.swimmer(ctx, game.player.x, game.player.y, game.player);
+    const points = vertices[frame].map(([sx, sy]) => {
+      const x = destination.dx + sx * destination.width / destination.sw;
+      const y = destination.dy + sy * destination.height / destination.sh;
+      return [game.player.x + x * Math.cos(rotation) - y * Math.sin(rotation), game.player.y + x * Math.sin(rotation) + y * Math.cos(rotation)];
+    });
+    const expected = {
+      left: Math.min(...points.map(p => p[0])), right: Math.max(...points.map(p => p[0])),
+      top: Math.min(...points.map(p => p[1])), bottom: Math.max(...points.map(p => p[1])),
+    };
+    const box = game.playerBounds();
+    for (const side of ['left', 'top', 'right', 'bottom']) assert.ok(Math.abs(box[side] - expected[side]) < 1e-9, `${frame}/${tilt}/${side}`);
   }
 });
 
 test('the pose selector preserves an existing raised pose through recovery instead of switching on velocity alone', () => {
   const renderer = Object.create(Dive.Renderer.prototype);
   renderer.rabbit = {};
-  renderer.tilt = 0;
-  renderer.tiltPose = false;
+
   let frame;
   const ctx = { save() {}, restore() {}, translate() {}, rotate() {}, drawImage(image, sx) { frame = sx / 112; } };
   const game = new Dive.Game();
   game.flap();
   renderer.swimmer(ctx, 100, 200, game.player);
   assert.equal(frame, 0, 'fold the limbs before extending');
-  renderer.tilt = -28;
-  renderer.tiltPose = true;
+  game.player.tilt = -28;
+  game.player.tiltPose = true;
   game.player.kickAge = .4;
   game.player.vy = 145;
   renderer.swimmer(ctx, 100, 200, game.player);
@@ -45,7 +65,7 @@ test('the pose selector preserves an existing raised pose through recovery inste
   renderer.swimmer(ctx, 100, 200, game.player);
   assert.equal(frame, 0, 'fold again while recovering');
   game.player.kickAge = .85;
-  renderer.tilt = -5;
+  game.player.tilt = -5;
   renderer.swimmer(ctx, 100, 200, game.player);
   assert.equal(frame, 1, 'extend while coasting');
 });
@@ -55,7 +75,7 @@ test('each accepted kick restarts folding in the real physics and render loop', 
   Object.assign(renderer, {
     canvas: { width: Dive.W, height: Dive.H }, loaded: true,
     background: {}, foreground: {}, rabbit: {}, lettering: {},
-    best: 0, tilt: 0, tiltPose: false, lastMotionTime: 0,
+    best: 0,
   });
   let frame;
   const frames = new Set();
