@@ -118,7 +118,7 @@
 
   function queryPhones(phones, state = {}) {
     const ranges = Object.entries(state.ranges || {});
-    const within = (value, range) => value != null && value >= range[0] && value <= range[1];
+    const within = (value, range) => value == null || (value >= range[0] && value <= range[1]);
     const words = String(state.search || '').trim().toLowerCase().split(/\s+/).filter(Boolean);
     const rows = phones.flatMap(phone => {
       if (state.brands?.length && !state.brands.includes(phone.brand)) return [];
@@ -128,7 +128,7 @@
       const variantRanges = ranges.filter(([key]) => offerKeys.has(key));
       const offers = phone.offers.filter(offer => (!state.pricedOnly || offer.price != null)
         && variantRanges.every(([key, range]) => within(offer[key], range)));
-      if ((variantRanges.length || state.pricedOnly) && !offers.length) return [];
+      if (!offers.length && (state.pricedOnly || (variantRanges.length && phone.offers.length))) return [];
       const prices = offers.map(offer => offer.price).filter(value => value != null);
       return [{ phone, offers, sortPrice: prices.length ? Math.min(...prices) : null }];
     });

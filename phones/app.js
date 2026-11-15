@@ -23,7 +23,7 @@
       box.className = 'range-field';
       box.dataset.field = field.key;
       box.setAttribute('aria-label', field.label);
-      const title = [field.tip, `${limit.count} 款有数据；设置范围时排除该项缺失的机型。`].filter(Boolean).join(' ');
+      const title = [field.tip, `${limit.count} 款有数据；滑块仅筛选已知数值，缺失数据的机型仍保留。`].filter(Boolean).join(' ');
       box.innerHTML = `<div class="range-top"><span class="range-label" title="${esc(title)}">${esc(field.label)}<span class="range-unit">${esc(field.unit)}</span></span><button class="range-clear" type="button" aria-label="重置${esc(field.label)}" title="重置此项">×</button></div>
         <div class="range-values"><input type="number" data-edge="0" min="${min}" max="${max}" step="${field.step}" value="${min}" aria-label="${esc(field.label)}下限"><span>–</span><input type="number" data-edge="1" min="${min}" max="${max}" step="${field.step}" value="${max}" aria-label="${esc(field.label)}上限"></div>
         <div class="dual-range"><span class="range-track"></span><span class="range-fill"></span><input type="range" data-edge="0" min="${min}" max="${max}" step="${field.step}" value="${min}" aria-label="${esc(field.label)}最小值滑块"><input type="range" data-edge="1" min="${min}" max="${max}" step="${field.step}" value="${max}" aria-label="${esc(field.label)}最大值滑块"></div>`;

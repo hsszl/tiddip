@@ -82,5 +82,5 @@ test('priced-only is optional and matches a quoted configuration rather than ano
   assert.deepEqual(rows.map(row => row.phone.id), ['mixed']);
   assert.deepEqual(rows[0].offers.map(offer => offer.config), ['12+256']);
   assert.equal(M.queryPhones(phones, { pricedOnly: true, ranges: { storage: [512, 1024] } }).length, 0);
-  assert.equal(M.queryPhones(phones, { ranges: { storage: [512, 1024] } }).length, 1);
+  assert.deepEqual(M.queryPhones(phones, { ranges: { storage: [512, 1024] } }).map(row => row.phone.id), ['mixed', 'unpriced']);
 });

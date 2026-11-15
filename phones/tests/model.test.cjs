@@ -21,13 +21,13 @@ const sample = {
 };
 
 // First vertical slice: real data normalization through the filter engine.
-test('weight and performance ranges combine inclusively; missing scores are not zero', () => {
+test('sliders filter known values inclusively and preserve unknown values', () => {
   const { normalizePhone, queryPhones } = model();
   const phones = [normalizePhone(sample), normalizePhone({ id: 'unknown', name: '未知' })];
   assert.equal(queryPhones(phones, {}).length, 2);
   const found = queryPhones(phones, { ranges: { weight: [190, 194], gbMulti: [11000, 11033] } });
-  assert.deepEqual(found.map(row => row.phone.id), ['sample']);
-  assert.equal(queryPhones(phones, { ranges: { gbMulti: [0, 100] } }).length, 0);
+  assert.deepEqual(found.map(row => row.phone.id), ['sample', 'unknown']);
+  assert.deepEqual(queryPhones(phones, { ranges: { gbMulti: [0, 100] } }).map(row => row.phone.id), ['unknown']);
 });
 
 test('price, RAM, and storage bounds must match the same configuration', () => {
@@ -51,6 +51,22 @@ test('out of stock and missing latest quotes never fall back to old prices', () 
   } });
   assert.equal(phone.offers[0].price, null);
   assert.equal(phone.offers[0].previous.price, 1000);
-  assert.equal(queryPhones([phone], { ranges: { price: [0, 5000] } }).length, 0);
+  const retained = queryPhones([phone], { ranges: { price: [4000, 5000] } });
+  assert.equal(retained.length, 1);
+  assert.ok(retained[0].offers.every(offer => offer.price === null));
   assert.equal(queryPhones([phone], {}).length, 1);
+});
+
+test('price slider retains phones without configurations while known out-of-range data is excluded', () => {
+  const { normalizePhone, queryPhones } = model();
+  const unpriced = normalizePhone({ id: 'unpriced', name: '只有参数', weight: 190 });
+  const tooHeavy = normalizePhone({ id: 'heavy', name: '超重未报价', weight: 220 });
+  const priced = normalizePhone(sample);
+  const ranges = { price: [2000, 3000], weight: [180, 200] };
+  const found = queryPhones([unpriced, tooHeavy, priced], { ranges });
+  assert.deepEqual(found.map(row => row.phone.id), ['unpriced']);
+  assert.equal(found[0].sortPrice, null);
+  assert.deepEqual(found[0].offers, []);
+  assert.equal(queryPhones([unpriced], { ranges, pricedOnly: true }).length, 0);
+  assert.equal(queryPhones([unpriced], { ranges: { ram: [12, 16], storage: [256, 512] } }).length, 1);
 });
