@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#171919">
   <title>手机筛选</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="style.css?v=8b1767ebc8">
+  <link rel="stylesheet" href="style.css?v=0cea862c3b">
   <script src="data.js" defer></script>
-  <script src="model.js?v=51f62a0c05" defer></script>
-  <script src="app.js?v=5ada8dcc65" defer></script>
+  <script src="model.js?v=32a01e7d95" defer></script>
+  <script src="app.js?v=06f5eb8b06" defer></script>
 </head>
 <body>
   <main>
@@ -31,7 +31,7 @@
       </details>
     </section>
     <div class="result-bar">
-      <output id="count" aria-live="polite"></output>
+      <div class="result-options"><output id="count" aria-live="polite"></output><label class="price-toggle" title="只保留有本期统计报价的配置；取消后显示全部机型。"><input id="priced-only" type="checkbox">只看有报价</label></div>
       <span class="source"><a href="https://mingqimiao.cn/" target="_blank" rel="noopener noreferrer" title="公开参数快照，非实时成交价；原始字段及跑分来源可在机型详情中查看。">数据：名其喵</a><span id="updated"></span></span>
     </div>
     <div class="column-head row-grid" aria-hidden="true">

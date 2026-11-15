@@ -126,8 +126,9 @@
       if (!Object.entries(state.facets || {}).every(([key, value]) => !value || phone.facets[key] === value)) return [];
       if (!ranges.filter(([key]) => !offerKeys.has(key)).every(([key, range]) => within(phone.metrics[key], range))) return [];
       const variantRanges = ranges.filter(([key]) => offerKeys.has(key));
-      const offers = phone.offers.filter(offer => variantRanges.every(([key, range]) => within(offer[key], range)));
-      if (variantRanges.length && !offers.length) return [];
+      const offers = phone.offers.filter(offer => (!state.pricedOnly || offer.price != null)
+        && variantRanges.every(([key, range]) => within(offer[key], range)));
+      if ((variantRanges.length || state.pricedOnly) && !offers.length) return [];
       const prices = offers.map(offer => offer.price).filter(value => value != null);
       return [{ phone, offers, sortPrice: prices.length ? Math.min(...prices) : null }];
     });

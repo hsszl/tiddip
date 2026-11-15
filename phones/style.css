@@ -76,6 +76,9 @@ select option { background: var(--bg); }
 .facet-label > span { color: var(--muted); min-width: 53px; }
 .facet-label select { width: 100%; min-width: 0; padding: 5px 7px; font-size: 12px; }
 .result-bar { display: flex; align-items: center; justify-content: space-between; color: var(--muted); font-size: 12px; margin-top: 15px; padding-bottom: 12px; }
+.result-options { display: flex; align-items: center; gap: 12px; }
+.price-toggle { display: inline-flex; align-items: center; gap: 5px; min-height: 30px; cursor: pointer; white-space: nowrap; }
+.price-toggle input { accent-color: var(--accent); width: 14px; height: 14px; margin: 0; }
 .source { display: flex; gap: 12px; }
 .row-grid { display: grid; grid-template-columns: minmax(210px, 1fr) minmax(160px, .62fr) minmax(340px, 1.65fr) minmax(260px, 1.25fr); column-gap: 22px; }
 .column-head { padding: 10px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: 11px; color: var(--muted); }
@@ -153,6 +156,7 @@ select option { background: var(--bg); }
   .row-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 16px; }
   .column-head { display: none; }
   .result-bar { margin-top: 8px; border-bottom: 1px solid var(--line); }
+  .price-toggle { min-height: 44px; }
   .phone-row > summary { padding: 16px 0; row-gap: 10px; }
   .phone-id { grid-column: 1 / -1; grid-row: auto; align-items: center; }
   .phone-name { font-size: 17px; }

@@ -5,7 +5,7 @@
   const phones = data.phones.map(M.normalizePhone);
   const bounds = M.buildBounds(phones);
   const byId = new Map(phones.map(phone => [phone.id, phone]));
-  const state = { ranges: {}, brands: [], facets: {}, search: '', sort: 'price', direction: 'asc' };
+  const state = { ranges: {}, brands: [], facets: {}, search: '', sort: 'price', direction: 'asc', pricedOnly: false };
   const rangeNodes = new Map();
   const $ = id => document.getElementById(id);
   const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
@@ -126,7 +126,7 @@
   }
 
   function priceColumn(offers) {
-    if (!offers.length) return '<div class="price-line"><span class="unpriced">未收录报价</span></div>';
+    if (!offers.length) return '<div class="price-line"><span class="unpriced" title="来源仅收录了这款机型的参数，没有提供配置和报价。">未收录报价</span></div>';
     const lines = offers.map(offer => {
       const label = offer.price != null ? `<strong>${fmt(offer.price)}<small>（${esc(offer.config)}）</small></strong>`
         : `<span class="unpriced">${esc(offer.text || '—')}<small>（${esc(offer.config)}）</small></span>`;
@@ -217,6 +217,8 @@
     state.search = '';
     state.sort = 'price';
     state.direction = 'asc';
+    state.pricedOnly = false;
+    $('priced-only').checked = false;
     $('search').value = '';
     $('sort').value = 'price';
     $('facet-filters').querySelectorAll('select').forEach(select => { select.value = ''; });
@@ -229,6 +231,7 @@
   createRanges();
   createSelectors();
   $('search').addEventListener('input', event => { state.search = event.target.value; scheduleRender(); });
+  $('priced-only').addEventListener('change', event => { state.pricedOnly = event.target.checked; scheduleRender(); });
   $('reset').addEventListener('click', reset);
   $('empty-reset').addEventListener('click', reset);
   $('updated').textContent = data.meta.updatedAt || data.meta.latestLabel;

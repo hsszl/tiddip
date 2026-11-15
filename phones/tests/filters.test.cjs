@@ -66,3 +66,21 @@ test('storage-only Apple variants do not acquire invented RAM; terabytes use GB'
   assert.equal(p.offers[0].storage, 256);
   assert.equal(p.offers[1].storage, 1024);
 });
+
+test('priced-only is optional and matches a quoted configuration rather than another variant', () => {
+  const mixed = M.normalizePhone({ id: 'mixed', name: '有部分报价', configs: ['12+256', '16+512'], histByCfg: {
+    '12+256': [{ label: '11/11', value: 2000 }],
+    '16+512': [{ label: '11/9', value: 2500 }, { label: '11/11', value: null }],
+  } });
+  const unpriced = M.normalizePhone({ id: 'unpriced', name: '只有参数' });
+  const soldOut = M.normalizePhone({ id: 'sold-out', name: '本期无货', configs: ['12+256'], histByCfg: {
+    '12+256': [{ label: '11/9', value: 1500 }, { label: '11/11', value: null, out: true }],
+  } });
+  const phones = [mixed, unpriced, soldOut];
+  assert.equal(M.queryPhones(phones, {}).length, 3);
+  const rows = M.queryPhones(phones, { pricedOnly: true });
+  assert.deepEqual(rows.map(row => row.phone.id), ['mixed']);
+  assert.deepEqual(rows[0].offers.map(offer => offer.config), ['12+256']);
+  assert.equal(M.queryPhones(phones, { pricedOnly: true, ranges: { storage: [512, 1024] } }).length, 0);
+  assert.equal(M.queryPhones(phones, { ranges: { storage: [512, 1024] } }).length, 1);
+});
