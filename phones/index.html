@@ -6,10 +6,11 @@
   <meta name="theme-color" content="#171919">
   <title>手机筛选</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="style.css?v=0cea862c3b">
+  <link rel="stylesheet" href="style.css?v=53e1054967">
   <script src="data.js" defer></script>
-  <script src="model.js?v=cb7d65cf80" defer></script>
-  <script src="app.js?v=7b223c8d3e" defer></script>
+  <script src="supplements.js?v=4ed0d5485b" defer></script>
+  <script src="model.js?v=0fbf987cb4" defer></script>
+  <script src="app.js?v=c6b0a87c9d" defer></script>
 </head>
 <body>
   <main>
@@ -32,10 +33,10 @@
     </section>
     <div class="result-bar">
       <div class="result-options"><output id="count" aria-live="polite"></output><label class="price-toggle" title="只保留有本期统计报价的配置；取消后显示全部机型。"><input id="priced-only" type="checkbox">只看有报价</label></div>
-      <span class="source"><a href="https://mingqimiao.cn/" target="_blank" rel="noopener noreferrer" title="公开参数快照，非实时成交价；原始字段及跑分来源可在机型详情中查看。">数据：名其喵</a><span id="updated"></span></span>
+      <span class="source"><a href="https://mingqimiao.cn/" target="_blank" rel="noopener noreferrer" title="公开参数快照；标注“预估”的补缺值与原数据分开，来源及方法可在机型详情查看。">原表：名其喵</a><span id="updated"></span></span>
     </div>
     <div class="column-head row-grid" aria-hidden="true">
-      <span>机型 / 配置</span><span>最近价</span><span>芯片与跑分 / 电池 / 后摄</span><span>屏幕大小 / 充电 / 前摄</span>
+      <span>机型 / 配置</span><span>报价 / 预估参考</span><span>芯片与跑分 / 电池 / 后摄</span><span>屏幕大小 / 充电 / 前摄</span>
     </div>
     <div id="results" aria-label="手机列表"></div>
     <div id="empty" hidden>没有符合条件的机型。<button id="empty-reset" type="button">重置筛选</button></div>

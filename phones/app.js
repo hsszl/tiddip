@@ -2,7 +2,8 @@
   'use strict';
   const M = globalThis.PhoneModel;
   const data = globalThis.PHONE_DATA;
-  const phones = data.phones.map(M.normalizePhone);
+  const supplements = globalThis.PHONE_SUPPLEMENTS?.phones || {};
+  const phones = data.phones.map(raw => ({ ...M.normalizePhone(raw), supplement: supplements[raw.id] || {} }));
   const bounds = M.buildBounds(phones);
   const byId = new Map(phones.map(phone => [phone.id, phone]));
   const state = { ranges: {}, brands: [], facets: {}, search: '', sort: 'price', direction: 'asc', pricedOnly: false };
@@ -125,11 +126,26 @@
       ? `https://mingqimiao.cn/${phone.img}` : '';
   }
 
-  function priceColumn(offers) {
-    if (!offers.length) return '<div class="price-line"><span class="unpriced" title="来源仅收录了这款机型的参数，没有提供配置和报价。">未收录报价</span></div>';
+  function estimateTitle(entry) {
+    return [entry?.method, entry?.confidence ? `可信度：${entry.confidence}` : '', ...(entry?.sources || [])].filter(Boolean).join('\n');
+  }
+
+  function estimatedPrice(entry, config = '') {
+    const text = M.estimateText(entry, '元');
+    if (!text) return '';
+    return `<span class="estimated" title="${esc(estimateTitle(entry))}">${esc(text)}${config ? `<small>（${esc(config)}）</small>` : ''}</span>`;
+  }
+
+  function priceColumn(offers, phone) {
+    const estimates = phone.supplement?.prices || {};
+    if (!offers.length) {
+      const entry = estimates.default;
+      return `<div class="price-line">${estimatedPrice(entry, entry?.config) || '<span class="unpriced" title="来源未提供报价，也未找到可靠估值依据。">未收录报价</span>'}</div>`;
+    }
     const lines = offers.map(offer => {
       const label = offer.price != null ? `<strong>${fmt(offer.price)}<small>（${esc(offer.config)}）</small></strong>`
-        : `<span class="unpriced">${esc(offer.text || '—')}<small>（${esc(offer.config)}）</small></span>`;
+        : (!offer.out && estimatedPrice(estimates[offer.config], offer.config))
+          || `<span class="unpriced">${esc(offer.text || '—')}<small>（${esc(offer.config)}）</small></span>`;
       return `<div class="price-line" title="${esc(offer.date || '暂无记录')}">${label}</div>`;
     }).join('');
     const dates = [...new Set(offers.map(offer => offer.date).filter(Boolean))];
@@ -151,28 +167,46 @@
     const p = row.phone;
     const src = imageUrl(p);
     const image = src ? `<img src="${esc(src)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : esc((p.brand || p.name || '·').slice(0, 1));
-    const configs = row.offers.map(offer => offer.config).join(' / ');
-    const physical = [p.weightRaw || (p.metrics.weight != null ? `${p.metrics.weight}g` : ''), p.thicknessRaw || (p.metrics.thickness != null ? `${p.metrics.thickness}mm` : '')].filter(Boolean).join(' · ');
-    const benchmark = p.gbSingle != null || p.gbMulti != null ? `GB6 单核 ${fmt(p.gbSingle)} / 多核 ${fmt(p.gbMulti)}` : 'GB6 暂无数据';
+    const configs = row.offers.map(offer => offer.config).join(' / ') || M.valueText(p, 'configs', '');
+    const physical = [M.valueText(p, 'weight', p.weightRaw || p.metrics.weight, 'g'), M.valueText(p, 'thickness', p.thicknessRaw || p.metrics.thickness, 'mm')].filter(Boolean).join(' · ');
+    const single = M.valueText(p, 'gbSingle', p.gbSingle);
+    const multi = M.valueText(p, 'gbMulti', p.gbMulti);
+    const benchmark = single || multi ? `GB6 单核 ${single || '—'} / 多核 ${multi || '—'}` : 'GB6 暂无数据';
     return `<details class="phone-row" data-id="${esc(p.id)}"><summary class="row-grid" aria-label="${esc(p.name)}，展开全部参数">
       <div class="phone-id"><div class="thumbnail">${image}</div><div class="identity-text"><div class="phone-name">${esc(p.name)}</div><div class="phone-sub">${esc([p.brand, configs].filter(Boolean).join(' · '))}</div><div class="phone-sub physical" title="多配色筛选采用最重、最厚值">${esc(physical || '重量 / 厚度未收录')}</div></div></div>
-      <div class="prices current" data-label="最近价">${priceColumn(row.offers)}</div>
-      <div class="spec-stack"><div class="spec-line chip-line"><span class="label">芯片</span>${esc(p.soc || '—')}<span class="benchmark-inline"> · ${esc(benchmark)}</span></div>${spec('电池', p.battery)}${spec('后摄', p.rear)}</div>
-      <div class="spec-stack">${screenSpec(p)}${spec('充电', p.charge)}${spec('前摄', p.front)}</div>
+      <div class="prices current" data-label="报价 / 预估参考">${priceColumn(row.offers, p)}</div>
+      <div class="spec-stack"><div class="spec-line chip-line"><span class="label">芯片</span>${esc(p.soc || '—')}<span class="benchmark-inline"> · ${esc(benchmark)}</span></div>${spec('电池', M.valueText(p, 'battery', p.battery, 'mAh'))}${spec('后摄', p.rear)}</div>
+      <div class="spec-stack">${screenSpec(p)}${spec('充电', M.valueText(p, 'charge', p.charge, 'W'))}${spec('前摄', p.front)}</div>
       </summary><div class="row-details"></div></details>`;
   }
 
   function renderDetails(phone, target) {
+    const value = (key, original, unit = '') => M.valueText(phone, key, original, unit);
+    const benchmark = (single, multi) => {
+      const a = value(single, phone[single]), b = value(multi, phone[multi]);
+      return a || b ? `${a || '—'} / ${b || '—'}` : '';
+    };
     const entries = [
-      ['芯片', phone.socRaw || phone.soc], ['CPU', phone.cpu],
-      ['GB6 单核 / 多核', phone.gbSingle != null || phone.gbMulti != null ? `${fmt(phone.gbSingle)} / ${fmt(phone.gbMulti)}` : ''],
-      ['GB7 单核 / 多核', phone.gb7Single != null || phone.gb7Multi != null ? `${fmt(phone.gb7Single)} / ${fmt(phone.gb7Multi)}` : ''],
-      ['安兔兔（原表，版本未标注）', phone.antutu != null ? fmt(phone.antutu) : ''],
-      ['屏幕', phone.screen], ['触控采样', phone.touch], ['重量', phone.weightRaw], ['厚度', phone.thicknessRaw],
-      ['电池', phone.battery], ['充电', phone.charge], ['后摄', phone.rear], ['前摄', phone.front],
-      ['运行内存', phone.ramType], ['闪存', phone.romType], ['防护', phone.waterproof], ['其他', phone.others],
-      ['发布时间', phone.releaseYM], ['报价口径', phone.priceSource],
-      ['SIM', phone.sim], ['系统', phone.os], ['二手', phone.used], ['评分', phone.rating],
+      ['芯片', phone.socRaw || phone.soc], ['CPU', value('cpu', phone.cpu)],
+      ['CPU 最高频率', value('cpuFrequency', phone.metrics.cpuFrequency, 'GHz')],
+      ['GB6 单核 / 多核', benchmark('gbSingle', 'gbMulti')],
+      ['GB7 单核 / 多核', benchmark('gb7Single', 'gb7Multi')],
+      [phone.metrics.antutu != null ? '安兔兔（原表版本未标注）' : `安兔兔（补源版本：${phone.supplement?.fields?.antutu?.benchmarkVersion || '见依据'}）`, value('antutu', phone.metrics.antutu, '万分')],
+      ['屏幕', phone.screen], ['触控采样', value('touch', phone.touch, 'Hz')],
+      ['屏幕尺寸', value('screenSize', phone.screenSize, '英寸')], ['刷新率', value('refresh', phone.refresh, 'Hz')],
+      ['瞬时触控', value('touchInstant', phone.metrics.touchInstant, 'Hz')],
+      ['重量', value('weight', phone.weightRaw || phone.metrics.weight, 'g')], ['厚度', value('thickness', phone.thicknessRaw || phone.metrics.thickness, 'mm')],
+      ['电池', value('battery', phone.battery, 'mAh')], ['充电', value('charge', phone.charge, 'W')],
+      ['无线充电', value('wireless', phone.metrics.wireless, 'W')], ['后摄', phone.rear], ['前摄', phone.front],
+      ['前摄像素', value('frontCamera', phone.metrics.frontCamera, 'MP')], ['USB', value('usb', phone.facets.usb)],
+      ['主摄像素', value('mainCamera', phone.metrics.mainCamera, 'MP')],
+      ['长焦像素', value('telephoto', phone.metrics.telephoto, 'MP')], ['超广角像素', value('ultrawide', phone.metrics.ultrawide, 'MP')],
+      ['运行内存', value('ramType', phone.ramType)], ['闪存', value('romType', phone.romType)],
+      ['补充配置', phone.offers.length ? '' : value('configs', '')],
+      ['补充RAM容量', value('ram', null, 'GB')], ['补充存储容量', value('storage', null, 'GB')],
+      ['防护', value('waterproof', phone.waterproof)], ['蓝牙', value('bluetooth', phone.metrics.bluetooth)], ['其他', value('others', phone.others)],
+      ['发布时间', value('releaseYM', phone.releaseYM)], ['报价口径', phone.priceSource],
+      ['SIM', value('sim', phone.sim)], ['系统', value('os', phone.os)], ['二手', phone.used], ['评分', phone.rating],
       ['发布记录', phone.pubTime], ['备注', phone.note],
     ];
     target.innerHTML = `<dl class="detail-grid">${entries.filter(([, value]) => value != null && value !== '').map(([label, value]) => `<div class="detail-pair"><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join('')}</dl>`;
@@ -185,7 +219,15 @@
       link.rel = 'noopener noreferrer';
       target.append(link);
     }
-
+    const labels = Object.fromEntries(M.numericFields.map(field => [field.key, field.label]));
+    const evidence = [...Object.entries(phone.supplement?.fields || {}), ...Object.entries(phone.supplement?.prices || {}).map(([key, entry]) => [`价格 ${key === 'default' ? '机型级' : key}`, entry])];
+    if (evidence.length) {
+      const details = document.createElement('details');
+      details.className = 'estimate-notes';
+      details.innerHTML = '<summary>预估依据</summary><p>括号值只作补缺参考，未覆盖原始数据，也不作为滑块排除缺项的依据。</p><ul>'
+        + evidence.map(([key, entry]) => `<li>${esc(labels[key] || key)}：${esc(entry.method || '参考资料')} ${(entry.sources || []).filter(url => /^https?:\/\//i.test(url)).map((url, index) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">来源${index + 1}</a>`).join(' · ')}</li>`).join('') + '</ul>';
+      target.append(details);
+    }
   }
 
   function render() {

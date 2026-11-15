@@ -46,6 +46,21 @@
     { key: 'usb', label: 'USB' }, { key: 'releaseYear', label: '发布年份' },
   ];
   const collator = new Intl.Collator('zh-CN', { numeric: true });
+  const displayNumber = new Intl.NumberFormat('zh-CN', { maximumFractionDigits: 2 });
+  const present = value => typeof value === 'number' ? Number.isFinite(value) : typeof value === 'string' && value.trim() !== '';
+
+  function estimateText(entry, unit = '') {
+    if (!entry || !present(entry.value)) return '';
+    const value = typeof entry.value === 'number' ? displayNumber.format(entry.value) : entry.value;
+    const numeric = typeof entry.value === 'number' || /^\d+(?:\.\d+)?(?:\s*\/\s*\d+(?:\.\d+)?)*$/.test(entry.value);
+    const suffix = numeric ? (entry.unit ?? unit) : '';
+    return `（预估${value}${suffix}${entry.displayNote ? ` · ${entry.displayNote}` : ''}）`;
+  }
+
+  function valueText(phone, key, value, unit = '') {
+    if (present(value)) return typeof value === 'number' ? displayNumber.format(value) + unit : value;
+    return estimateText(phone.supplement?.fields?.[key], unit);
+  }
   const matchNumber = (text, pattern) => {
     const match = String(text || '').match(pattern);
     return match ? Number(match[1]) : null;
@@ -154,5 +169,5 @@
     });
   }
 
-  globalThis.PhoneModel = { normalizePhone, queryPhones, buildBounds, numericFields, facetFields, screenSizeClass, screenSizeHint };
+  globalThis.PhoneModel = { normalizePhone, queryPhones, buildBounds, numericFields, facetFields, screenSizeClass, screenSizeHint, estimateText, valueText };
 })();
